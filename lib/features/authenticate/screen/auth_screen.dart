@@ -1,4 +1,4 @@
-import 'package:expense_tracking/core/theme/theme_data.dart';
+import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatelessWidget {
