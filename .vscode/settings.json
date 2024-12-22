@@ -1,0 +1,4 @@
+{
+  "java.compile.nullAnalysis.mode": "automatic",
+  "cmake.sourceDirectory": "C:/Users/htilssu/projects/expense_tracking/windows"
+}
