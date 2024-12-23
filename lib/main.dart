@@ -1,14 +1,14 @@
+import 'package:expense_tracking/features/greeting/screen/greeting_screen.dart';
 import 'package:expense_tracking/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'core/theme/theme_data.dart';
-import 'feature/auth/screen/auth_screen.dart';
+import 'constants/app_color.dart';
 
 Future<void> main() async {
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 }
 
@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Expense Tracking',
       theme: ThemeData(
-        colorScheme: AppTheme.lightTheme(),
+        colorScheme: AppColor.lightTheme(),
         useMaterial3: true,
       ),
-      home: const AuthScreen(),
+      home: GreetingScreen(),
     );
   }
 }
