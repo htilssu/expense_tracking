@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
-class AppTheme {
+class AppColor {
+  static Color hintColor = const Color(0x47232323);
+
+
+
+
   static ColorScheme lightTheme() {
-    return ColorScheme(
+    return const ColorScheme(
       brightness: Brightness.light,
-      primary: Color(0xFFC3D6FA),
+      primary: Color(0xFFACC7F8),
       onPrimary: Color(0xff001833),
       secondary: Color(0xFF000000),
       onSecondary: Colors.black,
@@ -17,7 +22,7 @@ class AppTheme {
 
   static ColorScheme darkTheme() {
     // TODO: implement dark theme
-    return ColorScheme(
+    return const ColorScheme(
       brightness: Brightness.light,
       primary: Color(0xFFC3D6FA),
       onPrimary: Color(0xff001833),
