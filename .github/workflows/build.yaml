@@ -3,22 +3,20 @@ on:
   pull_request:
     branches:
       - "**/*"
-  push:
-    branches:
-      - "**/*"
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: {{github}}
-
     steps:
       - uses: actions/checkout@v4
       - name: Setup Flutter SDK
         uses: flutter-actions/setup-flutter@v4
         with:
-          channel: stable
-          version: 3.0.2
+          channel: beta
+          version: latest
+          cache: true
+          cache-sdk: true
+          cache-key: ${{ runner.os }}-flutter-${{ hashFiles('pubspec.yaml') }}
       - name: Install dependencies
         run: flutter pub get
 
