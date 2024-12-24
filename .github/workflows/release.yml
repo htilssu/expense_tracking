@@ -6,8 +6,4 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     uses: "./.github/workflows/build.yaml"
-    steps:
-      - name: release
-        run: echo "Release"
