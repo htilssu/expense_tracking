@@ -1,5 +1,6 @@
-import 'package:expense_tracking/features/greeting/screen/greeting_screen.dart';
 import 'package:expense_tracking/firebase_options.dart';
+import 'package:expense_tracking/presentation/features/greeting/screen/greeting_screen.dart';
+import 'package:expense_tracking/presentation/features/overview/screen/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         colorScheme: AppColor.lightTheme(),
         useMaterial3: true,
       ),
-      home: GreetingScreen(),
+      home: HomeScreen(),
     );
   }
 }
