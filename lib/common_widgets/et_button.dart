@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class EtButton extends StatelessWidget {
-  Widget? child;
-  Color? color;
-  double borderRadius = 5;
-  double height = 1;
-  double width = double.infinity;
-  void Function()? onPressed;
+  final Widget? child;
+  final Color? color;
+  final double borderRadius;
+  final double height;
+  final double width;
+  final void Function()? onPressed;
 
-  EtButton({
+  const EtButton({
     super.key,
     this.child,
     this.color,

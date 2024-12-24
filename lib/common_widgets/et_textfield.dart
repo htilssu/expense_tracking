@@ -3,12 +3,12 @@ import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:flutter/material.dart';
 
 class EtTextField extends StatelessWidget {
-  String label;
-  TextEditingController? controller;
-  Widget? suffixIcon;
-  bool obscureText;
+ final String label;
+ final TextEditingController? controller;
+ final Widget? suffixIcon;
+ final bool obscureText;
 
-  EtTextField(
+  const EtTextField(
       {super.key,
       this.label = "",
       this.controller,
