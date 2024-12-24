@@ -1,9 +1,10 @@
-import 'package:expense_tracking/common_widgets/et_button.dart';
+import 'package:expense_tracking/presentation/features/authenticate/screen/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../constants/text_constant.dart';
+import '../../../common_widgets/et_button.dart';
 import '../../../common_widgets/et_textfield.dart';
-import '../../../constants/text_constant.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -18,30 +19,36 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Align(
+          alignment: Alignment.center,
+          child: Text("Đăng nhập"),
+        ),
+      ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 16),
-        margin: EdgeInsetsDirectional.only(top: 100),
+        margin: EdgeInsetsDirectional.only(top: 200),
         child: Column(
+          spacing: 16,
           children: [
             EtTextField(
               suffixIcon: Icon(Icons.email_rounded),
               label: "Tên đăng nhập",
             ),
-            SizedBox(
-              height: 16,
-            ),
             EtTextField(
               obscureText: !isShowPassword,
               suffixIcon: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    isShowPassword = !isShowPassword;
+                  });
+                },
                 icon: Icon(
                   !isShowPassword ? Icons.visibility : Icons.visibility_off,
                 ),
               ),
               label: "Mật khẩu",
-            ),
-            SizedBox(
-              height: 16,
             ),
             EtButton(
               onPressed: () {},
@@ -49,7 +56,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 "Đăng nhập",
                 style: TextStyle(
                     fontSize: TextSize.medium,
-                    color: Theme.of(context).colorScheme.onPrimary),
+                    color: Theme
+                        .of(context)
+                        .colorScheme
+                        .onPrimary),
               ),
             ),
             Row(
@@ -59,7 +69,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextButton(
                     style: ButtonStyle(
                         padding: WidgetStatePropertyAll(EdgeInsets.all(0))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => RegisterScreen(),));
+                    },
                     child: Text(
                       "Đăng ký",
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -75,9 +88,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Expanded(child: Divider())
               ],
-            ),
-            SizedBox(
-              height: 16,
             ),
             EtButton(
               onPressed: () {},
@@ -96,13 +106,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(
                     'Đăng nhập bằng Google',
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary),
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .onPrimary),
                   ),
                 ],
               ),
-            ),
-            SizedBox(
-              height: 8,
             ),
             EtButton(
               onPressed: () {},
@@ -111,8 +121,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   SvgPicture.asset(
                     "assets/images/facebook.svg",
-                    height: 26,
-                    width: 26,
+                    height: 32,
+                    width: 32,
                     fit: BoxFit.cover,
                   ),
                   SizedBox(
@@ -121,7 +131,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(
                     'Đăng nhập bằng Facebook',
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary),
+                        color: Theme
+                            .of(context)
+                            .colorScheme
+                            .onPrimary),
                   ),
                 ],
               ),

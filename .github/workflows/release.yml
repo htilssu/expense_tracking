@@ -1,0 +1,13 @@
+name: Release
+on:
+  push:
+    branches:
+      - "main**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    uses: "./.github/workflows/build.yaml"
+    steps:
+      - name: release
+        run: echo "Release"
