@@ -4,4 +4,6 @@ abstract class Repository<T, ID> {
   Future<T> update(T entity);
 
   Future<void> delete(ID id);
+
+  Future<T> save(T entity);
 }

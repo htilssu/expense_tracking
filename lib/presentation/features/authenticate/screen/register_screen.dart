@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../../../constants/text_constant.dart';
+import '../../../../domain/service/login_service.dart';
 import '../../../common_widgets/et_button.dart';
 import '../../../common_widgets/et_textfield.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
+
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             EtTextField(
               suffixIcon: IconButton(
                 onPressed: () {
-                  setState(() {
-                  });
+                  setState(() {});
                 },
                 icon: Icon(
                   !true ? Icons.visibility : Icons.visibility_off,
@@ -48,8 +49,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             EtTextField(
               suffixIcon: IconButton(
                 onPressed: () {
-                  setState(() {
-                  });
+                  setState(() {});
                 },
                 icon: Icon(
                   !true ? Icons.visibility : Icons.visibility_off,
@@ -57,18 +57,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               label: "Nhập lại mật khẩu",
             ),
-            EtButton(
-              onPressed: () {},
-              child: Text(
-                "Đăng ký",
-                style: TextStyle(
-                    fontSize: TextSize.medium,
-                    color: Theme
-                        .of(context)
-                        .colorScheme
-                        .onPrimary),
-              ),
-            ),
+            Column(
+              children: [
+                EtButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Đăng ký",
+                    style: TextStyle(
+                        fontSize: TextSize.medium,
+                        color: Theme.of(context).colorScheme.onPrimary),
+                  ),
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                    ),
+                    child: Text("Đã có tài khoản? Đăng nhập ngay"))
+              ],
+            )
           ],
         ),
       ),

@@ -1,11 +1,10 @@
 import 'package:expense_tracking/firebase_options.dart';
-import 'package:expense_tracking/presentation/features/greeting/screen/greeting_screen.dart';
-import 'package:expense_tracking/presentation/features/overview/screen/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'constants/app_color.dart';
+import 'presentation/features/authenticate/screen/login_screen.dart';
 
 Future<void> main() async {
   runApp(const MyApp());
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
         colorScheme: AppColor.lightTheme(),
         useMaterial3: true,
       ),
-      home: HomeScreen(),
+      home: LoginScreen(),
     );
   }
 }
