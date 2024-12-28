@@ -1,3 +1,4 @@
+import 'package:expense_tracking/presentation/common_widgets/et_navigation_bar.dart';
 import 'package:expense_tracking/presentation/features/overview/widget/et_home_appbar.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +8,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: EtNavigationBar(),
       body: Column(
         children: [
           SizedBox(

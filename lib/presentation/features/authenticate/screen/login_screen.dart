@@ -9,6 +9,7 @@ import '../../../../application/service/email_password_login_service.dart';
 import '../../../../constants/text_constant.dart';
 import '../../../common_widgets/et_button.dart';
 import '../../../common_widgets/et_textfield.dart';
+import '../../overview/screen/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -171,15 +172,23 @@ class _LoginScreenState extends State<LoginScreen> {
       await EmailPasswordLoginService(EmailPasswordLogin(
               email: emailController.text, password: passwordController.text))
           .login();
-    } on UserNotFoundException catch (e) {
+
+      if (mounted) {
+        Navigator.pushReplacement(context, MaterialPageRoute(
+          builder: (context) {
+            return HomeScreen();
+          },
+        ));
+      }
+    } on UserNotFoundException {
       setState(() {
         errorMessage = "Người dùng không tồn tại";
       });
-    } on WrongPasswordException catch (e) {
+    } on WrongPasswordException {
       setState(() {
         errorMessage = "Mật khẩu không đúng";
       });
-    } on Exception catch (e) {
+    } on Exception {
       setState(() {
         errorMessage = "Đã có lỗi xảy ra, vui lòng thử lại sau";
       });

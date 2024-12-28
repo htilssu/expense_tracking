@@ -3,13 +3,15 @@ import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:flutter/material.dart';
 
 class EtTextField extends StatelessWidget {
- final String label;
- final TextEditingController? controller;
- final Widget? suffixIcon;
- final bool obscureText;
+  final String label;
+  final TextEditingController? controller;
+  final Widget? suffixIcon;
+  final bool obscureText;
+  final String errorMessage;
 
   const EtTextField(
       {super.key,
+      this.errorMessage = "",
       this.label = "",
       this.controller,
       this.suffixIcon,
@@ -17,14 +19,26 @@ class EtTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-        obscureText: obscureText,
-        controller: controller,
-        decoration: InputDecoration(
-            suffixIcon: suffixIcon,
-            label: Text(label),
-            labelStyle:
-                TextStyle(fontSize: TextSize.medium, color: AppColor.hintColor),
-            border: OutlineInputBorder()));
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      spacing: 8,
+      children: [
+        TextField(
+          obscureText: obscureText,
+          controller: controller,
+          decoration: InputDecoration(
+              suffixIcon: suffixIcon,
+              label: Text(label),
+              labelStyle: TextStyle(
+                  fontSize: TextSize.medium, color: AppColor.hintColor),
+              border: OutlineInputBorder()),
+        ),
+        if (errorMessage.isNotEmpty)
+          Text(
+            errorMessage,
+            style: TextStyle(color: AppColor.lightTheme().error),
+          )
+      ],
+    );
   }
 }

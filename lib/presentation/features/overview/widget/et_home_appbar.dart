@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -61,7 +62,9 @@ class EtHomeAppbar extends StatelessWidget {
                             ],
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              FirebaseAuth.instance.signOut();
+                            },
                             icon: EtNotify(),
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white24,
