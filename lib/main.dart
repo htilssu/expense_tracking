@@ -31,6 +31,6 @@ class MyApp extends StatelessWidget {
           colorScheme: AppColor.lightTheme(),
           useMaterial3: true,
         ),
-        home: startScreen);
+        home: LoginScreen());
   }
 }

@@ -23,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String errorMessage = '';
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -35,128 +36,151 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Text("Đăng nhập"),
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        margin: EdgeInsetsDirectional.only(top: 100),
-        child: Column(
-          spacing: 16,
-          children: [
-            EtTextField(
-              controller: emailController,
-              suffixIcon: Icon(Icons.email_rounded),
-              label: "Tên đăng nhập",
-            ),
-            EtTextField(
-              controller: passwordController,
-              obscureText: !isShowPassword,
-              suffixIcon: IconButton(
-                onPressed: () {
-                  setState(() {
-                    isShowPassword = !isShowPassword;
-                  });
-                },
-                icon: Icon(
-                  !isShowPassword ? Icons.visibility : Icons.visibility_off,
-                ),
-              ),
-              label: "Mật khẩu",
-            ),
-            if (errorMessage.isNotEmpty)
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  errorMessage,
-                  textAlign: TextAlign.start,
-                  style: TextStyle(color: Colors.red),
-                ),
-              ),
-            EtButton(
-              onPressed: () {
-                onEmailPasswordLogin();
-              },
-              child: Text(
-                "Đăng nhập",
-                style: TextStyle(
-                    fontSize: TextSize.medium,
-                    color: Theme.of(context).colorScheme.onPrimary),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Bạn không có tài khoản?"),
-                TextButton(
-                    style: ButtonStyle(
-                        padding: WidgetStatePropertyAll(EdgeInsets.all(0))),
+      body: ListView(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            margin: EdgeInsetsDirectional.only(top: 100),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                spacing: 16,
+                children: [
+                  EtTextField(
+                    validator: (p0) {
+                      if (p0 == null || p0.isEmpty) {
+                        return "Tên đăng nhập không được để trống";
+                      }
+                      return null;
+                    },
+                    controller: emailController,
+                    suffixIcon: Icon(Icons.email_rounded),
+                    label: "Tên đăng nhập",
+                  ),
+                  EtTextField(
+                    validator: (p0) {
+                      if (p0 == null || p0.isEmpty) {
+                        return "Mật khẩu không được để trống";
+                      }
+                      return null;
+                    },
+                    controller: passwordController,
+                    obscureText: !isShowPassword,
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isShowPassword = !isShowPassword;
+                        });
+                      },
+                      icon: Icon(
+                        !isShowPassword ? Icons.visibility : Icons.visibility_off,
+                      ),
+                    ),
+                    label: "Mật khẩu",
+                  ),
+                  if (errorMessage.isNotEmpty)
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        errorMessage,
+                        textAlign: TextAlign.start,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  EtButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RegisterScreen(),
-                          ));
+                      setState(() {
+                        errorMessage = "";
+                      });
+                      if (!_formKey.currentState!.validate()) return;
+                      onEmailPasswordLogin();
                     },
                     child: Text(
-                      "Đăng ký",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ))
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(child: Divider()),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Text("Hoặc"),
-                ),
-                Expanded(child: Divider())
-              ],
-            ),
-            EtButton(
-              onPressed: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    "assets/images/google.svg",
-                    height: 26,
-                    width: 26,
-                    fit: BoxFit.cover,
+                      "Đăng nhập",
+                      style: TextStyle(
+                          fontSize: TextSize.medium,
+                          color: Theme.of(context).colorScheme.onPrimary),
+                    ),
                   ),
-                  SizedBox(
-                    width: 8,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Bạn không có tài khoản?"),
+                      TextButton(
+                          style: ButtonStyle(
+                              padding: WidgetStatePropertyAll(EdgeInsets.all(0))),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RegisterScreen(),
+                                ));
+                          },
+                          child: Text(
+                            "Đăng ký",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ))
+                    ],
                   ),
-                  Text(
-                    'Đăng nhập bằng Google',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary),
+                  Row(
+                    children: [
+                      Expanded(child: Divider()),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text("Hoặc"),
+                      ),
+                      Expanded(child: Divider())
+                    ],
                   ),
+                  EtButton(
+                    onPressed: () {},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/images/google.svg",
+                          height: 26,
+                          width: 26,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          'Đăng nhập bằng Google',
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
+                      ],
+                    ),
+                  ),
+                  EtButton(
+                    onPressed: () {},
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/images/facebook.svg",
+                          height: 32,
+                          width: 32,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          'Đăng nhập bằng Facebook',
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
-            EtButton(
-              onPressed: () {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    "assets/images/facebook.svg",
-                    height: 32,
-                    width: 32,
-                    fit: BoxFit.cover,
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  Text(
-                    'Đăng nhập bằng Facebook',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

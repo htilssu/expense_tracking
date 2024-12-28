@@ -20,9 +20,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   bool isShowPassword = false;
-  String emailError = "";
-  String passwordError = "";
-  String confirmPasswordError = "";
+  String errorMessage = "";
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -37,123 +36,127 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 16),
         margin: EdgeInsetsDirectional.only(top: 200),
-        child: Column(
-          spacing: 16,
-          children: [
-            EtTextField(
-              errorMessage: emailError,
-              controller: emailController,
-              suffixIcon: Icon(Icons.email_rounded),
-              label: "Email",
-            ),
-            EtTextField(
-              obscureText: isShowPassword,
-              errorMessage: passwordError,
-              controller: passwordController,
-              suffixIcon: IconButton(
-                onPressed: () {
-                  setState(() {
-                    isShowPassword = !isShowPassword;
-                  });
-                },
-                icon: Icon(
-                  !isShowPassword ? Icons.visibility : Icons.visibility_off,
-                ),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            spacing: 16,
+            children: [
+              EtTextField(
+                validator: emailValidator,
+                controller: emailController,
+                suffixIcon: Icon(Icons.email_rounded),
+                label: "Email",
               ),
-              label: "Mật khẩu",
-            ),
-            EtTextField(
-              obscureText: isShowPassword,
-              errorMessage: confirmPasswordError,
-              controller: confirmPasswordController,
-              suffixIcon: IconButton(
-                onPressed: () {
-                  setState(() {
-                    isShowPassword = !isShowPassword;
-                  });
-                },
-                icon: Icon(
-                  !true ? Icons.visibility : Icons.visibility_off,
-                ),
-              ),
-              label: "Nhập lại mật khẩu",
-            ),
-            Column(
-              children: [
-                EtButton(
+              EtTextField(
+                validator: passwordValidator,
+                obscureText: !isShowPassword,
+                controller: passwordController,
+                suffixIcon: IconButton(
                   onPressed: () {
-                    onEmailPasswordLogin();
+                    setState(() {
+                      isShowPassword = !isShowPassword;
+                    });
                   },
-                  child: Text(
-                    "Đăng ký",
-                    style: TextStyle(
-                        fontSize: TextSize.medium,
-                        color: Theme.of(context).colorScheme.onPrimary),
+                  icon: Icon(
+                    !isShowPassword ? Icons.visibility : Icons.visibility_off,
                   ),
                 ),
-                TextButton(
+                label: "Mật khẩu",
+              ),
+              EtTextField(
+                validator: confirmPasswordValidator,
+                obscureText: !isShowPassword,
+                controller: confirmPasswordController,
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isShowPassword = !isShowPassword;
+                    });
+                  },
+                  icon: Icon(
+                    !isShowPassword ? Icons.visibility : Icons.visibility_off,
+                  ),
+                ),
+                label: "Nhập lại mật khẩu",
+              ),
+              if (errorMessage.isNotEmpty)
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    errorMessage,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              Column(
+                children: [
+                  EtButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      setState(() {
+                        errorMessage = "";
+                      });
+                      if (!_formKey.currentState!.validate()) {
+                        return;
+                      }
+                      onEmailPasswordLogin();
                     },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
+                    child: Text(
+                      "Đăng ký",
+                      style: TextStyle(
+                          fontSize: TextSize.medium,
+                          color: Theme.of(context).colorScheme.onPrimary),
                     ),
-                    child: Text("Đã có tài khoản? Đăng nhập ngay"))
-              ],
-            )
-          ],
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                      ),
+                      child: Text("Đã có tài khoản? Đăng nhập ngay"))
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
   }
 
   Future<void> onEmailPasswordLogin() async {
-    if (!isValidate()) {
-      return;
-    }
-
     try {
       await EmailPasswordRegisterService(EmailPasswordRegister(
               emailController.text, passwordController.text))
           .register();
     } on EmailExistException {
       setState(() {
-        emailError = "Email đã tồn tại";
+        errorMessage = "Email đã tồn tại, vui lòng chọn email khác";
       });
     }
   }
 
-  bool isValidate() {
-    var isValid = true;
 
-    setState(() {
-      emailError = "";
-      passwordError = "";
-      confirmPasswordError = "";
-    });
+  String? emailValidator(String? text) {
+    if (!Validator.isValidEmail(text!)) {
+      return "Email không đúng định dạng";
+    }
+    return null;
+  }
 
-    if (emailController.text.isEmpty ||
-        !Validator.isValidEmail(emailController.text)) {
-      setState(() {
-        emailError = "Email không đúng định dạng";
-      });
-      isValid = false;
+  String? passwordValidator(String? text) {
+    if (passwordController.text.length < 6) {
+      return "Mật khẩu phải có ít nhất 6 ký tự";
     }
-    if (passwordController.text.isEmpty ||
-        !Validator.isValidPassword(passwordController.text)) {
-      setState(() {
-        passwordError =
-            "Mật khẩu phải có ít nhất 6 ký tự, 1 chữ hoa, 1 số, 1 ký tự đặc biệt";
-      });
-      isValid = false;
+    if (!Validator.isValidPassword(text!)) {
+      return "Mật khẩu phải có ít nhất 1 chữ hoa, 1 số, 1 ký tự đặc biệt";
     }
+    return null;
+  }
 
-    if (passwordController.text != confirmPasswordController.text) {
-      setState(() {
-        confirmPasswordError = "Mật khẩu không khớp";
-      });
-      isValid = false;
+  String? confirmPasswordValidator(String? text) {
+    if (passwordController.text != text) {
+      return "Mật khẩu không khớp";
     }
-    return isValid;
+    return null;
   }
 }

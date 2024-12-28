@@ -7,13 +7,13 @@ class EtTextField extends StatelessWidget {
   final TextEditingController? controller;
   final Widget? suffixIcon;
   final bool obscureText;
-  final String errorMessage;
+  final String? Function(String?)? validator;
 
   const EtTextField(
       {super.key,
-      this.errorMessage = "",
       this.label = "",
       this.controller,
+      this.validator,
       this.suffixIcon,
       this.obscureText = false});
 
@@ -23,7 +23,8 @@ class EtTextField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 8,
       children: [
-        TextField(
+        TextFormField(
+          validator: validator,
           obscureText: obscureText,
           controller: controller,
           decoration: InputDecoration(
@@ -33,11 +34,6 @@ class EtTextField extends StatelessWidget {
                   fontSize: TextSize.medium, color: AppColor.hintColor),
               border: OutlineInputBorder()),
         ),
-        if (errorMessage.isNotEmpty)
-          Text(
-            errorMessage,
-            style: TextStyle(color: AppColor.lightTheme().error),
-          )
       ],
     );
   }
