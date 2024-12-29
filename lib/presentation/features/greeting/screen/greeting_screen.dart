@@ -2,8 +2,8 @@ import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../../../utils/logging.dart';
 import '../../../common_widgets/et_button.dart' show EtButton;
-import '../../../utils/logging.dart';
 import '../../authenticate/screen/login_screen.dart';
 import '../widget/step_indicator.dart';
 
