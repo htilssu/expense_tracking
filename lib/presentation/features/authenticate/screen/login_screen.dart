@@ -73,7 +73,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                       },
                       icon: Icon(
-                        !isShowPassword ? Icons.visibility : Icons.visibility_off,
+                        !isShowPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                     ),
                     label: "Mật khẩu",
@@ -102,25 +104,32 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Theme.of(context).colorScheme.onPrimary),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Bạn không có tài khoản?"),
-                      TextButton(
-                          style: ButtonStyle(
-                              padding: WidgetStatePropertyAll(EdgeInsets.all(0))),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => RegisterScreen(),
-                                ));
-                          },
-                          child: Text(
-                            "Đăng ký",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ))
-                    ],
+                  SizedBox(
+                    height: 20,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Bạn không có tài khoản?",
+                        ),
+                        TextButton(
+                            style: ButtonStyle(
+                                minimumSize: WidgetStatePropertyAll(Size.zero),
+                                padding: WidgetStatePropertyAll(
+                                    EdgeInsets.symmetric(horizontal: 3))),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => RegisterScreen(),
+                                  ));
+                            },
+                            child: Text(
+                              "Đăng ký",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ))
+                      ],
+                    ),
                   ),
                   Row(
                     children: [
