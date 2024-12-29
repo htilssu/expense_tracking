@@ -1,10 +1,15 @@
+import 'package:expense_tracking/application/dto/email_password_login.dart';
 import 'package:expense_tracking/application/dto/email_password_register.dart';
+import 'package:expense_tracking/application/service/email_password_login_service.dart';
 import 'package:expense_tracking/application/service/email_password_register_service.dart';
 import 'package:expense_tracking/exceptions/email_exist_exception.dart';
+import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
 import 'package:expense_tracking/utils/validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../constants/text_constant.dart';
+import '../../../../domain/entity/user.dart' as entity;
 import '../../../common_widgets/et_button.dart';
 import '../../../common_widgets/et_textfield.dart';
 
@@ -33,92 +38,100 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Text("Đăng ký"),
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16),
-        margin: EdgeInsetsDirectional.only(top: 200),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            spacing: 16,
-            children: [
-              EtTextField(
-                validator: emailValidator,
-                controller: emailController,
-                suffixIcon: Icon(Icons.email_rounded),
-                label: "Email",
-              ),
-              EtTextField(
-                validator: passwordValidator,
-                obscureText: !isShowPassword,
-                controller: passwordController,
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isShowPassword = !isShowPassword;
-                    });
-                  },
-                  icon: Icon(
-                    !isShowPassword ? Icons.visibility : Icons.visibility_off,
-                  ),
-                ),
-                label: "Mật khẩu",
-              ),
-              EtTextField(
-                validator: confirmPasswordValidator,
-                obscureText: !isShowPassword,
-                controller: confirmPasswordController,
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isShowPassword = !isShowPassword;
-                    });
-                  },
-                  icon: Icon(
-                    !isShowPassword ? Icons.visibility : Icons.visibility_off,
-                  ),
-                ),
-                label: "Nhập lại mật khẩu",
-              ),
-              if (errorMessage.isNotEmpty)
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    errorMessage,
-                    style: TextStyle(color: Colors.red),
-                  ),
-                ),
-              Column(
+      body: ListView(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            margin: EdgeInsetsDirectional.only(top: 150),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                spacing: 16,
                 children: [
-                  EtButton(
-                    onPressed: () {
-                      setState(() {
-                        errorMessage = "";
-                      });
-                      if (!_formKey.currentState!.validate()) {
-                        return;
-                      }
-                      onEmailPasswordLogin();
-                    },
-                    child: Text(
-                      "Đăng ký",
-                      style: TextStyle(
-                          fontSize: TextSize.medium,
-                          color: Theme.of(context).colorScheme.onPrimary),
-                    ),
+                  EtTextField(
+                    validator: emailValidator,
+                    controller: emailController,
+                    suffixIcon: Icon(Icons.email_rounded),
+                    label: "Email",
                   ),
-                  TextButton(
+                  EtTextField(
+                    validator: passwordValidator,
+                    obscureText: !isShowPassword,
+                    controller: passwordController,
+                    suffixIcon: IconButton(
                       onPressed: () {
-                        Navigator.pop(context);
+                        setState(() {
+                          isShowPassword = !isShowPassword;
+                        });
                       },
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
+                      icon: Icon(
+                        !isShowPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
-                      child: Text("Đã có tài khoản? Đăng nhập ngay"))
+                    ),
+                    label: "Mật khẩu",
+                  ),
+                  EtTextField(
+                    validator: confirmPasswordValidator,
+                    obscureText: !isShowPassword,
+                    controller: confirmPasswordController,
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          isShowPassword = !isShowPassword;
+                        });
+                      },
+                      icon: Icon(
+                        !isShowPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                    ),
+                    label: "Nhập lại mật khẩu",
+                  ),
+                  if (errorMessage.isNotEmpty)
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        errorMessage,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
+                  Column(
+                    children: [
+                      EtButton(
+                        onPressed: () {
+                          setState(() {
+                            errorMessage = "";
+                          });
+                          if (!_formKey.currentState!.validate()) {
+                            return;
+                          }
+                          onEmailPasswordLogin();
+                        },
+                        child: Text(
+                          "Đăng ký",
+                          style: TextStyle(
+                              fontSize: TextSize.medium,
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                          ),
+                          child: Text("Đã có tài khoản? Đăng nhập ngay"))
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
-        ),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -128,13 +141,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
       await EmailPasswordRegisterService(EmailPasswordRegister(
               emailController.text, passwordController.text))
           .register();
+
+      await EmailPasswordLoginService(EmailPasswordLogin(
+              email: emailController.text, password: passwordController.text))
+          .login();
+
+      var user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        UserRepositoryImpl()
+            .save(entity.User(user.uid, "", user.email!, "", ""));
+      }
     } on EmailExistException {
       setState(() {
         errorMessage = "Email đã tồn tại, vui lòng chọn email khác";
       });
     }
   }
-
 
   String? emailValidator(String? text) {
     if (!Validator.isValidEmail(text!)) {

@@ -38,7 +38,7 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<User> save(User entity) async {
-    var refDocument = await db.add(entity.toMap());
-    return User.fromMap((await refDocument.get()).data()!);
+    await db.doc(entity.id).set(entity.toMap());
+    return User.fromMap((await db.doc(entity.id).get()).data()!);
   }
 }

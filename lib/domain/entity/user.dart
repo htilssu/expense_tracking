@@ -6,16 +6,18 @@ class User extends BaseTimeStampEntity {
   late String email;
   late String firstName;
   late String lastName;
+  late String avatar;
 
-  User(this.id, this.fullname, this.email, this.firstName, this.lastName);
+  User(this.id, this.fullname, this.email, this.firstName, this.lastName,
+      {this.avatar = ''});
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'fullname': fullname,
       'email': email,
       'firstName': firstName,
       'lastName': lastName,
+      'avatar': avatar,
     };
   }
 
@@ -23,10 +25,11 @@ class User extends BaseTimeStampEntity {
     try {
       return User(
         data['id'],
-        data['fullname'],
+        '${data['firstName']} ${data['lastName']}',
         data['email'],
         data['firstName'],
         data['lastName'],
+        avatar: data['avatar'],
       );
     } catch (e) {
       throw Exception('Invalid User data');

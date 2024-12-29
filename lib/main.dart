@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'constants/app_color.dart';
+import 'presentation/bloc/user_bloc.dart';
 import 'presentation/features/authenticate/screen/login_screen.dart';
 import 'presentation/features/overview/screen/home_screen.dart';
 
@@ -21,8 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var auth = FirebaseAuth.instance;
-    Widget startScreen =
-        auth.currentUser != null ? HomeScreen() : LoginScreen();
+    Widget screen = auth.currentUser != null ? HomeScreen() : LoginScreen();
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -31,6 +32,8 @@ class MyApp extends StatelessWidget {
           colorScheme: AppColor.lightTheme(),
           useMaterial3: true,
         ),
-        home: startScreen);
+        home: MultiBlocProvider(providers: [
+          BlocProvider(create: (context) => UserBloc()),
+        ], child: screen));
   }
 }
