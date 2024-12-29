@@ -10,14 +10,14 @@ class EtNotify extends StatelessWidget {
     return Stack(children: [
       Icon(
         Icons.notifications_outlined,
-        size: 35,
+        size: 26,
       ),
       Positioned(
         right: 5,
         top: 5,
         child: Container(
-          height: 10,
-          width: 10,
+          height: 8,
+          width: 8,
           decoration: BoxDecoration(
             color: Colors.red,
             borderRadius: BorderRadius.circular(10),
