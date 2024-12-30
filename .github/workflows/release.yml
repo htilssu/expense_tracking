@@ -42,16 +42,11 @@ jobs:
       - name: Build release APK
         run: flutter build apk --release
 
-      - name: Create release
-        uses: softprops/action-gh-release@v1
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v3
         with:
-          files: build/app/outputs/flutter-apk/app-release.apk
-          token: ${{ secrets.GITHUB_TOKEN }}
-          release_name: ${{ github.ref }}
-          release_body: ${{ github.event.head_commit.message }}
-          tag: ${{ github.ref }}
-          draft: false
-          prerelease: false
+          name: app-release-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
   build-ipa:
     runs-on: macos-latest
     needs: build
@@ -70,12 +65,42 @@ jobs:
         run: flutter pub get
 
       - name: Build release IPA
-        run: flutter build ios --release --no-codesign
+        run: flutter build ipa --release --no-codesign
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release-ipa
+          path: build/ios/iphoneos/Runner.ipa
+
+
+  create-release:
+    runs-on: ubuntu-latest
+    needs: [ build-apk, build-ipa ]
+    steps:
+      - name: Download APK artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: app-release-apk
+          path: .
+
+      - name: Download IPA artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: app-release-ipa
+          path: .
+
+      - name: Rename artifacts
+        run: |
+          mv app-release-apk trezo.apk
+          mv app-release-ipa trezo.ipa
 
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
-          files: build/ios/iphoneos/Runner.ipa
+          files: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/ios/iphoneos/Runner.ipa
           token: ${{ secrets.GITHUB_TOKEN }}
           release_name: ${{ github.ref }}
           release_body: ${{ github.event.head_commit.message }}
