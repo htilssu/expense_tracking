@@ -10,6 +10,9 @@ on:
         required: true
         default: 'v0.0.0'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     uses: "./.github/workflows/build.yaml"
