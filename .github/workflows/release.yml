@@ -65,7 +65,7 @@ jobs:
         run: flutter pub get
 
       - name: Build release IPA
-        run: flutter build ipa --release --no-codesign
+        run: flutter build ipa --release
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v3
