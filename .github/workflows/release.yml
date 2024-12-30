@@ -30,6 +30,12 @@ jobs:
           cache: true
           cache-sdk: true
           cache-key: ${{ runner.os }}-flutter-${{ hashFiles('pubspec.yaml') }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'corretto' # See 'Supported distributions' for available options
+          java-version: '22'
+          cache: 'gradle'
+
       - name: Install dependencies
         run: flutter pub get
 
