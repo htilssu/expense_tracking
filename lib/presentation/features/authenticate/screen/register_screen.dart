@@ -7,6 +7,7 @@ import 'package:expense_tracking/infrastructure/repository/user_repository_impl.
 import 'package:expense_tracking/utils/validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../../../constants/text_constant.dart';
 import '../../../../domain/entity/user.dart' as entity;
