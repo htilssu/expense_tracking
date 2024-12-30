@@ -22,7 +22,7 @@ jobs:
         run: flutter pub get
 
       - name: Lint code
-        run: flutter fix --apply
+        run: dart fix --apply
       - name: Commit and push changes
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
