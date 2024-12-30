@@ -23,6 +23,9 @@ class UserRepositoryImpl implements UserRepository {
 
   @override
   Future<User?> findById(String id) async {
+    if (id.isEmpty) {
+      return Future.error('Id is empty');
+    }
     var refDocument = await db.doc(id).get();
     if (refDocument.exists) {
       return User.fromMap(refDocument.data()!);

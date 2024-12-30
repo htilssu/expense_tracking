@@ -25,7 +25,7 @@ class User extends BaseTimeStampEntity {
     try {
       return User(
         data['id'],
-        '${data['firstName']} ${data['lastName']}',
+        '${data['lastName']} ${data['firstName']}',
         data['email'],
         data['firstName'],
         data['lastName'],

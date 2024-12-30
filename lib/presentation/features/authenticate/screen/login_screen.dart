@@ -1,15 +1,17 @@
 import 'package:expense_tracking/exceptions/user_notfound_exception.dart';
 import 'package:expense_tracking/exceptions/wrong_password_exception.dart';
 import 'package:expense_tracking/presentation/features/authenticate/screen/register_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../../application/dto/email_password_login.dart';
 import '../../../../application/service/email_password_login_service.dart';
 import '../../../../constants/text_constant.dart';
+import '../../../bloc/user_bloc.dart';
 import '../../../common_widgets/et_button.dart';
 import '../../../common_widgets/et_textfield.dart';
-import '../../overview/screen/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,20 +32,23 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        elevation: 1,
+        shadowColor: Colors.black,
         automaticallyImplyLeading: false,
         title: Align(
           alignment: Alignment.center,
           child: Text("Đăng nhập"),
         ),
       ),
-      body: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            margin: EdgeInsetsDirectional.only(top: 150),
-            child: Form(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Form(
               key: _formKey,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 spacing: 16,
                 children: [
                   EtTextField(
@@ -95,7 +100,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         errorMessage = "";
                       });
                       if (!_formKey.currentState!.validate()) return;
-                      onEmailPasswordLogin();
+                      onEmailPasswordLogin().then(
+                        (value) {
+                          if (context.mounted) {
+                            BlocProvider.of<UserBloc>(context).add(LoadUser(
+                                FirebaseAuth.instance.currentUser!.uid));
+                          }
+                        },
+                      );
                     },
                     child: Text(
                       "Đăng nhập",
@@ -121,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => RegisterScreen(),
+                                    builder: (context) => const RegisterScreen(),
                                   ));
                             },
                             child: Text(
@@ -187,9 +199,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   )
                 ],
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -200,19 +212,11 @@ class _LoginScreenState extends State<LoginScreen> {
     isShowPassword = false;
   }
 
-  void onEmailPasswordLogin() async {
+  Future<void> onEmailPasswordLogin() async {
     try {
       await EmailPasswordLoginService(EmailPasswordLogin(
               email: emailController.text, password: passwordController.text))
           .login();
-
-      if (mounted) {
-        Navigator.pushReplacement(context, MaterialPageRoute(
-          builder: (context) {
-            return HomeScreen();
-          },
-        ));
-      }
     } on UserNotFoundException {
       setState(() {
         errorMessage = "Người dùng không tồn tại";

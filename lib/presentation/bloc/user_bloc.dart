@@ -16,6 +16,11 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     on<ClearUser>(_onClearUser);
   }
 
+  UserBloc.fromState(super.initialState) {
+    on<LoadUser>(_onLoadUser);
+    on<ClearUser>(_onClearUser);
+  }
+
   Future<void> _onLoadUser(LoadUser event, Emitter<UserState> emit) async {
     try {
       var user = await userRepository.findById(event.uid);
