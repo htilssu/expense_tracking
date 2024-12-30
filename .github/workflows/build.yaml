@@ -26,7 +26,13 @@ jobs:
 
       - name: Lint code
         run: dart fix --apply
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git diff --exit-code || echo "::set-output name=changes::true"
+
       - name: Commit and push changes
+        if: steps.check_changes.outputs.changes == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
