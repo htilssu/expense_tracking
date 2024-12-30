@@ -1,0 +1,9 @@
+flutter_native_splash:
+  image: assets/images/pig_colorful.png
+  color: "#ffffff"
+  android: true
+  ios: true
+
+  android_12:
+    color: "#ffffff"
+    image: assets/images/pig_colorful.png

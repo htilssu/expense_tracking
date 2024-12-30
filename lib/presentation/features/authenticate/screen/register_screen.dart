@@ -7,7 +7,6 @@ import 'package:expense_tracking/infrastructure/repository/user_repository_impl.
 import 'package:expense_tracking/utils/validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../../../constants/text_constant.dart';
 import '../../../../domain/entity/user.dart' as entity;
@@ -33,18 +32,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        elevation: 1,
+        shadowColor: Colors.black,
         automaticallyImplyLeading: false,
         title: Align(
           alignment: Alignment.center,
           child: Text("Đăng ký"),
         ),
       ),
-      body: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            margin: EdgeInsetsDirectional.only(top: 150),
-            child: Form(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Form(
               key: _formKey,
               child: Column(
                 spacing: 16,
@@ -131,8 +132,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ],
               ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
