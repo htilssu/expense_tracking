@@ -68,7 +68,7 @@ jobs:
         run: flutter build ipa --release
 
       - name: Upload IPA artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: app-release-ipa
           path: build/ios/iphoneos/Runner.ipa
@@ -79,13 +79,13 @@ jobs:
     needs: [ build-apk, build-ipa ]
     steps:
       - name: Download APK artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: app-release-apk
           path: .
 
       - name: Download IPA artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: app-release-ipa
           path: .
@@ -96,7 +96,7 @@ jobs:
           mv app-release-ipa trezo.ipa
 
       - name: Create release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v4
         with:
           files: |
             build/app/outputs/flutter-apk/app-release.apk
