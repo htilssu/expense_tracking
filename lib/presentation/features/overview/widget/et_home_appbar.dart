@@ -76,7 +76,7 @@ class EtHomeAppbar extends StatelessWidget {
                               BlocProvider.of<UserBloc>(context)
                                   .add(ClearUser());
                             },
-                            icon: EtNotify(),
+                            icon: EtNotify(false),
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white24,
                                 shape: RoundedRectangleBorder(

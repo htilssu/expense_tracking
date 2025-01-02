@@ -46,6 +46,9 @@ dependencies:
   meta: ^1.15.0
   flutter_native_splash: ^2.4.4
   flutter_lints: ^5.0.0
+  intl: ^0.18.1
+  shimmer: ^3.0.0
+  custom_sliding_segmented_control: ^1.8.4
 
 dev_dependencies:
   flutter_test:

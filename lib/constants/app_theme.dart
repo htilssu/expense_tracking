@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static Color hintColor = const Color(0x47232323);
+  static Color placeholderColor = Colors.black.withAlpha(8);
 
   static ThemeData lightTheme() {
     return ThemeData(
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
-          primary: Color(0xFFACC7F8),
-          onPrimary: Color(0xff001833),
+          primary: Color(0xFF00AE66),
+          onPrimary: Color(0xFFffffff),
           secondary: Color(0xFF000000),
           onSecondary: Colors.black,
           error: Color(0xFFAC0000),

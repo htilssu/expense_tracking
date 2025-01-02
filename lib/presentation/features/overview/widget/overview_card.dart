@@ -32,7 +32,7 @@ class OverviewCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Total Balance',
+                        'Tổng số dư',
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
@@ -47,7 +47,10 @@ class OverviewCard extends StatelessWidget {
                       )
                     ],
                   ),
-                  Icon(Icons.more_horiz),
+                  Icon(
+                    Icons.more_horiz,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ],
               ),
             ),
@@ -77,7 +80,7 @@ class OverviewCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Income',
+                            'Thu nhập',
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.normal,
@@ -116,7 +119,7 @@ class OverviewCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Expense',
+                            'Chi tiêu',
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.normal,
