@@ -11,6 +11,7 @@ class User extends BaseTimeStampEntity {
   User(this.id, this.fullname, this.email, this.firstName, this.lastName,
       {this.avatar = ''});
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -18,6 +19,7 @@ class User extends BaseTimeStampEntity {
       'firstName': firstName,
       'lastName': lastName,
       'avatar': avatar,
+      ...super.toMap(),
     };
   }
 
@@ -30,7 +32,7 @@ class User extends BaseTimeStampEntity {
         data['firstName'],
         data['lastName'],
         avatar: data['avatar'],
-      );
+      )..timeStampFromMap(data);
     } catch (e) {
       throw Exception('Invalid User data');
     }
