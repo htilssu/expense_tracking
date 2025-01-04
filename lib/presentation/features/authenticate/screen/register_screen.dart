@@ -110,7 +110,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           if (!_formKey.currentState!.validate()) {
                             return;
                           }
-                          onEmailPasswordLogin();
+                          onEmailPasswordRegister();
                         },
                         child: Text(
                           "Đăng ký",
@@ -138,7 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Future<void> onEmailPasswordLogin() async {
+  Future<void> onEmailPasswordRegister() async {
     try {
       await EmailPasswordRegisterService(EmailPasswordRegister(
               emailController.text, passwordController.text))
@@ -151,6 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       var user = FirebaseAuth.instance.currentUser;
 
       if (user != null) {
+        //save user to firestore
         UserRepositoryImpl()
             .save(entity.User(user.uid, "", user.email!, "", ""));
       }
