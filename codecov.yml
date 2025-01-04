@@ -5,5 +5,4 @@ coverage:
         target: auto
         threshold: 5%
 comment:
-  layout: "header, diff, changes,flags, files, sunburst"
-  behavior: new
+  layout: "header, diff, changes,flags, files, sunburst, footer"
