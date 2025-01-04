@@ -1,0 +1,9 @@
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 5%
+comment:
+  layout: "header, diff, changes,flags, files, sunburst"
+  behavior: new
