@@ -1,4 +1,3 @@
-import 'package:expense_tracking/domain/entity/user.dart';
 import 'package:expense_tracking/firebase_options.dart';
 import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
