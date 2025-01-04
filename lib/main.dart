@@ -19,15 +19,21 @@ Future<void> main() async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    var auth = FirebaseAuth.instance;
+  State<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
+  final _userFuture = UserRepositoryImpl()
+      .findById(FirebaseAuth.instance.currentUser?.uid ?? '');
+
+  @override
+  Widget build(BuildContext context) {
     return FutureBuilder(
-      future: UserRepositoryImpl().findById(auth.currentUser?.uid ?? ''),
+      future: _userFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return MultiBlocProvider(
@@ -51,7 +57,7 @@ class MyApp extends StatelessWidget {
                   home: BlocBuilder<UserBloc, UserState>(
                     builder: (context, state) {
                       if (state is UserLoaded) {
-                        return const HomeScreen();
+                        return HomeScreen();
                       } else {
                         return const LoginScreen();
                       }

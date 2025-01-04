@@ -14,7 +14,15 @@ abstract class BaseTimeStampEntity {
   }
 
   void timeStampFromMap(Map<String, dynamic> map) {
-    createdAt = DateTime.parse(map['createdAt'] as String);
-    updatedAt = DateTime.parse(map['updatedAt'] as String);
+    var createdAtString = map['createdAt'] as String?;
+    var updatedAtString = map['updatedAt'] as String?;
+
+    if (createdAtString != null) {
+      createdAt = DateTime.parse(createdAtString);
+    }
+
+    if (updatedAtString != null) {
+      updatedAt = DateTime.parse(updatedAtString);
+    }
   }
 }
