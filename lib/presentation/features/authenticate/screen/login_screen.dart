@@ -1,6 +1,7 @@
 import 'package:expense_tracking/exceptions/user_notfound_exception.dart';
 import 'package:expense_tracking/exceptions/wrong_password_exception.dart';
 import 'package:expense_tracking/presentation/features/authenticate/screen/register_screen.dart';
+import 'package:expense_tracking/utils/logging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -107,6 +108,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                 FirebaseAuth.instance.currentUser!.uid));
                           }
                         },
+                      ).onError(
+                        (error, stackTrace) {
+                          Logger.error(error);
+                        },
                       );
                     },
                     child: Text(
@@ -133,7 +138,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => const RegisterScreen(),
+                                    builder: (context) =>
+                                        const RegisterScreen(),
                                   ));
                             },
                             child: Text(
@@ -217,6 +223,8 @@ class _LoginScreenState extends State<LoginScreen> {
       await EmailPasswordLoginService(EmailPasswordLogin(
               email: emailController.text, password: passwordController.text))
           .login();
+
+      return;
     } on UserNotFoundException {
       setState(() {
         errorMessage = "Người dùng không tồn tại";
@@ -230,5 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
         errorMessage = "Đã có lỗi xảy ra, vui lòng thử lại sau";
       });
     }
+
+    throw Exception(errorMessage);
   }
 }
