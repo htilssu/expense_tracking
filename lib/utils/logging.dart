@@ -10,4 +10,8 @@ class Logger {
   static void warn(dynamic message) {
     logger.w(message);
   }
+
+  static void error(dynamic error) {
+    logger.e(error);
+  }
 }
