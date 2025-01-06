@@ -49,16 +49,6 @@ jobs:
         if: steps.dependency-cache.outputs.cache-hit != 'true'
         run: flutter pub get
 
-
-      - name: Build release APK
-        run: flutter build apk --release
-
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
-
       - name: Get track from tag
         id: track
         run: |
