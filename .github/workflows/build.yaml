@@ -26,15 +26,17 @@ jobs:
           cache-sdk: true
           cache-key: ${{ runner.os }}-flutter-${{ hashFiles('pubspec.yaml') }}
 
-      - name: Cache Flutter SDK
+      - name: Cache Flutter Dependencies
         uses: actions/cache@v4
+        id: dependency-cache
         with:
           path: ${{ env.PUB_CACHE }}
           key: ${{ runner.os }}-flutter-dependency-${{ hashFiles('pubspec.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-flutter-sdk-
+            ${{ runner.os }}-flutter-dependency-
 
       - name: Install dependencies
+        if: steps.dependency-cache.outputs.cache-hit != 'true'
         run: flutter pub get
 
       - name: Lint code
