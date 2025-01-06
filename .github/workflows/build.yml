@@ -4,8 +4,6 @@ on:
 
 jobs:
   Build-APK:
-    needs:
-      - Testing
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
