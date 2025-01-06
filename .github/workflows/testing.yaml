@@ -1,4 +1,4 @@
-name: Build Action
+name: Testing
 on:
   pull_request:
     branches:
