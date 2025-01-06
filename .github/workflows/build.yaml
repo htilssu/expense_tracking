@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  Analysis:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,6 +56,35 @@ jobs:
           git add .
           git commit -m "Apply lint fixes"
           git push origin ${{ github.ref }}
+  
+
+  Testing:
+    needs:
+      - Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Flutter SDK
+        uses: flutter-actions/setup-flutter@v4
+        with:
+          channel: stable
+          version: latest
+          cache: true
+          cache-sdk: true
+          cache-key: ${{ runner.os }}-flutter-${{ hashFiles('pubspec.yaml') }}
+
+      - name: Cache Flutter Dependencies
+        uses: actions/cache@v4
+        id: dependency-cache
+        with:
+          path: ${{ env.PUB_CACHE }}
+          key: ${{ runner.os }}-flutter-dependency-${{ hashFiles('pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-dependency-
+
+      - name: Install dependencies
+        if: steps.dependency-cache.outputs.cache-hit != 'true'
+        run: flutter pub get
 
       - name: Run tests
         run: flutter test --coverage
@@ -67,3 +96,31 @@ jobs:
           file: ./coverage/lcov.info
           name: codecov-umbrella
           fail_ci_if_error: true
+  Build-APK:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Flutter SDK
+        uses: flutter-actions/setup-flutter@v4
+        with:
+          channel: stable
+          version: latest
+          cache: true
+          cache-sdk: true
+          cache-key: ${{ runner.os }}-flutter-${{ hashFiles('pubspec.yaml') }}
+
+      - name: Cache Flutter Dependencies
+        uses: actions/cache@v4
+        id: dependency-cache
+        with:
+          path: ${{ env.PUB_CACHE }}
+          key: ${{ runner.os }}-flutter-dependency-${{ hashFiles('pubspec.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-dependency-
+
+      - name: Install dependencies
+        if: steps.dependency-cache.outputs.cache-hit != 'true'
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
