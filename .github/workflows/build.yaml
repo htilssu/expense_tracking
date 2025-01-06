@@ -97,6 +97,8 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: true
   Build-APK:
+    needs:
+      - Testing
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
