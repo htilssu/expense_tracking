@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build:
-    uses: "./.github/workflows/build.yaml"
+    uses: "./.github/workflows/build.yml"
 
   build-apk:
     runs-on: ubuntu-latest
