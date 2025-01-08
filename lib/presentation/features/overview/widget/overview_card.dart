@@ -34,7 +34,7 @@ class OverviewCard extends StatelessWidget {
                       Text(
                         'Tổng số dư',
                         style: TextStyle(
-                            fontSize: 16,
+                            fontSize: TextSize.medium + 4,
                             fontWeight: FontWeight.normal,
                             color: Theme.of(context).colorScheme.onPrimary),
                       ),
