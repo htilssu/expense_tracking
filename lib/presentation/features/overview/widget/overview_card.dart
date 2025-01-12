@@ -29,6 +29,8 @@ class OverviewCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Column(
+                    spacing: 4,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
@@ -54,90 +56,88 @@ class OverviewCard extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        spacing: 8,
-                        children: [
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: Colors.white38,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.arrow_downward,
-                                size: 16,
-                              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      spacing: 8,
+                      children: [
+                        SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.white38,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.arrow_downward,
+                              size: 16,
                             ),
                           ),
-                          Text(
-                            'Thu nhập',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                                color: Theme.of(context).colorScheme.onPrimary),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        '1.000.000.00',
-                        style: TextStyle(
-                            fontSize: TextSize.medium + 2,
-                            fontWeight: FontWeight.normal,
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      )
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Row(
-                        spacing: 8,
-                        children: [
-                          SizedBox(
-                            width: 20,
-                            height: 20,
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(
-                                color: Colors.white38,
-                                shape: BoxShape.circle,
-                              ),
-                              child: Icon(
-                                Icons.arrow_upward,
-                                size: 16,
-                              ),
+                        ),
+                        Text(
+                          'Thu nhập',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      '1.000.000.00',
+                      style: TextStyle(
+                          fontSize: TextSize.medium + 2,
+                          fontWeight: FontWeight.normal,
+                          color: Theme.of(context).colorScheme.onPrimary),
+                    )
+                  ],
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Row(
+                      spacing: 8,
+                      children: [
+                        SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.white38,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.arrow_upward,
+                              size: 16,
                             ),
                           ),
-                          Text(
-                            'Chi tiêu',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                                color: Theme.of(context).colorScheme.onPrimary),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        '1.000.000.00',
-                        style: TextStyle(
-                            fontSize: TextSize.medium + 2,
-                            fontWeight: FontWeight.normal,
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      )
-                    ],
-                  ),
-                ],
-              ),
+                        ),
+                        Text(
+                          'Chi tiêu',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      '1.000.000.00',
+                      style: TextStyle(
+                          fontSize: TextSize.medium + 2,
+                          fontWeight: FontWeight.normal,
+                          color: Theme.of(context).colorScheme.onPrimary),
+                    )
+                  ],
+                ),
+              ],
             )
           ],
         ),
