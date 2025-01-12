@@ -12,6 +12,7 @@ import '../../../../constants/text_constant.dart';
 import '../../../../domain/entity/user.dart' as entity;
 import '../../../common_widgets/et_button.dart';
 import '../../../common_widgets/et_textfield.dart';
+import '../../overview/screen/home_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -103,14 +104,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Column(
                     children: [
                       EtButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             errorMessage = "";
                           });
                           if (!_formKey.currentState!.validate()) {
                             return;
                           }
-                          onEmailPasswordRegister();
+                          onEmailPasswordRegister().then(
+                            (value) {
+                              if (context.mounted) {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreen()));
+                              }
+                            },
+                          );
                         },
                         child: Text(
                           "Đăng ký",
@@ -159,6 +169,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         errorMessage = "Email đã tồn tại, vui lòng chọn email khác";
       });
+      rethrow;
     }
   }
 
