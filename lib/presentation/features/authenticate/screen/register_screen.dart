@@ -6,14 +6,19 @@ import 'package:expense_tracking/application/service/email_password_register_ser
 import 'package:expense_tracking/domain/repository/category_repository.dart';
 import 'package:expense_tracking/exceptions/email_exist_exception.dart';
 import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
+import 'package:expense_tracking/main.dart';
+import 'package:expense_tracking/presentation/features/overview/screen/home_screen.dart';
 import 'package:expense_tracking/utils/validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/text_constant.dart';
 import '../../../../domain/entity/user.dart' as entity;
+import '../../../bloc/user_bloc.dart';
 import '../../../common_widgets/et_button.dart';
 import '../../../common_widgets/et_textfield.dart';
+import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -105,14 +110,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Column(
                     children: [
                       EtButton(
-                        onPressed: () {
+                        onPressed: () async {
                           setState(() {
                             errorMessage = "";
                           });
                           if (!_formKey.currentState!.validate()) {
                             return;
                           }
-                          onEmailPasswordRegister();
+                          onEmailPasswordRegister().then(
+                            (value) {
+                              if (!context.mounted || value == null) return;
+                              BlocProvider.of<UserBloc>(context)
+                                  .add(LoadUser(value));
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      BlocBuilder<UserBloc, UserState>(
+                                    builder: (context, state) {
+                                      if (state is UserLoaded) {
+                                        return HomeScreen();
+                                      } else {
+                                        return const LoginScreen();
+                                      }
+                                    },
+                                  ),
+                                ),
+                                (route) => false,
+                              );
+                            },
+                          );
                         },
                         child: Text(
                           "Đăng ký",
@@ -140,7 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Future<void> onEmailPasswordRegister() async {
+  Future<String?> onEmailPasswordRegister() async {
     try {
       await EmailPasswordRegisterService(EmailPasswordRegister(
               emailController.text, passwordController.text))
@@ -155,13 +181,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (user != null) {
         await UserRepositoryImpl()
             .save(entity.User(user.uid, "", user.email!, "", ""));
+
         await CategoryServiceImpl().saveDefaultCategories();
+        return user.uid;
       }
     } on EmailExistException {
       setState(() {
         errorMessage = "Email đã tồn tại, vui lòng chọn email khác";
       });
     }
+
+    return null;
   }
 
   String? emailValidator(String? text) {
