@@ -1,18 +1,21 @@
 import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class EtTextField extends StatelessWidget {
   final String label;
   final TextEditingController? controller;
   final Widget? suffixIcon;
   final bool obscureText;
+  final EdgeInsets? padding;
   final String? Function(String?)? validator;
 
   const EtTextField(
       {super.key,
       this.label = "",
       this.controller,
+      this.padding,
       this.validator,
       this.suffixIcon,
       this.obscureText = false});
@@ -32,7 +35,10 @@ class EtTextField extends StatelessWidget {
               label: Text(label),
               labelStyle: TextStyle(
                   fontSize: TextSize.medium, color: AppTheme.hintColor),
-              border: OutlineInputBorder()),
+              contentPadding: padding,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              )),
         ),
       ],
     );

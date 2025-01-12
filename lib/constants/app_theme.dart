@@ -18,6 +18,14 @@ class AppTheme {
           onSurface: Color(0xff020156),
         ),
         textTheme: const TextTheme(
+          bodySmall: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              color: Color(0xff001833)),
+          bodyMedium: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              color: Color(0xff001833)),
           headlineLarge: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,

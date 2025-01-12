@@ -42,7 +42,12 @@ class _AmountInputState extends State<AmountInput> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Nhập số tiền"),
+          Text(
+            "Nhập số tiền",
+            style: TextStyle(
+              fontSize: TextSize.medium,
+            ),
+          ),
           TextField(
             keyboardType: TextInputType.number,
             onChanged: (value) {

@@ -8,7 +8,9 @@ import 'package:expense_tracking/presentation/features/overview/widget/overview_
 import 'package:expense_tracking/presentation/features/transaction/widget/transaction_item_skeleton.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../application/service/category_service_impl.dart';
 import '../../../../domain/entity/transaction.dart';
+import '../../../../domain/service/category_service.dart';
 import '../../transaction/screen/create_transaction_screen.dart';
 import '../../transaction/widget/transaction_item.dart';
 
@@ -16,6 +18,7 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   final TransactionService transactionService = TransactionServiceImpl();
+  final CategoryService categoryService = CategoryServiceImpl();
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +54,10 @@ class HomeScreen extends StatelessWidget {
                 ),
                 TextButton(
                     onPressed: () {},
-                    style: ButtonStyle(
-                        padding: WidgetStatePropertyAll(EdgeInsets.zero),
-                        minimumSize: WidgetStatePropertyAll(Size(0, 0))),
+                    style: TextButton.styleFrom(
+                      overlayColor: Colors.transparent,
+                      padding: EdgeInsets.all(8),
+                    ),
                     child: Text(
                       "Xem tất cả",
                       style: TextStyle(
@@ -74,10 +78,7 @@ class HomeScreen extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     physics: BouncingScrollPhysics(),
                     children: [
-                      for (int i = 0; i < 5; i++)
-                        TransactionItem(Transaction(
-                            "id", "note", 1000, "category", "user")),
-                      TransactionItemSkeleton()
+                      for (int i = 0; i < 5; i++) TransactionItemSkeleton()
                     ],
                   ),
                 ));
@@ -88,10 +89,13 @@ class HomeScreen extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
-                      spacing: 8,
+                      spacing: 16,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Không có giao dịch nào"),
+                        Text(
+                          "Không có giao dịch nào",
+                          style: TextStyle(fontSize: TextSize.medium),
+                        ),
                         IconButton(
                             color: AppTheme.placeholderColor,
                             style: ButtonStyle(
@@ -110,7 +114,10 @@ class HomeScreen extends StatelessWidget {
                               size: 32,
                               color: Theme.of(context).colorScheme.primary,
                             )),
-                        Text("Thêm giao dịch"),
+                        Text(
+                          "Thêm giao dịch",
+                          style: TextStyle(fontSize: TextSize.medium),
+                        ),
                       ],
                     ),
                   ),
@@ -118,17 +125,18 @@ class HomeScreen extends StatelessWidget {
               }
 
               return Expanded(
-                  child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    for (Transaction transaction in snapshot.data!)
-                      TransactionItem(transaction),
-                  ],
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      for (Transaction transaction in snapshot.data!)
+                        TransactionItem(transaction),
+                    ],
+                  ),
                 ),
-              ));
+              );
             },
           )
         ],

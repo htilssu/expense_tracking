@@ -10,16 +10,14 @@ class Transaction extends BaseTimeStampEntity {
   Transaction(this.id, this.note, this.value, this.category, this.user);
 
   factory Transaction.fromMap(Map<String, dynamic> map) {
-    var t = Transaction(
+    return Transaction(
       map['id'] as String,
       map['note'] as String,
       map['value'] as double,
       map['category'] as String,
       map['user'] as String,
-    );
-    t.timeStampFromMap(map);
-
-    return t;
+    )
+      ..timeStampFromMap(map);
   }
 
   // Convert a Transaction to a Map
