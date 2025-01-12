@@ -4,15 +4,19 @@ import 'package:expense_tracking/application/service/email_password_login_servic
 import 'package:expense_tracking/application/service/email_password_register_service.dart';
 import 'package:expense_tracking/exceptions/email_exist_exception.dart';
 import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
+import 'package:expense_tracking/main.dart';
+import 'package:expense_tracking/presentation/features/overview/screen/home_screen.dart';
 import 'package:expense_tracking/utils/validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/text_constant.dart';
 import '../../../../domain/entity/user.dart' as entity;
+import '../../../bloc/user_bloc.dart';
 import '../../../common_widgets/et_button.dart';
 import '../../../common_widgets/et_textfield.dart';
-import '../../overview/screen/home_screen.dart';
+import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -113,12 +117,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
                           onEmailPasswordRegister().then(
                             (value) {
-                              if (context.mounted) {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeScreen()));
-                              }
+                              if (!context.mounted || value == null) return;
+                              BlocProvider.of<UserBloc>(context)
+                                  .add(LoadUser(value));
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      BlocBuilder<UserBloc, UserState>(
+                                    builder: (context, state) {
+                                      if (state is UserLoaded) {
+                                        return HomeScreen();
+                                      } else {
+                                        return const LoginScreen();
+                                      }
+                                    },
+                                  ),
+                                ),
+                                (route) => false,
+                              );
                             },
                           );
                         },
@@ -148,7 +164,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Future<void> onEmailPasswordRegister() async {
+  Future<String?> onEmailPasswordRegister() async {
     try {
       await EmailPasswordRegisterService(EmailPasswordRegister(
               emailController.text, passwordController.text))
@@ -162,15 +178,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (user != null) {
         //save user to firestore
-        UserRepositoryImpl()
+        await UserRepositoryImpl()
             .save(entity.User(user.uid, "", user.email!, "", ""));
+
+        return user.uid;
       }
     } on EmailExistException {
       setState(() {
         errorMessage = "Email đã tồn tại, vui lòng chọn email khác";
       });
-      rethrow;
     }
+
+    return null;
   }
 
   String? emailValidator(String? text) {
