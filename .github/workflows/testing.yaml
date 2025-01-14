@@ -43,7 +43,7 @@ jobs:
       - name: Check for changes
         id: check_changes
         run: |
-          git diff --exit-code || echo "::set-output name=changes::true"
+          git diff --exit-code || "changes=true" >> $GITHUB_OUTPUT
 
       - name: Commit and push changes
         if: steps.check_changes.outputs.changes == 'true'
