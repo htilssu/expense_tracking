@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'constants/app_theme.dart';
 import 'presentation/bloc/user_bloc.dart';
@@ -73,11 +74,20 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           color: Colors.white,
           home: Scaffold(
-            body: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-              ],
+            body: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(bottom: 100),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/images/pig_colorful.png",
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                  const CircularProgressIndicator(),
+                ],
+              ),
             ),
           ),
         );

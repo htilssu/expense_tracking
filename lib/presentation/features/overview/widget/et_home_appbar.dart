@@ -60,7 +60,7 @@ class EtHomeAppbar extends StatelessWidget {
                                         .onPrimary),
                               ),
                               Text(
-                                user?.fullname ?? "",
+                                user?.fullName ?? "",
                                 style: TextStyle(
                                     fontSize: TextSize.large,
                                     fontWeight: FontWeight.bold,

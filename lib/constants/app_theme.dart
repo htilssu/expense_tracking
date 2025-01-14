@@ -21,11 +21,11 @@ class AppTheme {
           bodySmall: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.normal,
-              color: Color(0xff001833)),
+              color: Color(0xff000000)),
           bodyMedium: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.normal,
-              color: Color(0xff001833)),
+              color: Color(0xff000000)),
           headlineLarge: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,

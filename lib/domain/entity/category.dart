@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:expense_tracking/domain/entity/timestamp_entity.dart';
 
-class Category extends BaseTimeStampEntity {
+class Category extends BaseTimeStampEntity implements Equatable {
   static List<Category> get defaultCategories => [
         Category('Ăn uống', 'user', 'expense', icon: 'food'),
         Category('Di chuyển', 'user', 'expense', icon: 'transport'),
@@ -24,13 +25,13 @@ class Category extends BaseTimeStampEntity {
         Category('Thu nhập khác', 'user', 'income', icon: 'other'),
       ];
 
-  late final String? id;
+  late String? id;
   final String name;
   final String? icon;
   final String type;
   final int amount = 0;
   final int budget = 0;
-  final String user;
+  late String user;
 
   Category(
     this.name,
@@ -68,4 +69,7 @@ class Category extends BaseTimeStampEntity {
   String toString() {
     return 'Category{id: $id, name: $name, icon: $icon, type: $type, amount: $amount, budget: $budget, user: $user}';
   }
+
+  @override
+  List<Object?> get props => [id, name, type];
 }

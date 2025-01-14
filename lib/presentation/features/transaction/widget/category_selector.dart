@@ -42,7 +42,7 @@ class _CategorySelectorState extends State<CategorySelector> {
               color: Colors.grey,
               width: 1.0,
             ),
-            color: AppTheme.placeholderColor.withAlpha(20),
+            color: AppTheme.placeholderColor,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Padding(
@@ -53,7 +53,9 @@ class _CategorySelectorState extends State<CategorySelector> {
                 Text(
                   textAlign: TextAlign.start,
                   _selectedCategory?.name ?? "Chọn danh mục",
-                  style: TextStyle(fontSize: TextSize.medium),
+                  style: TextStyle(
+                      fontSize: TextSize.medium,
+                      color: Colors.black),
                 ),
                 const Icon(
                   Icons.keyboard_arrow_down,

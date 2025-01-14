@@ -1,11 +1,31 @@
 import 'package:expense_tracking/constants/text_constant.dart';
+import 'package:expense_tracking/presentation/bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OverviewCard extends StatelessWidget {
   const OverviewCard({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var userBloc = BlocProvider.of<UserBloc>(context);
+    var user = (userBloc.state as UserLoaded).user;
+
+    var totalBalance = user.categories.fold(
+        0,
+        (previousValue, element) =>
+            previousValue + element.budget - element.amount);
+
+    var income = user.categories
+        .where(
+          (element) => element.type == "income",
+        )
+        .fold(
+          0,
+          (previousValue, element) =>
+              previousValue + element.budget - element.amount,
+        );
+
     return Container(
       decoration: BoxDecoration(
           boxShadow: [
@@ -41,7 +61,7 @@ class OverviewCard extends StatelessWidget {
                             color: Theme.of(context).colorScheme.onPrimary),
                       ),
                       Text(
-                        '1.000.000',
+                        totalBalance.toString(),
                         style: TextStyle(
                             fontSize: TextSize.xLarge,
                             fontWeight: FontWeight.normal,

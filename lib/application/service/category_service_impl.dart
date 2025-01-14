@@ -19,9 +19,9 @@ class CategoryServiceImpl implements CategoryService {
   Future<void> saveDefaultCategories() async {
     Category.defaultCategories.map(
       (e) {
-        e.id = FirebaseAuth.instance.currentUser!.uid;
+        e.user = FirebaseAuth.instance.currentUser!.uid;
         _categoryRepository.save(e);
       },
-    );
+    ).toList();
   }
 }

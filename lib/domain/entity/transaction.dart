@@ -16,8 +16,7 @@ class Transaction extends BaseTimeStampEntity {
       map['value'] as double,
       map['category'] as String,
       map['user'] as String,
-    )
-      ..timeStampFromMap(map);
+    )..timeStampFromMap(map);
   }
 
   // Convert a Transaction to a Map
@@ -32,4 +31,7 @@ class Transaction extends BaseTimeStampEntity {
       ...super.toMap(),
     };
   }
+
+  @override
+  List<Object?> get props => [id, note, value, category, user];
 }

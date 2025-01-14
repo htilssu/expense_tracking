@@ -1,4 +1,5 @@
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
+import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:expense_tracking/presentation/common_widgets/et_button.dart';
 import 'package:expense_tracking/presentation/features/transaction/widget/amount_input.dart';
@@ -43,20 +44,20 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 90.0),
+              padding: const EdgeInsets.symmetric(horizontal: 70.0),
               child: CustomSlidingSegmentedControl<int>(
                   curve: Curves.easeInCubic,
                   isStretch: true,
                   duration: Duration(milliseconds: 200),
                   decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: AppTheme.placeholderColor,
                       borderRadius: BorderRadius.circular(7)),
                   innerPadding: EdgeInsets.all(4),
                   thumbDecoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(4)),
                   children: {
-                    0: AnimatedDefaultTextStyle(
+                    0:  AnimatedDefaultTextStyle(
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),

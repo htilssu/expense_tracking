@@ -28,6 +28,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   Future<Category> save(Category entity) {
     return docRef.add(entity.toMap()).then(
       (value) {
+        docRef.doc(value.id).update({'id': value.id});
         return entity..id = value.id;
       },
     );
