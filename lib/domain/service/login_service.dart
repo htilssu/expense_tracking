@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:meta/meta.dart';
 
 import '../dto/user_login.dart';
 
 abstract class LoginService<T extends UserLogin> {
-  late T userLogin;
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  LoginService(this.userLogin);
+  LoginService();
 
   /// Đăng nhập người dùng với thông tin đăng nhập được cung cấp.
   ///
@@ -15,5 +15,5 @@ abstract class LoginService<T extends UserLogin> {
   /// - [WrongPasswordException]: Nếu mật khẩu không đúng.
   /// - [UserDisabledException]: Nếu tài khoản người dùng bị vô hiệu hóa.
   /// - [Exception]: Nếu có lỗi khác xảy ra.
-  Future<void> login();
+  Future<void> login(T data);
 }
