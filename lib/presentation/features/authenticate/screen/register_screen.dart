@@ -170,9 +170,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               emailController.text, passwordController.text))
           .register();
 
-      await EmailPasswordLoginService(EmailPasswordLogin(
-              email: emailController.text, password: passwordController.text))
-          .login();
+      await EmailPasswordLoginService().login(EmailPasswordLogin(
+          email: emailController.text, password: passwordController.text));
 
       var user = FirebaseAuth.instance.currentUser;
 

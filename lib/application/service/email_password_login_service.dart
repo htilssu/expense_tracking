@@ -7,13 +7,11 @@ import '../../exceptions/user_notfound_exception.dart';
 import '../../exceptions/wrong_password_exception.dart';
 
 class EmailPasswordLoginService extends LoginService<EmailPasswordLogin> {
-
   @override
-  Future<void> login() async {
+  Future<void> login(EmailPasswordLogin data) async {
     try {
       await auth.signInWithEmailAndPassword(
-          email: userLogin.email, password: userLogin.password);
-
+          email: data.email, password: data.password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         throw UserNotFoundException();
@@ -27,5 +25,5 @@ class EmailPasswordLoginService extends LoginService<EmailPasswordLogin> {
     }
   }
 
-  EmailPasswordLoginService(super.userLogin);
+  EmailPasswordLoginService();
 }
