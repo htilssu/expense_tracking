@@ -133,6 +133,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                             BlocProvider<CategorySelectorCubit>(
                               create: (context) => CategorySelectorCubit(),
                               child: CategorySelector(
+                                key: ValueKey(_selectedSegment),
                                 _selectedSegment == 0
                                     ? TransactionType.income
                                     : TransactionType.expense,
