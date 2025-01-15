@@ -29,12 +29,12 @@ class HomeScreen extends StatelessWidget {
               children: [
                 EtHomeAppbar(),
                 Positioned(
-                    top: 180,
+                    top: 170,
                     left: 0,
                     child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 32),
                         width: MediaQuery.of(context).size.width,
-                        height: 180,
+                        height: 190,
                         child: OverviewCard()))
               ],
             ),
@@ -47,17 +47,18 @@ class HomeScreen extends StatelessWidget {
                 Text(
                   "Lịch sử",
                   style: TextStyle(
-                      fontSize: TextSize.medium, fontWeight: FontWeight.bold),
+                      fontSize: TextSize.medium + 3,
+                      fontWeight: FontWeight.bold),
                 ),
                 TextButton(
                     onPressed: () {},
-                    style: ButtonStyle(
-                        padding: WidgetStatePropertyAll(EdgeInsets.zero),
-                        minimumSize: WidgetStatePropertyAll(Size(0, 0))),
+                    style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        overlayColor: Colors.transparent),
                     child: Text(
                       "Xem tất cả",
                       style: TextStyle(
-                        fontSize: TextSize.small + 3,
+                        fontSize: TextSize.medium,
                       ),
                     ))
               ],
@@ -74,10 +75,7 @@ class HomeScreen extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     physics: BouncingScrollPhysics(),
                     children: [
-                      for (int i = 0; i < 5; i++)
-                        TransactionItem(Transaction(
-                            "id", "note", 1000, "category", "user")),
-                      TransactionItemSkeleton()
+                      for (int i = 0; i < 5; i++) TransactionItemSkeleton()
                     ],
                   ),
                 ));

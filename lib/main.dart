@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
               builder: (context) {
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  title: 'TH',
+                  title: 'Trezo',
                   theme: AppTheme.lightTheme(),
                   home: BlocBuilder<UserBloc, UserState>(
                     builder: (context, state) {
@@ -72,11 +72,13 @@ class _MyAppState extends State<MyApp> {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           color: Colors.white,
-          home: const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              CircularProgressIndicator(),
-            ],
+          home: Scaffold(
+            body: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+              ],
+            ),
           ),
         );
       },

@@ -220,9 +220,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> onEmailPasswordLogin() async {
     try {
-      await EmailPasswordLoginService(EmailPasswordLogin(
-              email: emailController.text, password: passwordController.text))
-          .login();
+      await EmailPasswordLoginService().login(EmailPasswordLogin(
+          email: emailController.text, password: passwordController.text));
 
       return;
     } on UserNotFoundException {
