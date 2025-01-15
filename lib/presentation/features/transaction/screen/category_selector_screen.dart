@@ -2,6 +2,7 @@ import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:expense_tracking/domain/entity/category.dart';
 import 'package:expense_tracking/presentation/bloc/category_selector_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/user_bloc.dart';
+import 'package:expense_tracking/presentation/features/category/create_category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,6 +28,7 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
   Widget build(BuildContext context) {
     var userBloc = BlocProvider.of<UserBloc>(context);
     var userState = userBloc.state as UserLoaded;
+    var categoryCubit = BlocProvider.of<CategorySelectorCubit>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -35,8 +37,14 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              widget.onCategorySelected(_selectedCategory!);
-              Navigator.of(context).pop();
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context) {
+                  return BlocProvider.value(
+                    value: categoryCubit,
+                    child: CreateCategoryScreen(),
+                  );
+                },
+              ));
             },
             icon: Icon(
               Icons.add,
