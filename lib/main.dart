@@ -3,9 +3,7 @@ import 'package:expense_tracking/infrastructure/repository/user_repository_impl.
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import 'constants/app_theme.dart';
 import 'presentation/bloc/user_bloc.dart';

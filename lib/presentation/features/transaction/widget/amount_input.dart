@@ -1,7 +1,6 @@
 import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:expense_tracking/utils/formatter.dart';
-import 'package:expense_tracking/utils/logging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
