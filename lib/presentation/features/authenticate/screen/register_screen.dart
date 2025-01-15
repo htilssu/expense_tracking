@@ -1,10 +1,10 @@
 import 'package:expense_tracking/application/dto/email_password_login.dart';
 import 'package:expense_tracking/application/dto/email_password_register.dart';
+import 'package:expense_tracking/application/service/category_service_impl.dart';
 import 'package:expense_tracking/application/service/email_password_login_service.dart';
 import 'package:expense_tracking/application/service/email_password_register_service.dart';
 import 'package:expense_tracking/exceptions/email_exist_exception.dart';
 import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
-import 'package:expense_tracking/main.dart';
 import 'package:expense_tracking/presentation/features/overview/screen/home_screen.dart';
 import 'package:expense_tracking/utils/validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -176,10 +176,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       var user = FirebaseAuth.instance.currentUser;
 
       if (user != null) {
-        //save user to firestore
         await UserRepositoryImpl()
             .save(entity.User(user.uid, "", user.email!, "", ""));
 
+        await CategoryServiceImpl().saveDefaultCategories();
         return user.uid;
       }
     } on EmailExistException {

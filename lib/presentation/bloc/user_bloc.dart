@@ -1,15 +1,19 @@
 import 'package:equatable/equatable.dart';
+import 'package:expense_tracking/application/service/category_service_impl.dart';
 import 'package:expense_tracking/domain/entity/user.dart';
 import 'package:expense_tracking/domain/repository/user_repository.dart';
+import 'package:expense_tracking/domain/service/category_service.dart';
 import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
 part 'user_event.dart';
+
 part 'user_state.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {
-  UserRepository userRepository = UserRepositoryImpl();
+  final UserRepository _userRepository = UserRepositoryImpl();
+  final CategoryService _categoryService = CategoryServiceImpl();
 
   UserBloc() : super(UserInitial()) {
     on<LoadUser>(_onLoadUser);
@@ -19,11 +23,18 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc.fromState(super.initialState) {
     on<LoadUser>(_onLoadUser);
     on<ClearUser>(_onClearUser);
+
+    if (state is UserLoaded) {
+      add(LoadUser((state as UserLoaded).user.id));
+    }
   }
 
   Future<void> _onLoadUser(LoadUser event, Emitter<UserState> emit) async {
     try {
-      var user = await userRepository.findById(event.uid);
+      var user = await _userRepository.findById(event.uid);
+      var categories = await _categoryService.getCategories();
+      user?.categories = categories;
+
       if (user != null) {
         emit(UserLoaded(user: user));
       } else {

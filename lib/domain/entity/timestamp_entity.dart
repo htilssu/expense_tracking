@@ -1,4 +1,6 @@
-abstract class BaseTimeStampEntity {
+import 'package:equatable/equatable.dart';
+
+abstract class BaseTimeStampEntity extends Equatable {
   DateTime createdAt = DateTime.now();
   DateTime updatedAt = DateTime.now();
 
