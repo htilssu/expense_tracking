@@ -24,6 +24,10 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   UserBloc.fromState(super.initialState) {
     on<LoadUser>(_onLoadUser);
     on<ClearUser>(_onClearUser);
+
+    if (state is UserLoaded) {
+      add(LoadUser((state as UserLoaded).user.id));
+    }
   }
 
   Future<void> _onLoadUser(LoadUser event, Emitter<UserState> emit) async {
