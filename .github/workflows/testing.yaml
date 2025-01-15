@@ -1,8 +1,5 @@
 name: Testing
 on:
-  pull_request:
-    branches:
-      - "**/*"
   workflow_call:
   push:
     branches:
