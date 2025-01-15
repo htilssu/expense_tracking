@@ -56,14 +56,14 @@ class OverviewCard extends StatelessWidget {
                       Text(
                         'Tổng số dư',
                         style: TextStyle(
-                            fontSize: TextSize.medium + 4,
+                            fontSize: TextSize.medium + 1,
                             fontWeight: FontWeight.normal,
                             color: Theme.of(context).colorScheme.onPrimary),
                       ),
                       Text(
                         totalBalance.toString(),
                         style: TextStyle(
-                            fontSize: TextSize.xLarge,
+                            fontSize: TextSize.large,
                             fontWeight: FontWeight.normal,
                             color: Theme.of(context).colorScheme.onPrimary),
                       )
@@ -103,7 +103,7 @@ class OverviewCard extends StatelessWidget {
                         Text(
                           'Thu nhập',
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: TextSize.medium,
                               fontWeight: FontWeight.normal,
                               color: Theme.of(context).colorScheme.onPrimary),
                         ),
@@ -142,7 +142,7 @@ class OverviewCard extends StatelessWidget {
                         Text(
                           'Chi tiêu',
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: TextSize.medium,
                               fontWeight: FontWeight.normal,
                               color: Theme.of(context).colorScheme.onPrimary),
                         ),

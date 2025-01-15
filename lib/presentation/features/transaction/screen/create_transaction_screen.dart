@@ -1,11 +1,15 @@
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/constants/text_constant.dart';
+import 'package:expense_tracking/domain/entity/transaction.dart';
+import 'package:expense_tracking/presentation/bloc/category_selector_cubit.dart';
 import 'package:expense_tracking/presentation/common_widgets/et_button.dart';
 import 'package:expense_tracking/presentation/features/transaction/widget/amount_input.dart';
 import 'package:expense_tracking/presentation/features/transaction/widget/note_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../domain/entity/category.dart';
 import '../widget/category_selector.dart';
 
 class CreateTransactionScreen extends StatefulWidget {
@@ -18,24 +22,34 @@ class CreateTransactionScreen extends StatefulWidget {
 
 class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
   int _selectedSegment = 0;
-  late TextEditingController _noteController;
+  late double _amount;
+  Category? _category;
+  String _note = "";
+
+  void _onNoteChanged(String note) {
+    _note = note;
+  }
+
+  void _onCategorySelected(Category category) {
+    _category = category;
+  }
+
+  void _onAmountChanged(double amount) {
+    _amount = amount;
+  }
 
   @override
   void initState() {
     super.initState();
-    _noteController = TextEditingController();
+    _amount = 0;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text(
           "Tạo giao dịch",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
         ),
         centerTitle: true,
       ),
@@ -57,7 +71,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                       color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(4)),
                   children: {
-                    0:  AnimatedDefaultTextStyle(
+                    0: AnimatedDefaultTextStyle(
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
@@ -94,14 +108,16 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(bottom: 64),
+                padding: const EdgeInsets.only(bottom: 8.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(
                       spacing: 16,
                       children: [
-                        AmountInput(),
+                        AmountInput(
+                          onChanged: _onAmountChanged,
+                        ),
                         Column(
                           spacing: 8,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,9 +130,15 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                 fontSize: TextSize.medium,
                               ),
                             ),
-                            CategorySelector(
-                              key: ValueKey(_selectedSegment),
-                            ),
+                            BlocProvider<CategorySelectorCubit>(
+                              create: (context) => CategorySelectorCubit(),
+                              child: CategorySelector(
+                                _selectedSegment == 0
+                                    ? TransactionType.income
+                                    : TransactionType.expense,
+                                onCategorySelected: _onCategorySelected,
+                              ),
+                            )
                           ],
                         ),
                         Column(
@@ -132,7 +154,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                               ),
                             ),
                             NoteInput(
-                              controller: _noteController,
+                              onChanged: _onNoteChanged,
                             ),
                           ],
                         ),

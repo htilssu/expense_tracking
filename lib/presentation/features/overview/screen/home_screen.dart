@@ -33,17 +33,18 @@ class HomeScreen extends StatelessWidget {
         body: Column(
           children: [
             SizedBox(
-              height: 370,
+              height: 320,
               child: Stack(
                 children: [
                   EtHomeAppbar(),
                   Positioned(
-                      top: 180,
+                      top: 280 - 40 - 150 / 2,
                       left: 0,
                       child: Container(
+                          alignment: Alignment.topCenter,
                           padding: EdgeInsets.symmetric(horizontal: 32),
                           width: MediaQuery.of(context).size.width,
-                          height: 180,
+                          height: 150,
                           child: OverviewCard()))
                 ],
               ),

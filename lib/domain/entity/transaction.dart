@@ -35,3 +35,5 @@ class Transaction extends BaseTimeStampEntity {
   @override
   List<Object?> get props => [id, note, value, category, user];
 }
+
+enum TransactionType { income, expense }

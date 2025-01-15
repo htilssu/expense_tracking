@@ -15,7 +15,7 @@ class AppTheme {
           error: Color(0xFFAC0000),
           onError: Color(0xFFFFFFFF),
           surface: Color(0xFFFFFFFF),
-          onSurface: Color(0xff020156),
+          onSurface: Color(0xff000000),
         ),
         textTheme: const TextTheme(
           bodySmall: TextStyle(
@@ -27,13 +27,18 @@ class AppTheme {
               fontWeight: FontWeight.normal,
               color: Color(0xff000000)),
           headlineLarge: TextStyle(
-              fontSize: 24,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
-              color: Color(0xff001833)),
+              color: Color(0xff000000)),
+          headlineMedium: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: Color(0xff000000),
+          ),
           bodyLarge: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.normal,
-              color: Color(0xff001833)),
+              color: Color(0xff000000)),
         ));
   }
 

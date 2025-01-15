@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class NoteInput extends StatelessWidget {
-  final TextEditingController controller;
+  final void Function(String note) onChanged;
 
-  const NoteInput({super.key, required this.controller});
+  const NoteInput({super.key, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
+      onChanged: onChanged,
       maxLines: 3,
       inputFormatters: [LengthLimitingTextInputFormatter(100)],
       decoration: InputDecoration(
