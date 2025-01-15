@@ -54,7 +54,7 @@ jobs:
           git commit -m "Apply dart fix"
 
       - name: Github Pushy
-        uses: htilssu/github_push_action@v0
+        uses: htilssu/github_push_action@v0.0.4
 
   Testing:
     needs:
