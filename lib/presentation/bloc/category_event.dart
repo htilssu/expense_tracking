@@ -5,7 +5,10 @@ sealed class CategoryEvent extends Equatable {
 }
 
 final class LoadCategories extends CategoryEvent {
-  @override
-  List<Object> get props => [];
-}
+  final User user;
 
+  const LoadCategories(this.user);
+
+  @override
+  List<Object> get props => [user];
+}

@@ -59,10 +59,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
 
   @override
   Future<Transaction> save(Transaction entity) async {
-    return ref.add(entity.toMap()).then((value) {
-      entity.id = value.id;
-      return entity;
-    });
+    return ref.doc(entity.id).set(entity.toMap()).then((value) => entity);
   }
 
   @override

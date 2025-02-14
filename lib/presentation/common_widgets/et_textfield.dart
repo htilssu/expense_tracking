@@ -7,11 +7,13 @@ class EtTextField extends StatelessWidget {
   final bool obscureText;
   final EdgeInsets? padding;
   final String? Function(String?)? validator;
+  final void Function(String)? onChanged;
 
   const EtTextField(
       {super.key,
       this.label = "",
       this.controller,
+      this.onChanged,
       this.padding,
       this.validator,
       this.suffixIcon,
@@ -24,6 +26,7 @@ class EtTextField extends StatelessWidget {
       spacing: 8,
       children: [
         TextFormField(
+          onChanged: onChanged,
           validator: validator,
           obscureText: obscureText,
           controller: controller,

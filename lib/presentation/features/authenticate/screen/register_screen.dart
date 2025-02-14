@@ -176,9 +176,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       var user = FirebaseAuth.instance.currentUser;
 
       if (user != null) {
+        //save user to database
         await UserRepositoryImpl()
             .save(entity.User(user.uid, "", user.email!, "", ""));
 
+        //create default category for new user
         await CategoryServiceImpl().saveDefaultCategories();
         return user.uid;
       }

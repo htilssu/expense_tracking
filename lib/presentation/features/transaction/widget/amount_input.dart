@@ -1,8 +1,9 @@
 import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/constants/text_constant.dart';
-import 'package:expense_tracking/utils/formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+import '../../../../utils/currency_formatter.dart';
 
 class AmountInput extends StatefulWidget {
   const AmountInput({super.key, this.onChanged});
@@ -24,7 +25,7 @@ class _AmountInputState extends State<AmountInput> {
         var rawValue = _controller.text.replaceAll(RegExp(r"/\D/"), "");
         var newValue = double.parse(rawValue);
         widget.onChanged?.call(newValue);
-        var formattedValue = Formatter.formatCurrency(newValue);
+        var formattedValue = CurrencyFormatter.formatCurrency(newValue);
         _controller.value = _controller.value.copyWith(
           text: formattedValue,
           selection: TextSelection.collapsed(
