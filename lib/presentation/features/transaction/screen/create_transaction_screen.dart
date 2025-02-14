@@ -7,7 +7,6 @@ import 'package:expense_tracking/domain/service/creation_transaction_service.dar
 import 'package:expense_tracking/presentation/bloc/category_selector_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/loading_cubit.dart';
 import 'package:expense_tracking/presentation/common_widgets/et_button.dart';
-import 'package:expense_tracking/presentation/features/transaction/screen/scan_bill_screen.dart';
 import 'package:expense_tracking/presentation/features/transaction/widget/amount_input.dart';
 import 'package:expense_tracking/presentation/features/transaction/widget/note_input.dart';
 import 'package:firebase_auth/firebase_auth.dart';

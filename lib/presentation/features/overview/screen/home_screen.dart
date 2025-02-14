@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       IconButton(
                           color: AppTheme.placeholderColor,
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
+                            backgroundColor: WidgetStateProperty.all(
                                 AppTheme.placeholderColor.withAlpha(20)),
                           ),
                           onPressed: () {

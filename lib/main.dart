@@ -3,7 +3,6 @@ import 'package:expense_tracking/infrastructure/repository/user_repository_impl.
 import 'package:expense_tracking/presentation/bloc/category_bloc.dart';
 import 'package:expense_tracking/presentation/bloc/loading_cubit.dart';
 import 'package:expense_tracking/presentation/features/loading_overlay.dart';
-import 'package:expense_tracking/utils/logging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
