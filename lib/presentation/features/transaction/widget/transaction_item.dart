@@ -1,6 +1,6 @@
 import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/constants/text_constant.dart';
-import 'package:expense_tracking/presentation/bloc/category_bloc.dart';
+import 'package:expense_tracking/presentation/bloc/category/category_bloc.dart';
 import 'package:expense_tracking/utils/currency_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

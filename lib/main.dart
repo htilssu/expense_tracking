@@ -1,7 +1,7 @@
 import 'package:expense_tracking/firebase_options.dart';
 import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
-import 'package:expense_tracking/presentation/bloc/category_bloc.dart';
-import 'package:expense_tracking/presentation/bloc/loading_cubit.dart';
+import 'package:expense_tracking/presentation/bloc/category/category_bloc.dart';
+import 'package:expense_tracking/presentation/bloc/loading/loading_cubit.dart';
 import 'package:expense_tracking/presentation/features/loading_overlay.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'constants/app_theme.dart';
-import 'presentation/bloc/user_bloc.dart';
+import 'presentation/bloc/user/user_bloc.dart';
 import 'presentation/features/authenticate/screen/login_screen.dart';
 import 'presentation/features/overview/screen/home_screen.dart';
 

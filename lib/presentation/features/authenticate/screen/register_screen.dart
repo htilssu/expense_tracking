@@ -13,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/text_constant.dart';
 import '../../../../domain/entity/user.dart' as entity;
-import '../../../bloc/user_bloc.dart';
+import '../../../bloc/user/user_bloc.dart';
 import '../../../common_widgets/et_button.dart';
 import '../../../common_widgets/et_textfield.dart';
 import 'login_screen.dart';

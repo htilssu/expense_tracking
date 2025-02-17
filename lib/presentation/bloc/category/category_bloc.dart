@@ -5,7 +5,7 @@ import 'package:expense_tracking/domain/service/category_service.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/entity/category.dart';
+import '../../../domain/entity/category.dart';
 
 part 'category_event.dart';
 

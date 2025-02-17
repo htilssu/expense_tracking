@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-import '../../domain/entity/transaction.dart';
+import '../../../domain/entity/transaction.dart';
 
 part 'transaction_event.dart';
 part 'transaction_state.dart';

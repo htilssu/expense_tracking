@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../constants/text_constant.dart';
-import '../../bloc/category_selector_cubit.dart';
+import '../../bloc/category_selector/category_selector_cubit.dart';
 
 class CreateCategoryScreen extends StatelessWidget {
   CreateCategoryScreen({super.key});
