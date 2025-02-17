@@ -5,7 +5,6 @@ import 'package:expense_tracking/infrastructure/llm_client.dart';
 import 'package:expense_tracking/utils/logging.dart';
 import 'package:expense_tracking/utils/text_recognizer.dart';
 import 'package:flutter/foundation.dart';
-import 'package:meta/meta.dart';
 
 part 'scan_bill_event.dart';
 

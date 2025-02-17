@@ -1,8 +1,6 @@
 import 'package:crop_your_image/crop_your_image.dart';
-import 'package:expense_tracking/presentation/bloc/scan_bill/scan_bill_bloc.dart';
 import 'package:expense_tracking/presentation/features/transaction/screen/scan_bill_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CropImageScreen extends StatelessWidget {
