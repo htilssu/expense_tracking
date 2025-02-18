@@ -24,17 +24,17 @@ class _HomeScreenState extends State<HomeScreen> {
   final TransactionService transactionService = TransactionServiceImpl();
   late Future<List<Transaction>> _transactionsFuture;
   final RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
 
   @override
   void initState() {
     super.initState();
-    _transactionsFuture = transactionService.getRecentTransactions();
+    _transactionsFuture = transactionService.getRecentTransactionsByUserId();
   }
 
   Future<void> _refreshTransactions() async {
     setState(() {
-      _transactionsFuture = transactionService.getRecentTransactions();
+      _transactionsFuture = transactionService.getRecentTransactionsByUserId();
     });
   }
 
@@ -54,10 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Container(
                         alignment: Alignment.topCenter,
                         padding: EdgeInsets.symmetric(horizontal: 32),
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
+                        width: MediaQuery.of(context).size.width,
                         height: 150,
                         child: OverviewCard()))
               ],
@@ -100,10 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       enablePullDown: true,
                       onRefresh: _onRefresh,
                       header: WaterDropMaterialHeader(
-                        backgroundColor: Theme
-                            .of(context)
-                            .colorScheme
-                            .primary,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
                       ),
                       controller: _refreshController,
                       child: ListView(
@@ -122,21 +116,22 @@ class _HomeScreenState extends State<HomeScreen> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Expanded(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: ListView(
-                        padding: EdgeInsets.zero,
-                        physics: BouncingScrollPhysics(),
-                        children: [
-                          for (int i = 0; i < 5; i++) TransactionItemSkeleton()
-                        ],
-                      ),
-                    ));
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: ListView(
+                    padding: EdgeInsets.zero,
+                    physics: BouncingScrollPhysics(),
+                    children: [
+                      for (int i = 0; i < 5; i++) TransactionItemSkeleton()
+                    ],
+                  ),
+                ));
               }
 
               return Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Column(
+                    spacing: 8,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
@@ -159,10 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           icon: Icon(
                             Icons.add,
                             size: 32,
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .primary,
+                            color: Theme.of(context).colorScheme.primary,
                           )),
                       Text(
                         "Thêm giao dịch",
