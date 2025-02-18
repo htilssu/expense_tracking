@@ -13,7 +13,7 @@ import 'package:expense_tracking/presentation/features/transaction/widget/amount
 import 'package:expense_tracking/presentation/features/transaction/widget/note_input.dart';
 import 'package:expense_tracking/utils/logging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,6 +36,12 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
   late double _amount;
   Category? _category;
   String _note = "";
+  late final ScanBillBloc _scanBillBloc;
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   void _onNoteChanged(String note) {
     _note = note;
@@ -53,13 +59,14 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
   void initState() {
     super.initState();
     _amount = 0;
+    _scanBillBloc = ScanBillBloc();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) {
-        return ScanBillBloc();
+        return _scanBillBloc;
       },
       child: BlocBuilder<ScanBillBloc, ScanBillState>(
         builder: (context, state) {
@@ -72,6 +79,8 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
               _amount = transaction.value;
               _note = transaction.note;
             });
+            BlocProvider.of<ScanBillBloc>(context)
+                .add(ScanBillInitialEvent());
           }
 
           return Scaffold(
@@ -82,7 +91,9 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ScanBillScreen(),
+                            builder: (context) => BlocProvider.value(
+                                value: _scanBillBloc,
+                                child: ScanBillScreen()),
                           ));
                     },
                     icon: Icon(
@@ -162,7 +173,8 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                               ),
                               Column(
                                 spacing: 8,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     "Danh mục",
@@ -180,14 +192,16 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                       _selectedSegment == 0
                                           ? TransactionType.income
                                           : TransactionType.expense,
-                                      onCategorySelected: _onCategorySelected,
+                                      onCategorySelected:
+                                          _onCategorySelected,
                                     ),
                                   )
                                 ],
                               ),
                               Column(
                                 spacing: 8,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     "Ghi chú (Notes)",
@@ -206,7 +220,8 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                           ),
                           Container(
                             margin: EdgeInsets.only(
-                                bottom: MediaQuery.of(context).padding.bottom),
+                                bottom:
+                                    MediaQuery.of(context).padding.bottom),
                             child: EtButton(
                               onPressed: () {
                                 final transaction = Transaction(
@@ -219,7 +234,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                       .handle(transaction);
                                   //TODO: add to recent transaction or update if back to home screen
                                 } on Exception catch (e) {
-                                  if (kDebugMode) {
+                                  if (foundation.kDebugMode) {
                                     Logger.error(e.toString());
                                   }
                                 }

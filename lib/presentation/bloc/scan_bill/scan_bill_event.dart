@@ -4,7 +4,9 @@ part of 'scan_bill_bloc.dart';
 sealed class ScanBillEvent {}
 
 class ScanBill extends ScanBillEvent {
-  final XFile image;
+  late final String imagePath;
 
-  ScanBill(this.image);
+  ScanBill(this.imagePath);
 }
+
+class ScanBillInitialEvent extends ScanBillEvent {}

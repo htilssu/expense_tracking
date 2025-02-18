@@ -15,19 +15,25 @@ class ScanBillBloc extends Bloc<ScanBillEvent, ScanBillState> {
 
   ScanBillBloc() : super(ScanBillInitial()) {
     on<ScanBill>(_scanBill);
+    on<ScanBillInitialEvent>(_scanBillInitial);
   }
 
   void _scanBill(ScanBill scanBill, Emitter<ScanBillState> emit) async {
     emit(BillLoading());
-    var textScanned = await TextRecognizerUtil.recognize(scanBill.image.path);
+    var textScanned = await TextRecognizerUtil.recognize(scanBill.imagePath);
     try {
       var transaction = await _llmClient.analyzeText(textScanned);
       emit(BillScanned(transaction));
     } catch (e) {
-      if (kDebugMode){
+      if (kDebugMode) {
         Logger.error(e.toString());
       }
       emit(ScanBillInitial());
     }
+  }
+
+  void _scanBillInitial(
+      ScanBillInitialEvent scanBill, Emitter<ScanBillState> emit) async {
+    emit(ScanBillInitial());
   }
 }

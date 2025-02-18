@@ -1,6 +1,10 @@
+import 'package:camera/camera.dart';
 import 'package:crop_your_image/crop_your_image.dart';
+import 'package:expense_tracking/presentation/bloc/scan_bill/scan_bill_bloc.dart';
 import 'package:expense_tracking/presentation/features/transaction/screen/scan_bill_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:expense_tracking/utils/image.dart' as image;
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CropImageScreen extends StatelessWidget {
@@ -73,9 +77,15 @@ class CropImageScreen extends StatelessWidget {
                         return Rect.fromLTRB(imageRect.left, imageRect.top,
                             imageRect.width, imageRect.bottom);
                       }),
-                      onCropped: (croppedImage) {
+                      onCropped: (croppedImage) async {
                         if (croppedImage is CropSuccess) {
-                          
+                          var croppedImageFile =
+                              await image.Image.saveCroppedImage(
+                                  croppedImage.croppedImage);
+
+                          BlocProvider.of<ScanBillBloc>(context)
+                              .add(ScanBill(croppedImageFile.path));
+
                           Navigator.pop(context, croppedImage.croppedImage);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(

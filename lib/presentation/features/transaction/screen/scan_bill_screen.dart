@@ -1,6 +1,8 @@
 import 'package:camera/camera.dart';
+import 'package:expense_tracking/presentation/bloc/scan_bill/scan_bill_bloc.dart';
 import 'package:expense_tracking/utils/logging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -52,7 +54,10 @@ class _CameraControlScreenState extends State<ScanBillScreen> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return CropImageScreen(image);
+              return BlocProvider.value(
+                value: BlocProvider.of<ScanBillBloc>(context),
+                child: CropImageScreen(image),
+              );
             },
           ),
         );
@@ -62,20 +67,7 @@ class _CameraControlScreenState extends State<ScanBillScreen> {
     }
   }
 
-  Future<void> _pickImageFromGallery(BuildContext context) async {
-    final picker = ImagePicker();
-    final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-    if (context.mounted && pickedImage != null) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return CropImageScreen(pickedImage);
-          },
-        ),
-      );
-    }
-  }
+  Future<void> _pickImageFromGallery(BuildContext context) async {}
 
   @override
   void dispose() {
@@ -85,6 +77,7 @@ class _CameraControlScreenState extends State<ScanBillScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var t = BlocProvider.of<ScanBillBloc>(context);
     return Scaffold(
       body: Column(
         children: [
@@ -127,8 +120,25 @@ class _CameraControlScreenState extends State<ScanBillScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         IconButton(
-          onPressed: () {
-            _pickImageFromGallery(context);
+          onPressed: () async {
+            final picker = ImagePicker();
+            final pickedImage =
+                await picker.pickImage(source: ImageSource.gallery);
+            if (context.mounted && pickedImage != null) {
+              var t = BlocProvider.of<ScanBillBloc>(context);
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return BlocProvider.value(
+                      value: t,
+                      child: CropImageScreen(pickedImage),
+                    );
+                  },
+                ),
+              );
+            }
           },
           icon: const Icon(Icons.photo_library, color: Colors.white),
         ),

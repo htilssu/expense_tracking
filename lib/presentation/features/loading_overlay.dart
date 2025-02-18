@@ -1,6 +1,7 @@
 import 'package:expense_tracking/presentation/bloc/loading/loading_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class LoadingOverlay extends StatefulWidget {
   final Widget child;
@@ -23,7 +24,8 @@ class _LoadingOverlayState extends State<LoadingOverlay> {
         return Container(
           color: Colors.black.withAlpha(60),
           child: Center(
-            child: CircularProgressIndicator(),
+            child:
+                LoadingAnimationWidget.inkDrop(color: Colors.green, size: 30),
           ),
         );
       },
