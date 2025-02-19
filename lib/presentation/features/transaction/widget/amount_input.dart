@@ -6,23 +6,41 @@ import 'package:flutter/services.dart';
 import '../../../../utils/currency_formatter.dart';
 
 class AmountInput extends StatefulWidget {
-  const AmountInput({super.key, this.onChanged});
+  const AmountInput({super.key, this.onChanged, required this.value});
 
   final void Function(double)? onChanged;
+  final double value;
 
   @override
   State<AmountInput> createState() => _AmountInputState();
 }
 
 class _AmountInputState extends State<AmountInput> {
-  final TextEditingController _controller = TextEditingController();
+  late TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
+    _initializeController();
+  }
+
+  @override
+  void didUpdateWidget(covariant AmountInput oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.value != widget.value) {
+      _initializeController();
+    }
+  }
+
+  void _initializeController() {
+    var formattedValue = CurrencyFormatter.formatCurrency(widget.value);
+    _controller = TextEditingController(
+      text: formattedValue,
+    );
+
     _controller.addListener(
       () {
-        var rawValue = _controller.text.replaceAll(RegExp(r"/\D/"), "");
+        var rawValue = _controller.text.replaceAll(RegExp(r"\D"), "");
         var newValue = double.parse(rawValue);
         widget.onChanged?.call(newValue);
         var formattedValue = CurrencyFormatter.formatCurrency(newValue);

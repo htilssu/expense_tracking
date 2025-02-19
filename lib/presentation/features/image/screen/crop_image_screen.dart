@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:crop_your_image/crop_your_image.dart';
+import 'package:expense_tracking/presentation/bloc/category/category_bloc.dart';
 import 'package:expense_tracking/presentation/bloc/scan_bill/scan_bill_bloc.dart';
 import 'package:expense_tracking/presentation/features/transaction/screen/scan_bill_screen.dart';
 import 'package:flutter/material.dart';
@@ -33,10 +34,15 @@ class CropImageScreen extends StatelessWidget {
                         backgroundColor: Theme.of(context).primaryColor,
                       ),
                       onPressed: () {
+                        var scanBillBloc =
+                            BlocProvider.of<ScanBillBloc>(context);
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const ScanBillScreen(),
+                              builder: (context) => BlocProvider.value(
+                                value: scanBillBloc,
+                                child: ScanBillScreen(),
+                              ),
                             ));
                       },
                       child: Text(
@@ -83,8 +89,17 @@ class CropImageScreen extends StatelessWidget {
                               await image.Image.saveCroppedImage(
                                   croppedImage.croppedImage);
 
-                          BlocProvider.of<ScanBillBloc>(context)
-                              .add(ScanBill(croppedImageFile.path));
+                          var categoryBloc =
+                              BlocProvider.of<CategoryBloc>(context);
+
+                          if (categoryBloc.state is CategoryLoaded) {
+                            BlocProvider.of<ScanBillBloc>(context).add(ScanBill(
+                                croppedImageFile.path,
+                                (categoryBloc.state as CategoryLoaded)
+                                    .categories));
+                          } else {
+                            throw Exception("CategoryBloc is not loaded");
+                          }
 
                           Navigator.pop(context, croppedImage.croppedImage);
                         } else {

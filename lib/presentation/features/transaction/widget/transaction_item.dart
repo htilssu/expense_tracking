@@ -51,8 +51,7 @@ class TransactionItem extends StatelessWidget {
                           return Text(
                             state.categories
                                 .firstWhere((element) =>
-                                    element.id == _transaction.category)
-                                .name,
+                                    element.id == _transaction.category).name,
                             style: TextStyle(
                                 fontSize: TextSize.medium,
                                 fontWeight: FontWeight.bold),

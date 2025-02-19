@@ -67,7 +67,25 @@ class _CameraControlScreenState extends State<ScanBillScreen> {
     }
   }
 
-  Future<void> _pickImageFromGallery(BuildContext context) async {}
+  Future<void> _pickImageFromGallery(BuildContext context) async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (context.mounted) {
+      var t = BlocProvider.of<ScanBillBloc>(context);
+      if (image != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) {
+              return BlocProvider.value(
+                value: t,
+                child: CropImageScreen(image),
+              );
+            },
+          ),
+        );
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -77,7 +95,6 @@ class _CameraControlScreenState extends State<ScanBillScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var t = BlocProvider.of<ScanBillBloc>(context);
     return Scaffold(
       body: Column(
         children: [
@@ -121,24 +138,7 @@ class _CameraControlScreenState extends State<ScanBillScreen> {
       children: [
         IconButton(
           onPressed: () async {
-            final picker = ImagePicker();
-            final pickedImage =
-                await picker.pickImage(source: ImageSource.gallery);
-            if (context.mounted && pickedImage != null) {
-              var t = BlocProvider.of<ScanBillBloc>(context);
-
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return BlocProvider.value(
-                      value: t,
-                      child: CropImageScreen(pickedImage),
-                    );
-                  },
-                ),
-              );
-            }
+            await _pickImageFromGallery(context);
           },
           icon: const Icon(Icons.photo_library, color: Colors.white),
         ),

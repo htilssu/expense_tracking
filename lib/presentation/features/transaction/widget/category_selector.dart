@@ -12,9 +12,10 @@ class CategorySelector extends StatefulWidget {
   final void Function(Category category) onCategorySelected;
 
   final TransactionType transactionType;
+  final Category? value;
 
   const CategorySelector(this.transactionType,
-      {super.key, required this.onCategorySelected});
+      {super.key, required this.onCategorySelected, this.value});
 
   @override
   State<CategorySelector> createState() => _CategorySelectorState();
@@ -93,5 +94,17 @@ class _CategorySelectorState extends State<CategorySelector> {
         ),
       ),
     );
+  }
+
+  @override
+  void didUpdateWidget(CategorySelector oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _selectedCategory = widget.value;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedCategory = widget.value;
   }
 }

@@ -12,12 +12,12 @@ import 'package:expense_tracking/presentation/features/transaction/screen/scan_b
 import 'package:expense_tracking/presentation/features/transaction/widget/amount_input.dart';
 import 'package:expense_tracking/presentation/features/transaction/widget/note_input.dart';
 import 'package:expense_tracking/utils/logging.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/entity/category.dart';
+import '../../../../utils/auth.dart';
 import '../widget/category_selector.dart';
 
 class CreateTransactionScreen extends StatefulWidget {
@@ -32,11 +32,13 @@ class CreateTransactionScreen extends StatefulWidget {
 }
 
 class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
+  /// 0: income, 1: expense
   int _selectedSegment = 0;
   late double _amount;
   Category? _category;
   String _note = "";
   late final ScanBillBloc _scanBillBloc;
+  late CustomSegmentedController<int> _customSegmentController;
 
   @override
   void dispose() {
@@ -60,6 +62,8 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
     super.initState();
     _amount = 0;
     _scanBillBloc = ScanBillBloc();
+    _customSegmentController =
+        CustomSegmentedController<int>(value: _selectedSegment);
   }
 
   @override
@@ -70,17 +74,29 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
       },
       child: BlocBuilder<ScanBillBloc, ScanBillState>(
         builder: (context, state) {
+          var loadingCubit = BlocProvider.of<LoadingCubit>(context);
           if (state is BillLoading) {
-            BlocProvider.of<LoadingCubit>(context).showLoading();
+            loadingCubit.showLoading();
           } else if (state is BillScanned) {
-            BlocProvider.of<LoadingCubit>(context).hideLoading();
-            var transaction = state.transaction;
-            setState(() {
-              _amount = transaction.value;
-              _note = transaction.note;
+            //scan successfully and return a transaction
+            loadingCubit.hideLoading();
+            var billInfo = state.billInfo;
+
+            //update UI when build is done
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              setState(() {
+                _amount = billInfo.money;
+                _note = billInfo.note;
+                _category = billInfo.category;
+                _selectedSegment = billInfo.category.type == "income" ? 0 : 1;
+                _customSegmentController.value = _selectedSegment;
+              });
             });
-            BlocProvider.of<ScanBillBloc>(context)
-                .add(ScanBillInitialEvent());
+
+            //reset scan bill state
+            BlocProvider.of<ScanBillBloc>(context).add(ScanBillInitialEvent());
+          } else if (state is ScanBillInitial) {
+            loadingCubit.hideLoading();
           }
 
           return Scaffold(
@@ -92,8 +108,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => BlocProvider.value(
-                                value: _scanBillBloc,
-                                child: ScanBillScreen()),
+                                value: _scanBillBloc, child: ScanBillScreen()),
                           ));
                     },
                     icon: Icon(
@@ -113,6 +128,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 70.0),
                     child: CustomSlidingSegmentedControl<int>(
+                        controller: _customSegmentController,
                         curve: Curves.easeInCubic,
                         isStretch: true,
                         duration: Duration(milliseconds: 200),
@@ -156,6 +172,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                         onValueChanged: (value) {
                           setState(() {
                             _selectedSegment = value;
+                            _category = null;
                           });
                         }),
                   ),
@@ -169,12 +186,12 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                             spacing: 16,
                             children: [
                               AmountInput(
+                                value: _amount,
                                 onChanged: _onAmountChanged,
                               ),
                               Column(
                                 spacing: 8,
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     "Danh mục",
@@ -188,20 +205,18 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                     create: (context) =>
                                         CategorySelectorCubit(),
                                     child: CategorySelector(
-                                      key: ValueKey(_selectedSegment),
+                                      value: _category,
                                       _selectedSegment == 0
                                           ? TransactionType.income
                                           : TransactionType.expense,
-                                      onCategorySelected:
-                                          _onCategorySelected,
+                                      onCategorySelected: _onCategorySelected,
                                     ),
                                   )
                                 ],
                               ),
                               Column(
                                 spacing: 8,
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     "Ghi chú (Notes)",
@@ -212,6 +227,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                     ),
                                   ),
                                   NoteInput(
+                                    value: _note,
                                     onChanged: _onNoteChanged,
                                   ),
                                 ],
@@ -220,15 +236,11 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                           ),
                           Container(
                             margin: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).padding.bottom),
+                                bottom: MediaQuery.of(context).padding.bottom),
                             child: EtButton(
                               onPressed: () {
                                 final transaction = Transaction(
-                                    _note,
-                                    _amount,
-                                    _category!.id!,
-                                    FirebaseAuth.instance.currentUser!.uid);
+                                    _note, _amount, _category!.id, Auth.uid());
                                 try {
                                   widget._creationTransactionService
                                       .handle(transaction);
