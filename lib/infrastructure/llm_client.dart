@@ -1,7 +1,6 @@
 import 'package:expense_tracking/domain/entity/category.dart';
 import 'package:expense_tracking/presentation/bloc/scan_bill/scan_bill_bloc.dart';
 
-import '../domain/entity/transaction.dart';
 
 abstract class LlmClient {
   /// Send a request to server to llm to analyze the text
