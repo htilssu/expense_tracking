@@ -162,7 +162,9 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                       ],
                     ),
                     EtButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        //TODO: Save transaction
+                      },
                       child: Text(
                         "Lưu",
                         style: TextStyle(
