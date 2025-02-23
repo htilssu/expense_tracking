@@ -1,16 +1,22 @@
+import 'package:uuid/uuid.dart';
+
 import 'timestamp_entity.dart';
 
 class Transaction extends BaseTimeStampEntity {
-  late final String id;
-  final String note;
-  final double value;
-  final String category;
+  late String id;
+  String note;
+  double value;
+  String category;
   final String user;
 
-  Transaction(this.id, this.note, this.value, this.category, this.user);
+  Transaction(this.note, this.value, this.category, this.user) {
+    id = Uuid().v4();
+  }
+
+  Transaction.withId(this.id, this.note, this.value, this.category, this.user);
 
   factory Transaction.fromMap(Map<String, dynamic> map) {
-    return Transaction(
+    return Transaction.withId(
       map['id'] as String,
       map['note'] as String,
       map['value'] as double,

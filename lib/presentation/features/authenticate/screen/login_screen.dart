@@ -10,7 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../application/dto/email_password_login.dart';
 import '../../../../application/service/email_password_login_service.dart';
 import '../../../../constants/text_constant.dart';
-import '../../../bloc/user_bloc.dart';
+import '../../../bloc/user/user_bloc.dart';
 import '../../../common_widgets/et_button.dart';
 import '../../../common_widgets/et_textfield.dart';
 

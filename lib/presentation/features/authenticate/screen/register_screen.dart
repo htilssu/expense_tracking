@@ -13,7 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/text_constant.dart';
 import '../../../../domain/entity/user.dart' as entity;
-import '../../../bloc/user_bloc.dart';
+import '../../../bloc/user/user_bloc.dart';
 import '../../../common_widgets/et_button.dart';
 import '../../../common_widgets/et_textfield.dart';
 import 'login_screen.dart';
@@ -176,9 +176,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       var user = FirebaseAuth.instance.currentUser;
 
       if (user != null) {
+        //save user to database
         await UserRepositoryImpl()
             .save(entity.User(user.uid, "", user.email!, "", ""));
 
+        //create default category for new user
         await CategoryServiceImpl().saveDefaultCategories();
         return user.uid;
       }

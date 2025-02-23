@@ -1,52 +1,66 @@
 import 'package:equatable/equatable.dart';
 import 'package:expense_tracking/domain/entity/timestamp_entity.dart';
+import 'package:uuid/uuid.dart';
 
 class Category extends BaseTimeStampEntity implements Equatable {
   static List<Category> get defaultCategories => [
-        Category('Ăn uống', 'user', 'expense', icon: 'food'),
-        Category('Di chuyển', 'user', 'expense', icon: 'transport'),
-        Category('Nhà cửa', 'user', 'expense', icon: 'house'),
-        Category('Xe cộ', 'user', 'expense', icon: 'car'),
-        Category('Con cái', 'user', 'expense', icon: 'baby'),
-        Category('Mua sắm', 'user', 'expense', icon: 'shopping'),
-        Category('Giải trí', 'user', 'expense', icon: 'entertainment'),
-        Category('Du lịch', 'user', 'expense', icon: 'travel'),
-        Category('Sức khỏe', 'user', 'expense', icon: 'health'),
-        Category('Học vấn', 'user', 'expense', icon: 'education'),
-        Category('Kinh doanh', 'user', 'expense', icon: 'business'),
-        Category('Quà tặng', 'user', 'expense', icon: 'gift'),
-        Category('Bảo hiểm', 'user', 'expense', icon: 'insurance'),
-        Category('Phí dịch vụ', 'user', 'expense', icon: 'service'),
-        Category('Chi phí khác', 'user', 'expense', icon: 'other'),
-        Category('Lương', 'user', 'income', icon: 'salary'),
-        Category('Thưởng', 'user', 'income', icon: 'bonus'),
-        Category('Tiền lãi', 'user', 'income', icon: 'interest'),
-        Category('Bán đồ', 'user', 'income', icon: 'sell'),
-        Category('Thu nhập khác', 'user', 'income', icon: 'other'),
+        Category('Ăn uống', 0, 0, 'user', 'expense', icon: 'food'),
+        Category('Di chuyển', 0, 0, 'user', 'expense', icon: 'transport'),
+        Category('Nhà cửa', 0, 0, 'user', 'expense', icon: 'house'),
+        Category('Xe cộ', 0, 0, 'user', 'expense', icon: 'car'),
+        Category('Con cái', 0, 0, 'user', 'expense', icon: 'baby'),
+        Category('Mua sắm', 0, 0, 'user', 'expense', icon: 'shopping'),
+        Category('Giải trí', 0, 0, 'user', 'expense', icon: 'entertainment'),
+        Category('Du lịch', 0, 0, 'user', 'expense', icon: 'travel'),
+        Category('Sức khỏe', 0, 0, 'user', 'expense', icon: 'health'),
+        Category('Học vấn', 0, 0, 'user', 'expense', icon: 'education'),
+        Category('Kinh doanh', 0, 0, 'user', 'expense', icon: 'business'),
+        Category('Quà tặng', 0, 0, 'user', 'expense', icon: 'gift'),
+        Category('Bảo hiểm', 0, 0, 'user', 'expense', icon: 'insurance'),
+        Category('Phí dịch vụ', 0, 0, 'user', 'expense', icon: 'service'),
+        Category('Chi phí khác', 0, 0, 'user', 'expense', icon: 'other'),
+        Category('Lương', 0, 0, 'user', 'income', icon: 'salary'),
+        Category('Thưởng', 0, 0, 'user', 'income', icon: 'bonus'),
+        Category('Tiền lãi', 0, 0, 'user', 'income', icon: 'interest'),
+        Category('Bán đồ', 0, 0, 'user', 'income', icon: 'sell'),
+        Category('Thu nhập khác', 0, 0, 'user', 'income', icon: 'other'),
       ];
 
-  late String? id;
+  late String id = Uuid().v4();
   final String name;
   final String? icon;
   final String type;
-  final int amount = 0;
-  final int budget = 0;
+  int amount = 0;
+  int budget = 0;
   late String user;
 
   Category(
     this.name,
-    this.user,
-    this.type, {
+    this.amount,
+    this.budget,
+    this.type,
+    this.user, {
+    this.icon,
+  });
+
+  Category.withId(
     this.id,
+    this.name,
+    this.amount,
+    this.budget,
+    this.type,
+    this.user, {
     this.icon,
   });
 
   factory Category.fromMap(Map<String, dynamic> map) {
-    return Category(
+    return Category.withId(
+      map['id'] as String,
       map['name'] as String,
-      map['user'] as String,
+      map['amount'] as int,
+      map['budget'] as int,
       map['type'] as String,
-      id: map['id'] as String?,
+      map['user'] as String,
       icon: map['icon'] as String?,
     )..timeStampFromMap(map);
   }

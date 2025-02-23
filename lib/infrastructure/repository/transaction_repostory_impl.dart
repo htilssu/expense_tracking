@@ -59,14 +59,23 @@ class TransactionRepositoryImpl implements TransactionRepository {
 
   @override
   Future<Transaction> save(Transaction entity) async {
-    return ref.add(entity.toMap()).then((value) {
-      entity.id = value.id;
-      return entity;
-    });
+    return ref.doc(entity.id).set(entity.toMap()).then((value) => entity);
   }
 
   @override
   Future<Transaction> update(Transaction entity) async {
     return ref.doc(entity.id).update(entity.toMap()).then((value) => entity);
+  }
+
+  @override
+  Future<List<Transaction>> findRecentByUserId(
+      String userId, int page, int size) {
+    return ref
+        .where("user", isEqualTo: userId)
+        .orderBy("createdAt", descending: true)
+        .limit(size)
+        .get()
+        .then((value) =>
+            value.docs.map((e) => Transaction.fromMap(e.data())).toList());
   }
 }

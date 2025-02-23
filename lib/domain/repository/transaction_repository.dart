@@ -7,4 +7,5 @@ abstract class TransactionRepository
   Future<List<Transaction>> findByCategory(String category, int page, int size);
 
   Future<List<Transaction>> findRecent(int page, int size);
+  Future<List<Transaction>> findRecentByUserId(String userId,int page, int size);
 }
