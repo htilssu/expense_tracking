@@ -15,7 +15,6 @@ class TransactionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       margin: EdgeInsets.only(bottom: 8),
       child: Padding(
@@ -23,55 +22,56 @@ class TransactionItem extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              spacing: 8,
-              children: [
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppTheme.placeholderColor.withAlpha(20),
-                  ),
-                  child: Center(
-                    child: Text(
-                      //TODO: get category icon
-                      "😊",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: TextSize.large),
-                    ),
-                  ),
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: AppTheme.placeholderColor.withAlpha(20),
+              ),
+              child: Center(
+                child: Text(
+                  //TODO: get category icon
+                  "😊",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: TextSize.large),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BlocBuilder<CategoryBloc, CategoryState>(
-                      builder: (context, state) {
-                        if (state is CategoryLoaded) {
-                          return Text(
-                            state.categories
-                                .firstWhere((element) =>
-                                    element.id == _transaction.category).name,
-                            style: TextStyle(
-                                fontSize: TextSize.medium,
-                                fontWeight: FontWeight.bold),
-                          );
-                        } else {
-                          return Text("Loading...");
-                        }
-                      },
-                    ),
-                    Text(
-                      _transaction.note,
-                      style: TextStyle(
-                          fontSize: TextSize.medium,
-                          fontWeight: FontWeight.normal,
-                          color: AppTheme.hintColor.withAlpha(120)),
-                    ),
-                  ],
+              ),
+            ),
+            SizedBox(width: 8),
+            Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                BlocBuilder<CategoryBloc, CategoryState>(
+                  builder: (context, state) {
+                    if (state is CategoryLoaded) {
+                      return Text(
+                        state.categories
+                            .firstWhere((element) =>
+                                element.id == _transaction.category)
+                            .name,
+                        style: TextStyle(
+                            fontSize: TextSize.medium,
+                            fontWeight: FontWeight.bold),
+                      );
+                    } else {
+                      return Text("Loading...");
+                    }
+                  },
+                ),
+                Text(
+                  _transaction.note,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: TextSize.medium,
+                      fontWeight: FontWeight.normal,
+                      color: AppTheme.hintColor.withAlpha(120)),
                 )
               ],
-            ),
+            )),
+            SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [

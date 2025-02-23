@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/entity/category.dart';
-import '../screen/category_selector_screen.dart';
+import '../../category/category_selector_screen.dart';
 
 class CategorySelector extends StatefulWidget {
   final void Function(Category category) onCategorySelected;

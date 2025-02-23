@@ -87,9 +87,9 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
               setState(() {
                 _amount = billInfo.money;
                 _note = billInfo.note;
-                _category = billInfo.category;
                 _selectedSegment = billInfo.category.type == "income" ? 0 : 1;
                 _customSegmentController.value = _selectedSegment;
+                _category = billInfo.category;
               });
             });
 
@@ -171,8 +171,11 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                         },
                         onValueChanged: (value) {
                           setState(() {
+                            if (_selectedSegment != value) {
+                              _category = null;
+                            }
+
                             _selectedSegment = value;
-                            _category = null;
                           });
                         }),
                   ),
