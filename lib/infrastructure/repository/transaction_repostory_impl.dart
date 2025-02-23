@@ -51,13 +51,6 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<List<Transaction>> findRecent(int page, int size) async {
-    return ref.orderBy("createdAt", descending: true).limit(size).get().then(
-        (value) =>
-            value.docs.map((e) => Transaction.fromMap(e.data())).toList());
-  }
-
-  @override
   Future<Transaction> save(Transaction entity) async {
     return ref.doc(entity.id).set(entity.toMap()).then((value) => entity);
   }

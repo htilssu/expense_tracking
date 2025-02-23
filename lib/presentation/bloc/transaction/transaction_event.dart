@@ -3,8 +3,15 @@ part of 'transaction_bloc.dart';
 @immutable
 sealed class TransactionEvent {}
 
-class AddTransaction extends TransactionEvent {
-  final Transaction transaction;
+class LoadTransaction extends TransactionEvent {
+  final User user;
 
-  AddTransaction(this.transaction);
+  LoadTransaction(this.user);
+}
+
+class LoadMoreTransaction extends TransactionEvent {
+  final User user;
+  final int page;
+
+  LoadMoreTransaction(this.user, this.page);
 }

@@ -2,6 +2,7 @@ import 'package:expense_tracking/firebase_options.dart';
 import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
 import 'package:expense_tracking/presentation/bloc/category/category_bloc.dart';
 import 'package:expense_tracking/presentation/bloc/loading/loading_cubit.dart';
+import 'package:expense_tracking/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:expense_tracking/presentation/features/loading_overlay.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -58,6 +59,10 @@ class _MyAppState extends State<MyApp> {
               ),
               BlocProvider(
                 create: (context) => LoadingCubit(),
+              ),
+              BlocProvider(
+                create: (context) =>
+                    TransactionBloc(TransactionInitial(snapshot.data!)),
               )
             ],
             child: Builder(

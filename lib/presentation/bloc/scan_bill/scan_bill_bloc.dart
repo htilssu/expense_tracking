@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:expense_tracking/infrastructure/gemini_client.dart';
+import 'package:expense_tracking/infrastructure/image_analyze_client.dart';
 import 'package:expense_tracking/infrastructure/llm_client.dart';
 import 'package:expense_tracking/utils/logging.dart';
 import 'package:expense_tracking/utils/text_recognizer.dart';
@@ -9,11 +10,11 @@ import 'package:meta/meta.dart';
 import '../../../domain/entity/category.dart';
 
 part 'scan_bill_event.dart';
-
 part 'scan_bill_state.dart';
 
 class ScanBillBloc extends Bloc<ScanBillEvent, ScanBillState> {
   final LlmClient _llmClient = GeminiClient();
+  final ImageAnalyzeClient _imageAnalyzeClient = GeminiClient();
 
   ScanBillBloc() : super(ScanBillInitial()) {
     on<ScanBill>(_scanBill);
@@ -29,9 +30,11 @@ class ScanBillBloc extends Bloc<ScanBillEvent, ScanBillState> {
     }
 
     try {
-      var billInfo = await _llmClient.analyzeText(
-          textScanned,
-          scanBill.categories);
+      // var billInfo = await _llmClient.analyzeText(
+      //     textScanned,
+      //     scanBill.categories);
+      var billInfo = await _imageAnalyzeClient.analyzeImage(
+          scanBill.imagePath, scanBill.categories);
       emit(BillScanned(billInfo));
       return;
     } catch (e) {

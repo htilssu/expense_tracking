@@ -5,6 +5,7 @@ import 'package:expense_tracking/domain/service/transaction_service.dart';
 import 'package:expense_tracking/presentation/common_widgets/et_scaffold.dart';
 import 'package:expense_tracking/presentation/features/overview/widget/et_home_appbar.dart';
 import 'package:expense_tracking/presentation/features/overview/widget/overview_card.dart';
+import 'package:expense_tracking/presentation/features/transaction/screen/transaction_history_screen.dart';
 import 'package:expense_tracking/presentation/features/transaction/widget/transaction_item_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
@@ -71,7 +72,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       fontSize: TextSize.medium, fontWeight: FontWeight.bold),
                 ),
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const TransactionHistoryScreen(),
+                          ));
+                    },
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
                       overlayColor: Colors.transparent,

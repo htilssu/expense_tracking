@@ -13,8 +13,7 @@ import '../utils/logging.dart';
 class GeminiClient extends LlmClient implements ImageAnalyzeClient {
   Uri textEndpoint =
       Uri.parse('https://expensetrackingserver.vercel.app/gemini/text');
-  Uri imageEndpoint =
-      Uri.parse('https://expensetrackingserver.vercel.app/gemini/image');
+  Uri imageEndpoint = Uri.parse('https://expensetrackingserver.vercel.app/gemini/image');
 
   @override
   Future<BillInfo> analyzeText(String text, List<Category> category) async {
@@ -60,19 +59,23 @@ class GeminiClient extends LlmClient implements ImageAnalyzeClient {
   Future<BillInfo> analyzeImage(
       String imagePath, List<Category> category) async {
     try {
-      var res = await post(imageEndpoint,
-          headers: {"Content-Type": "application/json;charset=utf-8"},
-          body: jsonEncode({
-            'image': File(imagePath).readAsBytesSync(),
-            'category': category
-                .map(
-                  (e) => e.name,
-                )
-                .toList(),
-          })).timeout(Duration(seconds: 30));
+      var request = MultipartRequest("POST", imageEndpoint);
+
+      for (var i = 0; i < category.length; i++) {
+        request.files.add(MultipartFile.fromString(
+          "category",
+          category[i].name,
+        ));
+      }
+
+      var file = await MultipartFile.fromPath("image", imagePath);
+
+      request.files.add(file);
+
+      var res = await request.send().timeout(Duration(seconds: 30));
 
       if (res.statusCode == 200) {
-        final body = utf8.decode(res.bodyBytes);
+        final body = await res.stream.bytesToString();
         var jsonMap = jsonDecode(body) as Map<String, dynamic>;
 
         var tCategory = category.firstWhere(
@@ -81,9 +84,13 @@ class GeminiClient extends LlmClient implements ImageAnalyzeClient {
           },
         );
 
+        var date = jsonMap["date"] != null
+            ? DateTime.tryParse(jsonMap["date"]) ?? DateTime.now()
+            : DateTime.now();
+
         return BillInfo(
           (jsonMap["money"] as int).toDouble(),
-          DateTime.tryParse(jsonMap["date"]) ?? DateTime.now(),
+          date,
           jsonMap["store"] ?? "",
           tCategory,
           jsonMap["note"] ?? "",
