@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../constants/text_constant.dart';
-import '../../bloc/category_selector_cubit.dart';
+import '../../bloc/category_selector/category_selector_cubit.dart';
 
 class CreateCategoryScreen extends StatelessWidget {
-  const CreateCategoryScreen({super.key});
+  CreateCategoryScreen({super.key});
+
+  String _categoryName = "";
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,9 @@ class CreateCategoryScreen extends StatelessWidget {
                       height: 8,
                     ),
                     EtTextField(
+                      onChanged: (value) {
+                        _categoryName = value;
+                      },
                       label: "Tên danh mục",
                     ),
                     Column(
@@ -67,11 +72,15 @@ class CreateCategoryScreen extends StatelessWidget {
                     )
                   ],
                 )),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8.0),
-              child: EtButton(
-                onPressed: () {},
-                child: Text("Tạo danh mục"),
+            Container(
+              margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).padding.bottom),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: EtButton(
+                  onPressed: () {},
+                  child: Text("Tạo danh mục"),
+                ),
               ),
             )
           ],

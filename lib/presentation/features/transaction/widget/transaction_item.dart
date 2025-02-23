@@ -1,6 +1,9 @@
 import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/constants/text_constant.dart';
+import 'package:expense_tracking/presentation/bloc/category/category_bloc.dart';
+import 'package:expense_tracking/utils/currency_formatter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/entity/transaction.dart';
 import '../../../../utils/date_format.dart';
@@ -19,53 +22,63 @@ class TransactionItem extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              spacing: 8,
-              children: [
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppTheme.placeholderColor.withAlpha(20),
-                  ),
-                  child: Center(
-                    child: Text(
-                      //TODO: get category icon
-                      "😊",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: TextSize.large),
-                    ),
-                  ),
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: AppTheme.placeholderColor.withAlpha(20),
+              ),
+              child: Center(
+                child: Text(
+                  //TODO: get category icon
+                  "😊",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: TextSize.large),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      // TODO: get category name
-                      "Ăn sáng",
-                      style: TextStyle(
-                        fontSize: TextSize.medium + 2,
-                      ),
-                    ),
-                    Text(
-                      _transaction.note,
-                      style: TextStyle(
-                          fontSize: TextSize.medium,
-                          fontWeight: FontWeight.normal,
-                          color: AppTheme.hintColor.withAlpha(120)),
-                    ),
-                  ],
+              ),
+            ),
+            SizedBox(width: 8),
+            Expanded(
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                BlocBuilder<CategoryBloc, CategoryState>(
+                  builder: (context, state) {
+                    if (state is CategoryLoaded) {
+                      return Text(
+                        state.categories
+                            .firstWhere((element) =>
+                                element.id == _transaction.category)
+                            .name,
+                        style: TextStyle(
+                            fontSize: TextSize.medium,
+                            fontWeight: FontWeight.bold),
+                      );
+                    } else {
+                      return Text("Loading...");
+                    }
+                  },
+                ),
+                Text(
+                  _transaction.note,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      fontSize: TextSize.medium,
+                      fontWeight: FontWeight.normal,
+                      color: AppTheme.hintColor.withAlpha(120)),
                 )
               ],
-            ),
+            )),
+            SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  "100000",
+                  CurrencyFormatter.formatCurrency(_transaction.value),
                   style: TextStyle(
-                    fontSize: TextSize.large,
+                    fontSize: TextSize.medium + 4,
                   ),
                 ),
                 Text(

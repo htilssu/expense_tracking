@@ -1,12 +1,16 @@
 import 'package:expense_tracking/firebase_options.dart';
 import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
+import 'package:expense_tracking/presentation/bloc/category/category_bloc.dart';
+import 'package:expense_tracking/presentation/bloc/loading/loading_cubit.dart';
+import 'package:expense_tracking/presentation/bloc/transaction/transaction_bloc.dart';
+import 'package:expense_tracking/presentation/features/loading_overlay.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'constants/app_theme.dart';
-import 'presentation/bloc/user_bloc.dart';
+import 'presentation/bloc/user/user_bloc.dart';
 import 'presentation/features/authenticate/screen/login_screen.dart';
 import 'presentation/features/overview/screen/home_screen.dart';
 
@@ -14,7 +18,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 }
 
 class MyApp extends StatefulWidget {
@@ -45,23 +48,40 @@ class _MyAppState extends State<MyApp> {
                   }
                 },
               ),
+              BlocProvider<CategoryBloc>(
+                create: (context) {
+                  if (snapshot.data != null) {
+                    return CategoryBloc.withUser(snapshot.data!);
+                  } else {
+                    return CategoryBloc();
+                  }
+                },
+              ),
+              BlocProvider(
+                create: (context) => LoadingCubit(),
+              ),
+              BlocProvider(
+                create: (context) =>
+                    TransactionBloc(TransactionInitial(snapshot.data!)),
+              )
             ],
             child: Builder(
               builder: (context) {
                 return MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  title: 'Trezo',
-                  theme: AppTheme.lightTheme(),
-                  home: BlocBuilder<UserBloc, UserState>(
-                    builder: (context, state) {
-                      if (state is UserLoaded) {
-                        return HomeScreen();
-                      } else {
-                        return const LoginScreen();
-                      }
-                    },
-                  ),
-                );
+                    debugShowCheckedModeBanner: false,
+                    title: 'Trezo',
+                    theme: AppTheme.lightTheme(),
+                    home: LoadingOverlay(
+                      BlocBuilder<UserBloc, UserState>(
+                        builder: (context, state) {
+                          if (state is UserLoaded) {
+                            return HomeScreen();
+                          } else {
+                            return const LoginScreen();
+                          }
+                        },
+                      ),
+                    ));
               },
             ),
           );

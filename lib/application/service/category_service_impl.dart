@@ -10,6 +10,10 @@ class CategoryServiceImpl implements CategoryService {
 
   CategoryServiceImpl();
 
+  /// Get all categories of the current user
+  /// who is logged in
+  ///
+  /// Returns a list of [Category]
   @override
   Future<List<Category>> getCategories() {
     return _categoryRepository.getCategories();
