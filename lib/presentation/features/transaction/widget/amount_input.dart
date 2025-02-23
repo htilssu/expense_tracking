@@ -1,5 +1,6 @@
 import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/constants/text_constant.dart';
+import 'package:expense_tracking/utils/formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -18,6 +19,19 @@ class _AmountInputState extends State<AmountInput> {
   @override
   void initState() {
     super.initState();
+    _controller.addListener(
+      () {
+        var rawValue = _controller.text.replaceAll(RegExp(r"/\D/"), "");
+        var newValue = double.parse(rawValue);
+        widget.onChanged?.call(newValue);
+        var formattedValue = Formatter.formatCurrency(newValue);
+        _controller.value = _controller.value.copyWith(
+          text: formattedValue,
+          selection: TextSelection.collapsed(
+              offset: formattedValue.lastIndexOf(RegExp(r"\d")) + 1),
+        );
+      },
+    );
   }
 
   @override
@@ -42,9 +56,15 @@ class _AmountInputState extends State<AmountInput> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Nhập số tiền"),
+          Text(
+            "Nhập số tiền",
+            style: TextStyle(
+              fontSize: TextSize.medium,
+            ),
+          ),
           TextField(
             keyboardType: TextInputType.number,
+            controller: _controller,
             onChanged: (value) {
               if (value.isNotEmpty) {
                 widget.onChanged?.call(double.parse(value));

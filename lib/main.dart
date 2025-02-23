@@ -3,7 +3,6 @@ import 'package:expense_tracking/infrastructure/repository/user_repository_impl.
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'constants/app_theme.dart';
@@ -16,7 +15,6 @@ Future<void> main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 }
 
 class MyApp extends StatefulWidget {
@@ -73,11 +71,20 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           color: Colors.white,
           home: Scaffold(
-            body: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-              ],
+            body: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(bottom: 100),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/images/pig_colorful.png",
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                  const CircularProgressIndicator(),
+                ],
+              ),
             ),
           ),
         );

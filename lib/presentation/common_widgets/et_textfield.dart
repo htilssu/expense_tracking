@@ -1,5 +1,3 @@
-import 'package:expense_tracking/constants/app_theme.dart';
-import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:flutter/material.dart';
 
 class EtTextField extends StatelessWidget {
@@ -7,12 +5,14 @@ class EtTextField extends StatelessWidget {
   final TextEditingController? controller;
   final Widget? suffixIcon;
   final bool obscureText;
+  final EdgeInsets? padding;
   final String? Function(String?)? validator;
 
   const EtTextField(
       {super.key,
       this.label = "",
       this.controller,
+      this.padding,
       this.validator,
       this.suffixIcon,
       this.obscureText = false});
@@ -28,11 +28,13 @@ class EtTextField extends StatelessWidget {
           obscureText: obscureText,
           controller: controller,
           decoration: InputDecoration(
+              constraints: BoxConstraints(maxHeight: 55),
               suffixIcon: suffixIcon,
               label: Text(label),
-              labelStyle: TextStyle(
-                  fontSize: TextSize.medium, color: AppTheme.hintColor),
-              border: OutlineInputBorder()),
+              contentPadding: padding,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              )),
         ),
       ],
     );

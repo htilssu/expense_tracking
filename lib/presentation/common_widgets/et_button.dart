@@ -13,7 +13,7 @@ class EtButton extends StatelessWidget {
     this.child,
     this.color,
     this.borderRadius = 5,
-    this.height = 45,
+    this.height = 48,
     this.width = double.infinity,
     this.onPressed,
   });
