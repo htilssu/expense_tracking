@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:expense_tracking/domain/entity/transaction.dart';
 import 'package:expense_tracking/infrastructure/gemini_client.dart';
 import 'package:expense_tracking/infrastructure/llm_client.dart';
 import 'package:expense_tracking/utils/logging.dart';

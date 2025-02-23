@@ -8,7 +8,6 @@ import 'package:flutter/foundation.dart' as foundation;
 import 'package:http/http.dart' as http;
 
 import '../domain/entity/category.dart';
-import '../domain/entity/transaction.dart';
 
 class OllamaClient extends LlmClient {
   Uri url = Uri.parse('http://localhost:8080/ollama');
