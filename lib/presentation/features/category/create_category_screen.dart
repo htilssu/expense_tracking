@@ -14,7 +14,6 @@ class CreateCategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var state = BlocProvider.of<CategorySelectorCubit>(context);
 
     return Scaffold(
       appBar: AppBar(

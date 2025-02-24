@@ -16,7 +16,7 @@ import '../../transaction/screen/create_transaction_screen.dart';
 import '../../transaction/widget/transaction_item.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key,TransactionService? transactionService}) {
+  HomeScreen({super.key, TransactionService? transactionService}) {
     if (transactionService != null) {
       this.transactionService = transactionService;
     } else {
@@ -31,7 +31,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin {
   late Future<List<Transaction>> _transactionsFuture;
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -52,141 +53,139 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return EtScaffold(
-      body: Column(
-        children: [
-          SizedBox(
-            height: 320,
-            child: Stack(
-              children: [
-                EtHomeAppbar(),
-                Positioned(
-                    top: 280 - 40 - 150 / 2,
-                    left: 0,
-                    child: Container(
-                        alignment: Alignment.topCenter,
-                        padding: EdgeInsets.symmetric(horizontal: 32),
-                        width: MediaQuery.of(context).size.width,
-                        height: 150,
-                        child: OverviewCard()))
-              ],
-            ),
+    return Column(
+      children: [
+        SizedBox(
+          height: 320,
+          child: Stack(
+            children: [
+              EtHomeAppbar(),
+              Positioned(
+                  top: 280 - 40 - 150 / 2,
+                  left: 0,
+                  child: Container(
+                      alignment: Alignment.topCenter,
+                      padding: EdgeInsets.symmetric(horizontal: 32),
+                      width: MediaQuery.of(context).size.width,
+                      height: 150,
+                      child: OverviewCard()))
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "Lịch sử",
-                  style: TextStyle(
-                      fontSize: TextSize.medium, fontWeight: FontWeight.bold),
-                ),
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                const TransactionHistoryScreen(),
-                          ));
-                    },
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-                      overlayColor: Colors.transparent,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Lịch sử",
+                style: TextStyle(
+                    fontSize: TextSize.medium, fontWeight: FontWeight.bold),
+              ),
+              TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const TransactionHistoryScreen(),
+                        ));
+                  },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+                    overlayColor: Colors.transparent,
+                  ),
+                  child: Text(
+                    textAlign: TextAlign.end,
+                    "Xem tất cả",
+                    style: TextStyle(
+                      fontSize: TextSize.small + 3,
                     ),
-                    child: Text(
-                      textAlign: TextAlign.end,
-                      "Xem tất cả",
-                      style: TextStyle(
-                        fontSize: TextSize.small + 3,
-                      ),
-                    ))
-              ],
-            ),
+                  ))
+            ],
           ),
-          FutureBuilder<List<Transaction>>(
-            future: _transactionsFuture,
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                return Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: SmartRefresher(
-                      enablePullDown: true,
-                      onRefresh: _onRefresh,
-                      header: WaterDropMaterialHeader(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                      ),
-                      controller: _refreshController,
-                      child: ListView(
-                        padding: EdgeInsets.zero,
-                        physics: BouncingScrollPhysics(),
-                        children: [
-                          for (Transaction transaction in snapshot.data!)
-                            TransactionItem(transaction),
-                        ],
-                      ),
-                    ),
-                  ),
-                );
-              }
-
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Expanded(
-                    child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: ListView(
-                    padding: EdgeInsets.zero,
-                    physics: BouncingScrollPhysics(),
-                    children: [
-                      for (int i = 0; i < 5; i++) TransactionItemSkeleton()
-                    ],
-                  ),
-                ));
-              }
-
+        ),
+        FutureBuilder<List<Transaction>>(
+          future: _transactionsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               return Expanded(
                 child: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Column(
-                    spacing: 8,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Không có giao dịch nào",
-                        style: TextStyle(fontSize: TextSize.medium),
-                      ),
-                      IconButton(
-                          color: AppTheme.placeholderColor,
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all(
-                                AppTheme.placeholderColor.withAlpha(20)),
-                          ),
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) {
-                                return CreateTransactionScreen();
-                              },
-                            ));
-                          },
-                          icon: Icon(
-                            Icons.add,
-                            size: 32,
-                            color: Theme.of(context).colorScheme.primary,
-                          )),
-                      Text(
-                        "Thêm giao dịch",
-                        style: TextStyle(fontSize: TextSize.medium),
-                      ),
-                    ],
+                  child: SmartRefresher(
+                    enablePullDown: true,
+                    onRefresh: _onRefresh,
+                    header: WaterDropMaterialHeader(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                    ),
+                    controller: _refreshController,
+                    child: ListView(
+                      padding: EdgeInsets.zero,
+                      physics: BouncingScrollPhysics(),
+                      children: [
+                        for (Transaction transaction in snapshot.data!)
+                          TransactionItem(transaction),
+                      ],
+                    ),
                   ),
                 ),
               );
-            },
-          )
-        ],
-      ),
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Expanded(
+                  child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  physics: BouncingScrollPhysics(),
+                  children: [
+                    for (int i = 0; i < 5; i++) TransactionItemSkeleton()
+                  ],
+                ),
+              ));
+            }
+
+            return Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  spacing: 8,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Không có giao dịch nào",
+                      style: TextStyle(fontSize: TextSize.medium),
+                    ),
+                    IconButton(
+                        color: AppTheme.placeholderColor,
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStateProperty.all(
+                              AppTheme.placeholderColor.withAlpha(20)),
+                        ),
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return CreateTransactionScreen();
+                            },
+                          ));
+                        },
+                        icon: Icon(
+                          Icons.add,
+                          size: 32,
+                          color: Theme.of(context).colorScheme.primary,
+                        )),
+                    Text(
+                      "Thêm giao dịch",
+                      style: TextStyle(fontSize: TextSize.medium),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        )
+      ],
     );
   }
 
@@ -194,4 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await _refreshTransactions();
     _refreshController.refreshCompleted();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -5,8 +5,9 @@ import 'et_bottom_navigation_bar.dart';
 
 class EtScaffold extends StatelessWidget {
   final Widget body;
+  final void Function(int index) onNavigation;
 
-  const EtScaffold({required this.body, super.key});
+  const EtScaffold({required this.body, super.key, required this.onNavigation});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class EtScaffold extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: Icon(Icons.add),
       ),
-      bottomNavigationBar: EtNavigationBar(),
+      bottomNavigationBar: EtNavigationBar(onNavigation: onNavigation),
       body: body,
     );
   }
