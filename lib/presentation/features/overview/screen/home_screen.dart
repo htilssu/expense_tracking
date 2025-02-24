@@ -2,6 +2,7 @@ import 'package:expense_tracking/application/service/transaction_service_impl.da
 import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:expense_tracking/domain/service/transaction_service.dart';
+import 'package:expense_tracking/infrastructure/repository/transaction_repostory_impl.dart';
 import 'package:expense_tracking/presentation/common_widgets/et_scaffold.dart';
 import 'package:expense_tracking/presentation/features/overview/widget/et_home_appbar.dart';
 import 'package:expense_tracking/presentation/features/overview/widget/overview_card.dart';
@@ -15,14 +16,22 @@ import '../../transaction/screen/create_transaction_screen.dart';
 import '../../transaction/widget/transaction_item.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  HomeScreen({super.key,TransactionService? transactionService}) {
+    if (transactionService != null) {
+      this.transactionService = transactionService;
+    } else {
+      this.transactionService =
+          TransactionServiceImpl(TransactionRepositoryImpl());
+    }
+  }
+
+  late TransactionService transactionService;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final TransactionService transactionService = TransactionServiceImpl();
   late Future<List<Transaction>> _transactionsFuture;
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -30,12 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _transactionsFuture = transactionService.getRecentTransactionsByUserId();
+    _transactionsFuture =
+        widget.transactionService.getRecentTransactionsByUserId();
   }
 
   Future<void> _refreshTransactions() async {
     setState(() {
-      _transactionsFuture = transactionService.getRecentTransactionsByUserId();
+      _transactionsFuture =
+          widget.transactionService.getRecentTransactionsByUserId();
     });
   }
 
