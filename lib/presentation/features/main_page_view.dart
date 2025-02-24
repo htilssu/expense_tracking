@@ -12,18 +12,23 @@ class MainPageView extends StatefulWidget {
 }
 
 class _MainPageViewState extends State<MainPageView> {
+  late final GlobalKey<HomeScreenState> _homeScreenKey;
   late PageController _pageController;
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    HomeScreen(),
-    AnalysisScreen(),
-  ];
+  late final List<Widget> _pages;
 
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: _selectedIndex);
+    _pageController = PageController(initialPage: _selectedIndex, keepPage: false);
+    _homeScreenKey = GlobalKey<HomeScreenState>();
+    _pages = [
+      HomeScreen(
+        key: _homeScreenKey,
+      ),
+      const AnalysisScreen(),
+    ];
   }
 
   @override

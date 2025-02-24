@@ -28,11 +28,10 @@ class HomeScreen extends StatefulWidget {
   late TransactionService transactionService;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with AutomaticKeepAliveClientMixin {
+class HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin {
   late Future<List<Transaction>> _transactionsFuture;
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
