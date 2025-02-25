@@ -1,7 +1,6 @@
 import 'package:expense_tracking/application/service/transaction_service_impl.dart';
 import 'package:expense_tracking/domain/service/transaction_service.dart';
 import 'package:expense_tracking/infrastructure/repository/transaction_repostory_impl.dart';
-import 'package:expense_tracking/presentation/common_widgets/et_scaffold.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 

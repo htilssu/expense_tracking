@@ -13,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'constants/app_theme.dart';
 import 'presentation/bloc/user/user_bloc.dart';
 import 'presentation/features/authenticate/screen/login_screen.dart';
-import 'presentation/features/overview/screen/home_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

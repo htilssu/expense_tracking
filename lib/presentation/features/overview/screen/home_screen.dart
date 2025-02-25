@@ -3,7 +3,6 @@ import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:expense_tracking/domain/service/transaction_service.dart';
 import 'package:expense_tracking/infrastructure/repository/transaction_repostory_impl.dart';
-import 'package:expense_tracking/presentation/common_widgets/et_scaffold.dart';
 import 'package:expense_tracking/presentation/features/overview/widget/et_home_appbar.dart';
 import 'package:expense_tracking/presentation/features/overview/widget/overview_card.dart';
 import 'package:expense_tracking/presentation/features/transaction/screen/transaction_history_screen.dart';
