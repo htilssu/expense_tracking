@@ -10,6 +10,7 @@ import 'package:meta/meta.dart';
 import '../../../domain/entity/category.dart';
 
 part 'scan_bill_event.dart';
+
 part 'scan_bill_state.dart';
 
 class ScanBillBloc extends Bloc<ScanBillEvent, ScanBillState> {
@@ -23,11 +24,6 @@ class ScanBillBloc extends Bloc<ScanBillEvent, ScanBillState> {
 
   void _scanBill(ScanBill scanBill, Emitter<ScanBillState> emit) async {
     emit(BillLoading());
-    var textScanned = await TextRecognizerUtil.recognize(scanBill.imagePath);
-
-    if (foundation.kDebugMode) {
-      Logger.info(textScanned);
-    }
 
     try {
       // var billInfo = await _llmClient.analyzeText(

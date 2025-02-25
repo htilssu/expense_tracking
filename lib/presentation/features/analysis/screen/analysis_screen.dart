@@ -1,10 +1,8 @@
-import 'package:expense_tracking/application/service/transaction_service_impl.dart';
-import 'package:expense_tracking/domain/service/transaction_service.dart';
-import 'package:expense_tracking/infrastructure/repository/transaction_repostory_impl.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../domain/entity/transaction.dart';
+import '../../../../constants/app_theme.dart';
+import '../../../../constants/text_constant.dart';
 
 class AnalysisScreen extends StatefulWidget {
   const AnalysisScreen({super.key});
@@ -14,205 +12,325 @@ class AnalysisScreen extends StatefulWidget {
 }
 
 class _AnalysisScreenState extends State<AnalysisScreen> {
-  late TransactionService _transactionService;
-  late Future<List<Transaction>> _transactionsFuture;
-  int _selectedPeriod = 0; // 0: Tháng, 1: Tuần, 2: Năm
+  late int _selectedSegment;
 
   @override
   void initState() {
     super.initState();
-    _transactionService = TransactionServiceImpl(TransactionRepositoryImpl());
-    _transactionsFuture = _transactionService.getRecentTransactionsByUserId();
+    _selectedSegment = 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.teal[100],
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
+          onPressed: () {},
+        ),
+        title: Text(
+          'Analysis',
+          style: TextStyle(color: Colors.black, fontSize: 20),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications, color: Colors.black),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Total Balance và Total Expense
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildOverviewCard(),
-                  const SizedBox(height: 16),
-                  _buildPeriodSelector(),
-                  const SizedBox(height: 16),
-                  _buildPieChart(),
-                  const SizedBox(height: 16),
-                  _buildLineChart(),
+                  Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.teal[50],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.account_balance_wallet, color: Colors.green),
+                        SizedBox(width: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Số dư',
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.grey)),
+                            Text('\$7,783.00',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.teal[50],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.trending_down, color: Colors.blue),
+                        SizedBox(width: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Đã chi tiêu',
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.grey)),
+                            Text('-\$1,187.40',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildOverviewCard() {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: FutureBuilder<List<Transaction>>(
-          future: _transactionsFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Text('Không có dữ liệu giao dịch');
-            }
-
-            final transactions = snapshot.data!;
-            final totalIncome = 10.0;
-            final totalExpense = 900.0;
-
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildOverviewItem('Thu nhập', totalIncome, Colors.green),
-                _buildOverviewItem('Chi tiêu', totalExpense, Colors.red),
-              ],
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildOverviewItem(String label, double value, Color color) {
-    return Column(
-      children: [
-        Text(
-          label,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          '${value.toStringAsFixed(0)} VNĐ',
-          style: TextStyle(fontSize: 18, color: color),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPeriodSelector() {
-    return SegmentedButton<int>(
-      segments: const [
-        ButtonSegment<int>(value: 0, label: Text('Tháng')),
-        ButtonSegment<int>(value: 1, label: Text('Tuần')),
-        ButtonSegment<int>(value: 2, label: Text('Năm')),
-      ],
-      selected: {_selectedPeriod},
-      onSelectionChanged: (newSelection) {
-        setState(() {
-          _selectedPeriod = newSelection.first;
-          // TODO: Cập nhật dữ liệu theo khoảng thời gian nếu cần
-        });
-      },
-    );
-  }
-
-  Widget _buildPieChart() {
-    return SizedBox(
-      height: 200,
-      child: FutureBuilder<List<Transaction>>(
-        future: _transactionsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('Không có dữ liệu để phân tích'));
-          }
-
-          final transactions = snapshot.data!;
-          final expenseByCategory = <String, double>{};
-
-          return PieChart(
-            PieChartData(
-              sections: expenseByCategory.entries.map((entry) {
-                return PieChartSectionData(
-                  value: entry.value,
-                  title:
-                      '${entry.key}\n${(entry.value / expenseByCategory.values.reduce((a, b) => a + b) * 100).toStringAsFixed(1)}%',
-                  color: _getRandomColor(),
-                  radius: 80,
-                  titleStyle:
-                      const TextStyle(fontSize: 12, color: Colors.white),
-                );
-              }).toList(),
-              centerSpaceRadius: 40,
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildLineChart() {
-    return SizedBox(
-      height: 200,
-      child: FutureBuilder<List<Transaction>>(
-        future: _transactionsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(child: Text('Không có dữ liệu xu hướng'));
-          }
-
-          final transactions = snapshot.data!;
-          final expenseByDay = <String, double>{};
-
-          final sortedDays = expenseByDay.keys.toList()..sort();
-          return LineChart(
-            LineChartData(
-              lineBarsData: [
-                LineChartBarData(
-                  spots: sortedDays
-                      .map((day) => FlSpot(sortedDays.indexOf(day).toDouble(),
-                          expenseByDay[day]!))
-                      .toList(),
-                  isCurved: true,
-                  color: Colors.red,
-                  dotData: FlDotData(show: false),
+              SizedBox(height: 16),
+              // Progress Bar và Text
+              Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.teal[50],
+                  borderRadius: BorderRadius.circular(12),
                 ),
-              ],
-              titlesData: FlTitlesData(
-                bottomTitles: AxisTitles(
-                  sideTitles: SideTitles(
-                    showTitles: true,
-                    getTitlesWidget: (value, meta) {
-                      final dayIndex = value.toInt();
-                      if (dayIndex >= 0 && dayIndex < sortedDays.length) {
-                        return Text(
-                            sortedDays[dayIndex].substring(5)); // Hiển thị ngày
-                      }
-                      return const Text('');
-                    },
-                  ),
-                ),
-                leftTitles: AxisTitles(
-                  sideTitles: SideTitles(showTitles: true, reservedSize: 40),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    LinearProgressIndicator(
+                      value: 0.3,
+                      backgroundColor: Colors.grey[300],
+                      color: Colors.green,
+                      minHeight: 10,
+                    ),
+                    SizedBox(height: 8),
+                    Text('30% Of Your Expenses, Looks Good.',
+                        style: TextStyle(fontSize: 14, color: Colors.black)),
+                  ],
                 ),
               ),
-              borderData: FlBorderData(show: true),
-            ),
-          );
-        },
+              SizedBox(height: 16),
+              // Tabs (Daily, Weekly, Monthly, Year)
+              CustomSlidingSegmentedControl(
+                isStretch: true,
+                onValueChanged: (int value) {
+                  setState(() {
+                    _selectedSegment = value;
+                  });
+                },
+                curve: Curves.easeInCubic,
+                innerPadding: EdgeInsets.all(4),
+                thumbDecoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(4)),
+                decoration: BoxDecoration(
+                    color: AppTheme.placeholderColor.withAlpha(30),
+                    borderRadius: BorderRadius.circular(7)),
+                children: {
+                  0: AnimatedDefaultTextStyle(
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    duration: Duration(milliseconds: 250),
+                    child: Text(
+                      "Hàng tuần",
+                      style: TextStyle(
+                          fontSize: TextSize.medium,
+                          color: _selectedSegment == 0
+                              ? Colors.white
+                              : Colors.black),
+                    ),
+                  ),
+                  1: AnimatedDefaultTextStyle(
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    duration: Duration(milliseconds: 250),
+                    child: Text(
+                      "Hàng tháng",
+                      style: TextStyle(
+                          fontSize: TextSize.medium,
+                          color: _selectedSegment == 1
+                              ? Colors.white
+                              : Colors.black),
+                    ),
+                  ),
+                  2: AnimatedDefaultTextStyle(
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                    duration: Duration(milliseconds: 250),
+                    child: Text(
+                      "Hàng năm",
+                      style: TextStyle(
+                          fontSize: TextSize.medium,
+                          color: _selectedSegment == 2
+                              ? Colors.white
+                              : Colors.black),
+                    ),
+                  )
+                },
+              ),
+              SizedBox(height: 16),
+              // Biểu đồ Income & Expenses
+              Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.teal[50],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Income & Expenses',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
+                        Row(
+                          children: [
+                            Icon(Icons.question_mark, color: Colors.grey),
+                            Icon(Icons.calendar_today, color: Colors.grey),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    // Placeholder cho biểu đồ (sử dụng Container đơn giản, bạn có thể thay bằng fl_chart)
+                    Container(
+                      height: 200,
+                      child: CustomPaint(
+                        painter: BarChartPainter(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 16),
+              // Income và Expense Targets
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.teal[50],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.arrow_upward, color: Colors.green),
+                        SizedBox(width: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Income',
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.grey)),
+                            Text('\$4,120.00',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.teal[50],
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.arrow_downward, color: Colors.blue),
+                        SizedBox(width: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Expense',
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.grey)),
+                            Text('\$1,187.40',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              // Bottom Navigation Bar
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Color _getRandomColor() {
-    return Colors
-        .primaries[DateTime.now().microsecond % Colors.primaries.length];
+  Widget _buildTab(String title, Color color) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Text(title, style: TextStyle(color: Colors.white)),
+    );
   }
+}
+
+// Class đơn giản để vẽ biểu đồ cột (placeholder)
+class BarChartPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paintGreen = Paint()..color = Colors.green;
+    final paintBlue = Paint()..color = Colors.blue;
+
+    // Dữ liệu giả lập (chiều cao các cột)
+    final heights = [20, 50, 30, 80, 10, 40, 20]; // Thay đổi theo nhu cầu
+    final barWidth = size.width / 7 - 10;
+    double x = 0;
+
+    for (int i = 0; i < heights.length; i++) {
+      double barHeight = heights[i] / 100 * size.height;
+      // Vẽ cột xanh lá (income)
+      canvas.drawRect(
+        Rect.fromLTWH(x, size.height - barHeight, barWidth, barHeight),
+        paintGreen,
+      );
+      // Vẽ cột xanh dương (expense) chồng lên (giả lập)
+      canvas.drawRect(
+        Rect.fromLTWH(x, size.height - barHeight / 2, barWidth, barHeight / 2),
+        paintBlue,
+      );
+      x += barWidth + 10; // Khoảng cách giữa các cột
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
