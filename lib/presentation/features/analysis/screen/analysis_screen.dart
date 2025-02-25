@@ -216,7 +216,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                     ),
                     SizedBox(height: 8),
                     // Placeholder cho biểu đồ (sử dụng Container đơn giản, bạn có thể thay bằng fl_chart)
-                    Container(
+                    SizedBox(
                       height: 200,
                       child: CustomPaint(
                         painter: BarChartPainter(),
