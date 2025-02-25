@@ -4,6 +4,7 @@ import 'package:expense_tracking/presentation/bloc/category/category_bloc.dart';
 import 'package:expense_tracking/presentation/bloc/loading/loading_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:expense_tracking/presentation/features/loading_overlay.dart';
+import 'package:expense_tracking/presentation/features/main_page_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'constants/app_theme.dart';
 import 'presentation/bloc/user/user_bloc.dart';
 import 'presentation/features/authenticate/screen/login_screen.dart';
-import 'presentation/features/overview/screen/home_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
                       BlocBuilder<UserBloc, UserState>(
                         builder: (context, state) {
                           if (state is UserLoaded) {
-                            return HomeScreen();
+                            return MainPageView();
                           } else {
                             return const LoginScreen();
                           }

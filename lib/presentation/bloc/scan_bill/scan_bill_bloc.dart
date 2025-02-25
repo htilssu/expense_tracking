@@ -3,13 +3,13 @@ import 'package:expense_tracking/infrastructure/gemini_client.dart';
 import 'package:expense_tracking/infrastructure/image_analyze_client.dart';
 import 'package:expense_tracking/infrastructure/llm_client.dart';
 import 'package:expense_tracking/utils/logging.dart';
-import 'package:expense_tracking/utils/text_recognizer.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:meta/meta.dart';
 
 import '../../../domain/entity/category.dart';
 
 part 'scan_bill_event.dart';
+
 part 'scan_bill_state.dart';
 
 class ScanBillBloc extends Bloc<ScanBillEvent, ScanBillState> {
@@ -23,11 +23,6 @@ class ScanBillBloc extends Bloc<ScanBillEvent, ScanBillState> {
 
   void _scanBill(ScanBill scanBill, Emitter<ScanBillState> emit) async {
     emit(BillLoading());
-    var textScanned = await TextRecognizerUtil.recognize(scanBill.imagePath);
-
-    if (foundation.kDebugMode) {
-      Logger.info(textScanned);
-    }
 
     try {
       // var billInfo = await _llmClient.analyzeText(

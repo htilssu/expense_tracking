@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class EtNavigationBar extends StatefulWidget {
-  const EtNavigationBar({super.key});
+  final void Function(int index) onNavigation;
+
+  const EtNavigationBar({super.key, required this.onNavigation});
 
   @override
   State<EtNavigationBar> createState() => _EtNavigationBarState();
@@ -49,17 +51,17 @@ class _EtNavigationBarState extends State<EtNavigationBar> {
               SizedBox(width: 48),
               IconButton(
                 icon: Icon(Icons.notifications),
+                color: _selectedIndex == 2
+                    ? Theme.of(context).colorScheme.onPrimary
+                    : Color(0xFFCCCCCC),
+                onPressed: () => _onItemTapped(2),
+              ),
+              IconButton(
+                icon: Icon(Icons.person),
                 color: _selectedIndex == 3
                     ? Theme.of(context).colorScheme.onPrimary
                     : Color(0xFFCCCCCC),
                 onPressed: () => _onItemTapped(3),
-              ),
-              IconButton(
-                icon: Icon(Icons.person),
-                color: _selectedIndex == 4
-                    ? Theme.of(context).colorScheme.onPrimary
-                    : Color(0xFFCCCCCC),
-                onPressed: () => _onItemTapped(4),
               ),
             ],
           ),
@@ -71,6 +73,7 @@ class _EtNavigationBarState extends State<EtNavigationBar> {
   void _onItemTapped(int i) {
     setState(() {
       _selectedIndex = i;
+      widget.onNavigation(i);
     });
   }
 }
