@@ -27,8 +27,6 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var userBloc = BlocProvider.of<UserBloc>(context);
-    var userState = userBloc.state as UserLoaded;
     var categoryCubit = BlocProvider.of<CategorySelectorCubit>(context);
     var categoryBloc = BlocProvider.of<CategoryBloc>(context);
 
