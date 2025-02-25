@@ -31,15 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 1,
-        shadowColor: Colors.black,
-        automaticallyImplyLeading: false,
-        title: Align(
-          alignment: Alignment.center,
-          child: Text("Đăng nhập"),
-        ),
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(

@@ -31,7 +31,6 @@ class EtTextField extends StatelessWidget {
           obscureText: obscureText,
           controller: controller,
           decoration: InputDecoration(
-              constraints: BoxConstraints(maxHeight: 55),
               suffixIcon: suffixIcon,
               label: Text(label),
               contentPadding: padding,
