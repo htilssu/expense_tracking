@@ -1,9 +1,7 @@
 import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/domain/entity/category.dart';
 import 'package:expense_tracking/domain/repository/category_repository.dart';
-import 'package:expense_tracking/domain/repository/transaction_repository.dart';
 import 'package:expense_tracking/infrastructure/repository/category_repository_impl.dart';
-import 'package:expense_tracking/infrastructure/repository/transaction_repostory_impl.dart';
 import 'package:expense_tracking/presentation/bloc/category_selector/category_selector_cubit.dart';
 import 'package:expense_tracking/presentation/common_widgets/et_button.dart';
 import 'package:expense_tracking/presentation/common_widgets/et_textfield.dart';
