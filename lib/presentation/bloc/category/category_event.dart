@@ -12,3 +12,12 @@ final class LoadCategories extends CategoryEvent {
   @override
   List<Object> get props => [user];
 }
+
+final class AddCategory extends CategoryEvent {
+  final Category category;
+
+  const AddCategory(this.category);
+
+  @override
+  List<Object> get props => [category];
+}
