@@ -21,10 +21,17 @@ import '../../../../utils/auth.dart';
 import '../widget/category_selector.dart';
 
 class CreateTransactionScreen extends StatefulWidget {
-  final CreationTransactionService _creationTransactionService =
+  late CreationTransactionService creationTransactionService =
       CreationTransactionServiceImpl();
 
-  CreateTransactionScreen({super.key});
+  CreateTransactionScreen(
+      {super.key, CreationTransactionService? creationTransactionService}) {
+    if (creationTransactionService != null) {
+      this.creationTransactionService = creationTransactionService;
+    } else {
+      creationTransactionService = CreationTransactionServiceImpl();
+    }
+  }
 
   @override
   State<CreateTransactionScreen> createState() =>
@@ -49,7 +56,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
     _note = note;
   }
 
-  void _onCategorySelected(Category category) {
+  void onCategorySelected(Category category) {
     _category = category;
   }
 
@@ -212,7 +219,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                       _selectedSegment == 0
                                           ? TransactionType.income
                                           : TransactionType.expense,
-                                      onCategorySelected: _onCategorySelected,
+                                      onCategorySelected: onCategorySelected,
                                     ),
                                   )
                                 ],
@@ -245,7 +252,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                 final transaction = Transaction(
                                     _note, _amount, _category!.id, Auth.uid());
                                 try {
-                                  widget._creationTransactionService
+                                  widget.creationTransactionService
                                       .handle(transaction);
                                   //TODO: add to recent transaction or update if back to home screen
                                 } on Exception catch (e) {

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:expense_tracking/domain/entity/category.dart';
 import 'package:expense_tracking/infrastructure/image_analyze_client.dart';
