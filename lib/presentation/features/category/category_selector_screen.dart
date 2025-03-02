@@ -1,7 +1,6 @@
 import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:expense_tracking/domain/entity/category.dart';
 import 'package:expense_tracking/presentation/bloc/category_selector/category_selector_cubit.dart';
-import 'package:expense_tracking/presentation/bloc/user/user_bloc.dart';
 import 'package:expense_tracking/presentation/features/category/create_category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
