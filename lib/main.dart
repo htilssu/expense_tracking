@@ -100,7 +100,10 @@ class _MyAppState extends State<MyApp> {
                 children: [
                   Image.asset(
                     "assets/images/pig_colorful.png",
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
                   ),
                   const CircularProgressIndicator(),
                 ],
