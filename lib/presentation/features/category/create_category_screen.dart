@@ -85,7 +85,8 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
                       onChanged: (value) {
                         _categoryName = value;
                         setState(() {
-                          _canCreateCategory = !_isCategoryNameExist(value);
+                          _canCreateCategory = !_isCategoryNameExist(value) &&
+                              value.trim().isNotEmpty;
                         });
                       },
                       label: "Tên danh mục",
