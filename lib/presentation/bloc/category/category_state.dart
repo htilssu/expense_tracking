@@ -20,6 +20,13 @@ final class CategoryLoaded extends CategoryState {
   List<Object?> get props => [categories];
 }
 
+final class CategoryLoading extends CategoryState {
+  const CategoryLoading();
+
+  @override
+  List<Object?> get props => [];
+}
+
 final class CategoryError extends CategoryState {
   final String message;
 
