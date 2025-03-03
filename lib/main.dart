@@ -50,11 +50,7 @@ class _MyAppState extends State<MyApp> {
               ),
               BlocProvider<CategoryBloc>(
                 create: (context) {
-                  if (snapshot.data != null) {
-                    return CategoryBloc.withUser(snapshot.data!);
-                  } else {
-                    return CategoryBloc();
-                  }
+                  return CategoryBloc()..add(LoadCategories(snapshot.data!));
                 },
               ),
               BlocProvider(
