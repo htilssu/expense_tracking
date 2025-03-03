@@ -1,11 +1,11 @@
 import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:expense_tracking/domain/entity/category.dart';
 import 'package:expense_tracking/presentation/bloc/category_selector/category_selector_cubit.dart';
-import 'package:expense_tracking/presentation/bloc/user/user_bloc.dart';
 import 'package:expense_tracking/presentation/features/category/create_category_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../bloc/category/category_bloc.dart';
 import '../../common_widgets/et_button.dart';
 
 class CategorySelectorScreen extends StatefulWidget {
@@ -26,9 +26,8 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var userBloc = BlocProvider.of<UserBloc>(context);
-    var userState = userBloc.state as UserLoaded;
     var categoryCubit = BlocProvider.of<CategorySelectorCubit>(context);
+    var categoryBloc = BlocProvider.of<CategoryBloc>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -58,15 +57,19 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
           Expanded(
             child: BlocBuilder<CategorySelectorCubit, CategorySelectorState>(
               builder: (context, state) {
-                List<Category>? categories;
+                List<Category> categories = [];
+                if (categoryBloc.state is CategoryLoaded) {
+                  categories =
+                      (categoryBloc.state as CategoryLoaded).categories;
+                }
                 if (state is IncomeCategory) {
-                  categories = userState.user.categories
+                  categories = categories
                       .where(
                         (element) => element.type == "income",
                       )
                       .toList();
                 } else {
-                  categories = userState.user.categories
+                  categories = categories
                       .where(
                         (element) => element.type == "expense",
                       )
@@ -79,7 +82,7 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
                     crossAxisCount: 3,
                   ),
                   itemBuilder: (context, index) {
-                    var c = categories![index];
+                    var c = categories[index];
                     return GestureDetector(
                       onTap: () {
                         setState(() {

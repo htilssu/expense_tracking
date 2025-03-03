@@ -12,7 +12,8 @@ import '../utils/logging.dart';
 class GeminiClient extends LlmClient implements ImageAnalyzeClient {
   Uri textEndpoint =
       Uri.parse('https://expensetrackingserver.vercel.app/gemini/text');
-  Uri imageEndpoint = Uri.parse('https://expensetrackingserver.vercel.app/gemini/image');
+  Uri imageEndpoint =
+      Uri.parse('https://expensetrackingserver.vercel.app/gemini/image');
 
   @override
   Future<BillInfo> analyzeText(String text, List<Category> category) async {
@@ -87,8 +88,16 @@ class GeminiClient extends LlmClient implements ImageAnalyzeClient {
             ? DateTime.tryParse(jsonMap["date"]) ?? DateTime.now()
             : DateTime.now();
 
+        var money = jsonMap["money"]["amount"];
+
+        if (money is int) {
+          money = money.toDouble();
+        } else if (money is double) {
+          money = money;
+        }
+
         return BillInfo(
-          (jsonMap["money"] as int).toDouble(),
+          money,
           date,
           jsonMap["store"] ?? "",
           tCategory,

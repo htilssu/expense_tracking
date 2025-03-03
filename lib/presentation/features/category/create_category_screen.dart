@@ -1,20 +1,47 @@
 import 'package:expense_tracking/constants/app_theme.dart';
+import 'package:expense_tracking/domain/entity/category.dart';
+import 'package:expense_tracking/domain/repository/category_repository.dart';
+import 'package:expense_tracking/infrastructure/repository/category_repository_impl.dart';
+import 'package:expense_tracking/presentation/bloc/category_selector/category_selector_cubit.dart';
 import 'package:expense_tracking/presentation/common_widgets/et_button.dart';
 import 'package:expense_tracking/presentation/common_widgets/et_textfield.dart';
+import 'package:expense_tracking/presentation/common_widgets/number_input.dart';
+import 'package:expense_tracking/utils/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../constants/text_constant.dart';
-import '../../bloc/category_selector/category_selector_cubit.dart';
+import '../../bloc/category/category_bloc.dart';
 
-class CreateCategoryScreen extends StatelessWidget {
-  CreateCategoryScreen({super.key});
+class CreateCategoryScreen extends StatefulWidget {
+  late final CategoryRepository categoryRepository;
 
+  CreateCategoryScreen({super.key, CategoryRepository? categoryRepository}) {
+    this.categoryRepository = categoryRepository ?? CategoryRepositoryImpl();
+  }
+
+  @override
+  State<CreateCategoryScreen> createState() => _CreateCategoryScreenState();
+}
+
+class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
   String _categoryName = "";
+
+  double _budget = 0;
+
+  List<Category> _categories = [];
+
+  bool _canCreateCategory = false;
 
   @override
   Widget build(BuildContext context) {
-    var state = BlocProvider.of<CategorySelectorCubit>(context);
+    var categoryBloc = BlocProvider.of<CategoryBloc>(context);
+    var categoryState = categoryBloc.state;
+    if (categoryState is CategoryLoaded) {
+      _categories = categoryState.categories;
+    }
+
+    var categorySelectorCubit = BlocProvider.of<CategorySelectorCubit>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -48,13 +75,33 @@ class CreateCategoryScreen extends StatelessWidget {
                       height: 8,
                     ),
                     EtTextField(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Tên danh mục không được để trống";
+                        }
+                        return null;
+                      },
                       onChanged: (value) {
                         _categoryName = value;
+                        setState(() {
+                          _canCreateCategory = !_isCategoryNameExist(value) &&
+                              value.trim().isNotEmpty;
+                        });
                       },
                       label: "Tên danh mục",
                     ),
+                    if (_isCategoryNameExist(_categoryName))
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          textAlign: TextAlign.start,
+                          "Tên danh mục đã tồn tại",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
                     Column(
-                      spacing: 8,
+                      spacing: 16,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
@@ -65,8 +112,10 @@ class CreateCategoryScreen extends StatelessWidget {
                             fontSize: TextSize.medium,
                           ),
                         ),
-                        EtTextField(
-                          label: "Ngân sách",
+                        NumberInput(
+                          onChanged: (value) {
+                            _budget = value;
+                          },
                         ),
                       ],
                     )
@@ -78,7 +127,22 @@ class CreateCategoryScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 8.0),
                 child: EtButton(
-                  onPressed: () {},
+                  onPressed: _canCreateCategory == false
+                      ? null
+                      : () async {
+                          var categoryType =
+                              categorySelectorCubit.state is IncomeCategory
+                                  ? "income"
+                                  : "expense";
+                          var category = Category(_categoryName, 0,
+                              _budget.toInt(), categoryType, Auth.uid());
+
+                          category =
+                              await widget.categoryRepository.save(category);
+
+                          categoryBloc.add(AddCategory(category));
+                          Navigator.of(context).pop();
+                        },
                   child: Text("Tạo danh mục"),
                 ),
               ),
@@ -87,5 +151,9 @@ class CreateCategoryScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  bool _isCategoryNameExist(String categoryName) {
+    return _categories.any((element) => element.name == categoryName);
   }
 }

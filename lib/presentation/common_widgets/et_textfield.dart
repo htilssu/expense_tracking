@@ -1,3 +1,4 @@
+import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:flutter/material.dart';
 
 class EtTextField extends StatelessWidget {
@@ -8,6 +9,7 @@ class EtTextField extends StatelessWidget {
   final EdgeInsets? padding;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
+  final TextInputType? keyboardType;
 
   const EtTextField(
       {super.key,
@@ -17,7 +19,8 @@ class EtTextField extends StatelessWidget {
       this.padding,
       this.validator,
       this.suffixIcon,
-      this.obscureText = false});
+      this.obscureText = false,
+      this.keyboardType});
 
   @override
   Widget build(BuildContext context) {
@@ -31,9 +34,8 @@ class EtTextField extends StatelessWidget {
           obscureText: obscureText,
           controller: controller,
           decoration: InputDecoration(
-              constraints: BoxConstraints(maxHeight: 55),
               suffixIcon: suffixIcon,
-              label: Text(label),
+              label: Text(label, style: TextStyle(fontSize: TextSize.medium)),
               contentPadding: padding,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),

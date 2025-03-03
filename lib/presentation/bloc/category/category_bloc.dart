@@ -16,10 +16,12 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
 
   CategoryBloc() : super(CategoryInitial()) {
     on<LoadCategories>(_handleLoadCategories);
+    on<AddCategory>(_handleAddCategory);
   }
 
   CategoryBloc.withUser(User user, {Key? key}) : super(CategoryInitial()) {
     on<LoadCategories>(_handleLoadCategories);
+    on<AddCategory>(_handleAddCategory);
 
     add(LoadCategories(user));
   }
@@ -27,10 +29,19 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   void _handleLoadCategories(
       LoadCategories event, Emitter<CategoryState> emit) async {
     try {
+      emit(CategoryLoading());
       var categories = await _categoryService.getCategories();
       emit(CategoryLoaded(categories));
     } catch (e) {
       emit(CategoryError(e.toString()));
+    }
+  }
+
+  void _handleAddCategory(
+      AddCategory event, Emitter<CategoryState> emit) async {
+    if (state is CategoryLoaded) {
+      var categories = (state as CategoryLoaded).categories;
+      emit(CategoryLoaded([...categories, event.category]));
     }
   }
 }
