@@ -3,11 +3,13 @@ import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:expense_tracking/domain/service/transaction_service.dart';
 import 'package:expense_tracking/infrastructure/repository/transaction_repostory_impl.dart';
+import 'package:expense_tracking/presentation/bloc/category/category_bloc.dart';
 import 'package:expense_tracking/presentation/features/overview/widget/et_home_appbar.dart';
 import 'package:expense_tracking/presentation/features/overview/widget/overview_card.dart';
 import 'package:expense_tracking/presentation/features/transaction/screen/transaction_history_screen.dart';
 import 'package:expense_tracking/presentation/features/transaction/widget/transaction_item_skeleton.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pull_to_refresh_flutter3/pull_to_refresh_flutter3.dart';
 
 import '../../../../domain/entity/transaction.dart';
@@ -30,7 +32,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => HomeScreenState();
 }
 
-class HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMixin {
+class HomeScreenState extends State<HomeScreen>
+    with AutomaticKeepAliveClientMixin {
   late Future<List<Transaction>> _transactionsFuture;
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -104,83 +107,91 @@ class HomeScreenState extends State<HomeScreen> with AutomaticKeepAliveClientMix
             ],
           ),
         ),
-        FutureBuilder<List<Transaction>>(
-          future: _transactionsFuture,
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-              return Expanded(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: SmartRefresher(
-                    enablePullDown: true,
-                    onRefresh: _onRefresh,
-                    header: WaterDropMaterialHeader(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
+        BlocBuilder<CategoryBloc, CategoryState>(
+          builder: (context, state) {
+            return FutureBuilder<List<Transaction>>(
+              future: _transactionsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.hasData &&
+                    snapshot.data!.isNotEmpty &&
+                    state is CategoryLoaded) {
+                  return Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: SmartRefresher(
+                        enablePullDown: true,
+                        onRefresh: _onRefresh,
+                        header: WaterDropMaterialHeader(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                        ),
+                        controller: _refreshController,
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          physics: BouncingScrollPhysics(),
+                          children: [
+                            for (Transaction transaction in snapshot.data!)
+                              TransactionItem(transaction),
+                          ],
+                        ),
+                      ),
                     ),
-                    controller: _refreshController,
+                  );
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting ||
+                    state is CategoryLoading) {
+                  return Expanded(
+                      child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: ListView(
                       padding: EdgeInsets.zero,
                       physics: BouncingScrollPhysics(),
                       children: [
-                        for (Transaction transaction in snapshot.data!)
-                          TransactionItem(transaction),
+                        for (int i = 0; i < 5; i++) TransactionItemSkeleton()
+                      ],
+                    ),
+                  ));
+                }
+
+                return Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      spacing: 8,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Không có giao dịch nào",
+                          style: TextStyle(fontSize: TextSize.medium),
+                        ),
+                        IconButton(
+                            color: AppTheme.placeholderColor,
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all(
+                                  AppTheme.placeholderColor.withAlpha(20)),
+                            ),
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                builder: (context) {
+                                  return CreateTransactionScreen();
+                                },
+                              ));
+                            },
+                            icon: Icon(
+                              Icons.add,
+                              size: 32,
+                              color: Theme.of(context).colorScheme.primary,
+                            )),
+                        Text(
+                          "Thêm giao dịch",
+                          style: TextStyle(fontSize: TextSize.medium),
+                        ),
                       ],
                     ),
                   ),
-                ),
-              );
-            }
-
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Expanded(
-                  child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  physics: BouncingScrollPhysics(),
-                  children: [
-                    for (int i = 0; i < 5; i++) TransactionItemSkeleton()
-                  ],
-                ),
-              ));
-            }
-
-            return Expanded(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
-                  spacing: 8,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Không có giao dịch nào",
-                      style: TextStyle(fontSize: TextSize.medium),
-                    ),
-                    IconButton(
-                        color: AppTheme.placeholderColor,
-                        style: ButtonStyle(
-                          backgroundColor: WidgetStateProperty.all(
-                              AppTheme.placeholderColor.withAlpha(20)),
-                        ),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return CreateTransactionScreen();
-                            },
-                          ));
-                        },
-                        icon: Icon(
-                          Icons.add,
-                          size: 32,
-                          color: Theme.of(context).colorScheme.primary,
-                        )),
-                    Text(
-                      "Thêm giao dịch",
-                      style: TextStyle(fontSize: TextSize.medium),
-                    ),
-                  ],
-                ),
-              ),
+                );
+              },
             );
           },
         )

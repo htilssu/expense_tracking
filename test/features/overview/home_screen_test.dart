@@ -1,6 +1,7 @@
 import 'package:expense_tracking/application/service/transaction_service_impl.dart';
 import 'package:expense_tracking/domain/entity/user.dart';
 import 'package:expense_tracking/domain/service/transaction_service.dart';
+import 'package:expense_tracking/presentation/bloc/category/category_bloc.dart';
 import 'package:expense_tracking/presentation/bloc/user/user_bloc.dart';
 import 'package:expense_tracking/presentation/features/overview/screen/home_screen.dart';
 import 'package:expense_tracking/presentation/features/overview/widget/et_home_appbar.dart';
@@ -19,9 +20,15 @@ import 'home_screen_test.mocks.dart';
 void main() {
   TransactionService mockService = MockTransactionServiceImpl();
   late UserBloc userBloc;
+  late CategoryBloc categoryBloc;
 
   setUp(() {
     userBloc = MockUserBloc();
+    categoryBloc = MockCategoryBloc();
+
+    whenListen(
+        categoryBloc, Stream<CategoryState>.fromIterable([CategoryLoaded([])]),
+        initialState: CategoryInitial());
     whenListen(userBloc, Stream<UserState>.empty(),
         initialState: UserLoaded(
             user: User("123", "fullName", "email", "firstName", "lastName")));
@@ -33,6 +40,9 @@ void main() {
             providers: [
           BlocProvider(
             create: (context) => userBloc,
+          ),
+          BlocProvider(
+            create: (context) => categoryBloc,
           )
         ],
             child: HomeScreen(
@@ -49,3 +59,6 @@ void main() {
 }
 
 class MockUserBloc extends MockBloc<UserEvent, UserState> implements UserBloc {}
+
+class MockCategoryBloc extends MockBloc<CategoryEvent, CategoryState>
+    implements CategoryBloc {}

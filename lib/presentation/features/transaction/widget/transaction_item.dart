@@ -23,6 +23,7 @@ class TransactionItem extends StatelessWidget {
         padding: EdgeInsets.all(2),
         child: BlocBuilder<CategoryBloc, CategoryState>(
           builder: (context, state) {
+
             Category? category;
             if (state is CategoryLoaded) {
               category = state.categories
