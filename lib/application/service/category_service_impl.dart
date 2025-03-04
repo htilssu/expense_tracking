@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../domain/entity/category.dart';
 import '../../domain/repository/category_repository.dart';
 import '../../domain/service/category_service.dart';
 import '../../infrastructure/repository/category_repository_impl.dart';
+import '../../utils/auth.dart';
 
 class CategoryServiceImpl implements CategoryService {
   final CategoryRepository _categoryRepository = CategoryRepositoryImpl();
@@ -23,7 +23,7 @@ class CategoryServiceImpl implements CategoryService {
   Future<void> saveDefaultCategories() async {
     Category.defaultCategories.map(
       (e) {
-        e.user = FirebaseAuth.instance.currentUser!.uid;
+        e.user = Auth.uid();
         _categoryRepository.save(e);
       },
     ).toList();

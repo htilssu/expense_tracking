@@ -157,37 +157,45 @@ class HomeScreenState extends State<HomeScreen>
                 return Expanded(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
-                    child: Column(
-                      spacing: 8,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Không có giao dịch nào",
-                          style: TextStyle(fontSize: TextSize.medium),
-                        ),
-                        IconButton(
-                            color: AppTheme.placeholderColor,
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(
-                                  AppTheme.placeholderColor.withAlpha(20)),
-                            ),
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) {
-                                  return CreateTransactionScreen();
-                                },
-                              ));
-                            },
-                            icon: Icon(
-                              Icons.add,
-                              size: 32,
-                              color: Theme.of(context).colorScheme.primary,
-                            )),
-                        Text(
-                          "Thêm giao dịch",
-                          style: TextStyle(fontSize: TextSize.medium),
-                        ),
-                      ],
+                    child: SmartRefresher(
+                      enablePullDown: true,
+                      onRefresh: _onRefresh,
+                      header: WaterDropMaterialHeader(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                      controller: _refreshController,
+                      child: Column(
+                        spacing: 8,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Không có giao dịch nào",
+                            style: TextStyle(fontSize: TextSize.medium),
+                          ),
+                          IconButton(
+                              color: AppTheme.placeholderColor,
+                              style: ButtonStyle(
+                                backgroundColor: WidgetStateProperty.all(
+                                    AppTheme.placeholderColor.withAlpha(20)),
+                              ),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) {
+                                    return CreateTransactionScreen();
+                                  },
+                                ));
+                              },
+                              icon: Icon(
+                                Icons.add,
+                                size: 32,
+                                color: Theme.of(context).colorScheme.primary,
+                              )),
+                          Text(
+                            "Thêm giao dịch",
+                            style: TextStyle(fontSize: TextSize.medium),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );

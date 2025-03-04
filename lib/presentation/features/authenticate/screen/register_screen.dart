@@ -3,7 +3,6 @@ import 'package:expense_tracking/application/service/category_service_impl.dart'
 import 'package:expense_tracking/application/service/email_password_register_service.dart';
 import 'package:expense_tracking/exceptions/email_exist_exception.dart';
 import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
-import 'package:expense_tracking/presentation/features/overview/screen/home_screen.dart';
 import 'package:expense_tracking/utils/validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,21 +13,21 @@ import '../../../../domain/entity/user.dart' as entity;
 import '../../../bloc/user/user_bloc.dart';
 import '../../../common_widgets/et_button.dart';
 import '../../../common_widgets/et_textfield.dart';
-import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<RegisterScreen> createState() => RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   bool isShowPassword = false;
   String errorMessage = "";
+  bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -106,42 +105,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Column(
                     children: [
                       EtButton(
-                        onPressed: () async {
-                          setState(() {
-                            errorMessage = "";
-                          });
-                          if (!_formKey.currentState!.validate()) {
-                            return;
-                          }
-                          onEmailPasswordRegister().then(
-                            (value) {
-                              if (!context.mounted || value == null) return;
-                              BlocProvider.of<UserBloc>(context)
-                                  .add(LoadUser(value));
-                              Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      BlocBuilder<UserBloc, UserState>(
-                                    builder: (context, state) {
-                                      if (state is UserLoaded) {
-                                        return HomeScreen();
-                                      } else {
-                                        return const LoginScreen();
-                                      }
-                                    },
-                                  ),
+                        onPressed: isLoading ? null : _handleRegister,
+                        child: isLoading
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white),
                                 ),
-                                (route) => false,
-                              );
-                            },
-                          );
-                        },
-                        child: Text(
-                          "Đăng ký",
-                          style: TextStyle(
-                              fontSize: TextSize.medium,
-                              color: Theme.of(context).colorScheme.onPrimary),
-                        ),
+                              )
+                            : Text(
+                                "Đăng ký",
+                                style: TextStyle(
+                                  fontSize: TextSize.medium,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                ),
+                              ),
                       ),
                       TextButton(
                           onPressed: () {
@@ -160,6 +142,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _handleRegister() async {
+    setState(() {
+      errorMessage = "";
+      isLoading = true;
+    });
+
+    if (!_formKey.currentState!.validate()) {
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
+
+    final result = await onEmailPasswordRegister();
+    if (!mounted) return;
+
+    setState(() {
+      isLoading = false;
+    });
+
+    if (result != null) {
+      BlocProvider.of<UserBloc>(context).add(LoadUser(result));
+      Navigator.pop(context); // Quay lại LoginScreen
+    }
   }
 
   Future<String?> onEmailPasswordRegister() async {
