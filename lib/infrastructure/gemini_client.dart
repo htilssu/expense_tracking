@@ -19,7 +19,10 @@ class GeminiClient extends LlmClient implements ImageAnalyzeClient {
   Future<BillInfo> analyzeText(String text, List<Category> category) async {
     try {
       var res = await post(textEndpoint,
-          headers: {"Content-Type": "application/json;charset=utf-8"},
+          headers: {
+            "Content-Type": "application/json;charset=utf-8",
+            "User-Agent": "TrezoApp",
+          },
           body: jsonEncode({
             'text': text,
             'category': category
@@ -60,6 +63,7 @@ class GeminiClient extends LlmClient implements ImageAnalyzeClient {
       String imagePath, List<Category> category) async {
     try {
       var request = MultipartRequest("POST", imageEndpoint);
+      request.headers.addEntries([MapEntry("User-Agent", "TrezoApp")]);
 
       for (var i = 0; i < category.length; i++) {
         request.files.add(MultipartFile.fromString(
