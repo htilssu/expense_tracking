@@ -5,10 +5,12 @@ import 'package:expense_tracking/presentation/bloc/loading/loading_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:expense_tracking/presentation/features/loading_overlay.dart';
 import 'package:expense_tracking/presentation/features/main_page_view.dart';
+import 'package:expense_tracking/utils/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:expense_tracking/domain/entity/user.dart' as entity;
 
 import 'constants/app_theme.dart';
 import 'presentation/bloc/user/user_bloc.dart';
@@ -17,12 +19,13 @@ import 'presentation/features/authenticate/screen/login_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
+  Future<entity.User?> _future = UserRepositoryImpl().findById(Auth.uid());
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
@@ -73,10 +76,11 @@ class MyApp extends StatelessWidget {
             ),
           );
         }
+        _future = UserRepositoryImpl().findById(snapshot.data!.uid);
 
         // Nếu có người dùng đăng nhập, lấy thông tin từ repository
         return FutureBuilder(
-          future: UserRepositoryImpl().findById(snapshot.data!.uid),
+          future: _future,
           builder: (context, userSnapshot) {
             if (userSnapshot.connectionState == ConnectionState.done) {
               if (userSnapshot.hasData) {

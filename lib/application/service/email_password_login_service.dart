@@ -10,7 +10,7 @@ class EmailPasswordLoginService extends LoginService<EmailPasswordLogin> {
   @override
   Future<void> login(EmailPasswordLogin data) async {
     try {
-      await auth.signInWithEmailAndPassword(
+      await auth?.signInWithEmailAndPassword(
           email: data.email, password: data.password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -25,5 +25,9 @@ class EmailPasswordLoginService extends LoginService<EmailPasswordLogin> {
     }
   }
 
-  EmailPasswordLoginService();
+  EmailPasswordLoginService({FirebaseAuth? auth}) : super(auth) {
+    if (auth == null) {
+      this.auth = FirebaseAuth.instance;
+    }
+  }
 }

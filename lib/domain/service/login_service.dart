@@ -3,9 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../dto/user_login.dart';
 
 abstract class LoginService<T extends UserLogin> {
-  FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseAuth? auth;
 
-  LoginService();
+  // Constructor with required auth parameter
+  LoginService(this.auth);
 
   /// Đăng nhập người dùng với thông tin đăng nhập được cung cấp.
   ///
