@@ -1,7 +1,5 @@
-import 'package:expense_tracking/application/dto/email_password_login.dart';
 import 'package:expense_tracking/application/dto/email_password_register.dart';
 import 'package:expense_tracking/application/service/category_service_impl.dart';
-import 'package:expense_tracking/application/service/email_password_login_service.dart';
 import 'package:expense_tracking/application/service/email_password_register_service.dart';
 import 'package:expense_tracking/exceptions/email_exist_exception.dart';
 import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
@@ -170,18 +168,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
               emailController.text, passwordController.text))
           .register();
 
-      await EmailPasswordLoginService().login(EmailPasswordLogin(
-          email: emailController.text, password: passwordController.text));
-
       var user = FirebaseAuth.instance.currentUser;
-
       if (user != null) {
-        //save user to database
         await UserRepositoryImpl()
             .save(entity.User(user.uid, "", user.email!, "", ""));
 
-        //create default category for new user
         await CategoryServiceImpl().saveDefaultCategories();
+
+        Navigator.pop(context); // Quay lại màn hình trước đó (LoginScreen)
         return user.uid;
       }
     } on EmailExistException {
