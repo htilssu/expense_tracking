@@ -13,8 +13,10 @@ class MainPageView extends StatefulWidget {
   State<MainPageView> createState() => _MainPageViewState();
 }
 
-class _MainPageViewState extends State<MainPageView> with SingleTickerProviderStateMixin {
-  late final GlobalKey<HomeScreenState> _homeScreenKey; // Sửa tên State cho đúng
+class _MainPageViewState extends State<MainPageView>
+    with SingleTickerProviderStateMixin {
+  late final GlobalKey<HomeScreenState>
+      _homeScreenKey; // Sửa tên State cho đúng
   late PageController _pageController;
   int _selectedIndex = 0;
   late AnimationController _animationController;
@@ -25,7 +27,8 @@ class _MainPageViewState extends State<MainPageView> with SingleTickerProviderSt
   @override
   void initState() {
     super.initState();
-    _pageController = PageController(initialPage: _selectedIndex, keepPage: false);
+    _pageController =
+        PageController(initialPage: _selectedIndex, keepPage: false);
     _homeScreenKey = GlobalKey<HomeScreenState>();
     _pages = [
       HomeScreen(key: _homeScreenKey),
@@ -38,7 +41,8 @@ class _MainPageViewState extends State<MainPageView> with SingleTickerProviderSt
       duration: const Duration(milliseconds: 300),
     );
 
-    _slideAnimation = Tween<Offset>(begin: Offset.zero, end: Offset.zero).animate(
+    _slideAnimation =
+        Tween<Offset>(begin: Offset.zero, end: Offset.zero).animate(
       CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
   }
@@ -60,8 +64,9 @@ class _MainPageViewState extends State<MainPageView> with SingleTickerProviderSt
       final slideDistance = (previousIndex - index).toDouble();
       _slideAnimation = Tween<Offset>(
         begin: Offset(slideDistance * -1, 0), // Từ vị trí cũ
-        end: Offset.zero,                     // Đến vị trí mới
-      ).animate(CurvedAnimation(parent: _animationController, curve: Curves.easeInOut));
+        end: Offset.zero, // Đến vị trí mới
+      ).animate(CurvedAnimation(
+          parent: _animationController, curve: Curves.easeInOut));
 
       // Nhảy trực tiếp đến trang mới
       _pageController.jumpToPage(index);
@@ -73,6 +78,8 @@ class _MainPageViewState extends State<MainPageView> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    if (_pages.isEmpty) return Container();
+
     return EtScaffold(
       onNavigation: _onItemTapped,
       body: AnimatedBuilder(
