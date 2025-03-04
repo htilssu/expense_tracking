@@ -172,9 +172,8 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   Future<String?> onEmailPasswordRegister() async {
     try {
-      await EmailPasswordRegisterService(EmailPasswordRegister(
-              emailController.text, passwordController.text))
-          .register();
+      await EmailPasswordRegisterService().register(
+          EmailPasswordRegister(emailController.text, passwordController.text));
 
       var user = FirebaseAuth.instance.currentUser;
       if (user != null) {

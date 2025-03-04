@@ -4,14 +4,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../exceptions/email_exist_exception.dart';
 
-class EmailPasswordRegisterService<T extends EmailPasswordRegister> implements RegisterService {
-  late T userRegister;
-  FirebaseAuth auth = FirebaseAuth.instance;
+class EmailPasswordRegisterService
+    implements RegisterService<EmailPasswordRegister> {
+  late FirebaseAuth auth;
 
-  EmailPasswordRegisterService(this.userRegister);
+  EmailPasswordRegisterService({FirebaseAuth? auth}) {
+    if (auth != null) {
+      this.auth = auth;
+    }
+  }
 
   @override
-  Future<void> register() async {
+  Future<void> register(EmailPasswordRegister userRegister) async {
     try {
       await auth.createUserWithEmailAndPassword(
           email: userRegister.email, password: userRegister.password);
@@ -23,5 +27,4 @@ class EmailPasswordRegisterService<T extends EmailPasswordRegister> implements R
       }
     }
   }
-
 }
