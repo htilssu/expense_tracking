@@ -1,6 +1,5 @@
 import 'package:expense_tracking/utils/date_format.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:intl/intl.dart';
 
 void main() {
   group('Date', () {
