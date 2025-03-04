@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../domain/entity/category.dart';
 import '../../domain/repository/category_repository.dart';
