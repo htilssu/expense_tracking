@@ -28,7 +28,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
         margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -37,12 +37,12 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Colors.teal[50],
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(Icons.account_balance_wallet,
                               color: Colors.green),
@@ -63,12 +63,12 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Colors.teal[50],
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(Icons.trending_down, color: Colors.blue),
                           SizedBox(width: 8),
@@ -90,10 +90,10 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Progress Bar và Text
                 Container(
-                  padding: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: Colors.teal[50],
                     borderRadius: BorderRadius.circular(12),
@@ -107,13 +107,13 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                         color: Colors.green,
                         minHeight: 10,
                       ),
-                      SizedBox(height: 8),
-                      Text('30% Of Your Expenses, Looks Good.',
+                      const SizedBox(height: 8),
+                      const Text('30% Of Your Expenses, Looks Good.',
                           style: TextStyle(fontSize: 14, color: Colors.black)),
                     ],
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Tabs (Daily, Weekly, Monthly, Year)
                 CustomSlidingSegmentedControl(
                   isStretch: true,
@@ -123,7 +123,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                     });
                   },
                   curve: Curves.easeInCubic,
-                  innerPadding: EdgeInsets.all(4),
+                  innerPadding: const EdgeInsets.all(4),
                   thumbDecoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(4)),
@@ -132,12 +132,12 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                       borderRadius: BorderRadius.circular(7)),
                   children: {
                     0: AnimatedDefaultTextStyle(
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
-                      duration: Duration(milliseconds: 250),
+                      duration: const Duration(milliseconds: 250),
                       child: Text(
-                        "Hàng tuần",
+                        'Hàng tuần',
                         style: TextStyle(
                             fontSize: TextSize.medium,
                             color: _selectedSegment == 0
@@ -146,12 +146,12 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                       ),
                     ),
                     1: AnimatedDefaultTextStyle(
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
-                      duration: Duration(milliseconds: 250),
+                      duration: const Duration(milliseconds: 250),
                       child: Text(
-                        "Hàng tháng",
+                        'Hàng tháng',
                         style: TextStyle(
                             fontSize: TextSize.medium,
                             color: _selectedSegment == 1
@@ -160,12 +160,12 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                       ),
                     ),
                     2: AnimatedDefaultTextStyle(
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                       ),
-                      duration: Duration(milliseconds: 250),
+                      duration: const Duration(milliseconds: 250),
                       child: Text(
-                        "Hàng năm",
+                        'Hàng năm',
                         style: TextStyle(
                             fontSize: TextSize.medium,
                             color: _selectedSegment == 2
@@ -175,10 +175,10 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                     )
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Biểu đồ Income & Expenses
                 Container(
-                  padding: EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: Colors.teal[50],
                     borderRadius: BorderRadius.circular(12),
@@ -186,7 +186,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('Income & Expenses',
@@ -200,7 +200,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       // Placeholder cho biểu đồ (sử dụng Container đơn giản, bạn có thể thay bằng fl_chart)
                       SizedBox(
                         height: 200,
@@ -211,18 +211,18 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                     ],
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Income và Expense Targets
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Colors.teal[50],
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(Icons.arrow_upward, color: Colors.green),
                           SizedBox(width: 8),
@@ -242,12 +242,12 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         color: Colors.teal[50],
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Row(
+                      child: const Row(
                         children: [
                           Icon(Icons.arrow_downward, color: Colors.blue),
                           SizedBox(width: 8),
@@ -269,7 +269,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Bottom Navigation Bar
               ],
             ),
@@ -281,12 +281,12 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
 
   Widget _buildTab(String title, Color color) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(title, style: TextStyle(color: Colors.white)),
+      child: Text(title, style: const TextStyle(color: Colors.white)),
     );
   }
 }

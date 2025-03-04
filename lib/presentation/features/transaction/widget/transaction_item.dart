@@ -18,9 +18,9 @@ class TransactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
+      margin: const EdgeInsets.only(bottom: 8),
       child: Padding(
-        padding: EdgeInsets.all(2),
+        padding: const EdgeInsets.all(2),
         child: BlocBuilder<CategoryBloc, CategoryState>(
           builder: (context, state) {
 
@@ -40,16 +40,16 @@ class TransactionItem extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     color: AppTheme.placeholderColor.withAlpha(20),
                   ),
-                  child: Center(
+                  child: const Center(
                     child: Text(
                       //TODO: get category icon
-                      "😊",
+                      '😊',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: TextSize.large),
                     ),
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 Expanded(
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +58,7 @@ class TransactionItem extends StatelessWidget {
                     if (state is CategoryLoaded)
                       Text(
                         category!.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: TextSize.medium,
                             fontWeight: FontWeight.bold),
                       )
@@ -85,7 +85,7 @@ class TransactionItem extends StatelessWidget {
                     )
                   ],
                 )),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -93,7 +93,7 @@ class TransactionItem extends StatelessWidget {
                       "${category!.type == "income" ? "+" : "-"} ${CurrencyFormatter.formatCurrency(_transaction.value)}",
                       style: TextStyle(
                         fontSize: TextSize.medium + 4,
-                        color: category.type == "income"
+                        color: category.type == 'income'
                             ? Colors.green
                             : Colors.red[300],
                       ),

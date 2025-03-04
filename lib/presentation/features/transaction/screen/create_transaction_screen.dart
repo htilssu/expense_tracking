@@ -4,6 +4,7 @@ import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:expense_tracking/domain/entity/transaction.dart';
 import 'package:expense_tracking/domain/service/creation_transaction_service.dart';
+import 'package:expense_tracking/infrastructure/repository/category_repository_impl.dart';
 import 'package:expense_tracking/presentation/bloc/category_selector/category_selector_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/loading/loading_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/scan_bill/scan_bill_bloc.dart';
@@ -41,9 +42,9 @@ class CreateTransactionScreen extends StatefulWidget {
 class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
   /// 0: income, 1: expense
   int _selectedSegment = 0;
-  late double _amount;
+  late int _amount;
   Category? _category;
-  String _note = "";
+  String _note = '';
   late final ScanBillBloc _scanBillBloc;
   late CustomSegmentedController<int> _customSegmentController;
 
@@ -60,7 +61,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
     _category = category;
   }
 
-  void _onAmountChanged(double amount) {
+  void _onAmountChanged(int amount) {
     _amount = amount;
   }
 
@@ -94,7 +95,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
               setState(() {
                 _amount = billInfo.money;
                 _note = billInfo.note;
-                _selectedSegment = billInfo.category.type == "income" ? 0 : 1;
+                _selectedSegment = billInfo.category.type == 'income' ? 0 : 1;
                 _customSegmentController.value = _selectedSegment;
                 _category = billInfo.category;
               });
@@ -115,7 +116,8 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => BlocProvider.value(
-                                value: _scanBillBloc, child: ScanBillScreen()),
+                                value: _scanBillBloc,
+                                child: const ScanBillScreen()),
                           ));
                     },
                     icon: Icon(
@@ -123,8 +125,8 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                       color: Theme.of(context).colorScheme.primary,
                     ))
               ],
-              title: Text(
-                "Tạo giao dịch",
+              title: const Text(
+                'Tạo giao dịch',
               ),
               centerTitle: true,
             ),
@@ -138,22 +140,22 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                         controller: _customSegmentController,
                         curve: Curves.easeInCubic,
                         isStretch: true,
-                        duration: Duration(milliseconds: 200),
+                        duration: const Duration(milliseconds: 200),
                         decoration: BoxDecoration(
                             color: AppTheme.placeholderColor.withAlpha(30),
                             borderRadius: BorderRadius.circular(7)),
-                        innerPadding: EdgeInsets.all(4),
+                        innerPadding: const EdgeInsets.all(4),
                         thumbDecoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.primary,
                             borderRadius: BorderRadius.circular(4)),
                         children: {
                           0: AnimatedDefaultTextStyle(
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
-                            duration: Duration(milliseconds: 250),
+                            duration: const Duration(milliseconds: 250),
                             child: Text(
-                              "Thu nhập",
+                              'Thu nhập',
                               style: TextStyle(
                                   fontSize: TextSize.medium,
                                   color: _selectedSegment == 0
@@ -162,12 +164,12 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                             ),
                           ),
                           1: AnimatedDefaultTextStyle(
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
-                            duration: Duration(milliseconds: 250),
+                            duration: const Duration(milliseconds: 250),
                             child: Text(
-                              "Chi tiêu",
+                              'Chi tiêu',
                               style: TextStyle(
                                   fontSize: TextSize.medium,
                                   color: _selectedSegment == 1
@@ -203,8 +205,8 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                 spacing: 8,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Danh mục",
+                                  const Text(
+                                    'Danh mục',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -228,8 +230,8 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                 spacing: 8,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    "Ghi chú (Notes)",
+                                  const Text(
+                                    'Ghi chú (Notes)',
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -254,6 +256,18 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                 try {
                                   widget.creationTransactionService
                                       .handle(transaction);
+                                  if (_category?.type == 'income') {
+                                    CategoryRepositoryImpl()
+                                        .update(_category!..budget += _amount);
+                                  } else {
+                                    CategoryRepositoryImpl()
+                                        .update(_category!..amount += _amount);
+                                  }
+
+                                  if (foundation.kDebugMode) {
+                                    Logger.info(
+                                        'Transaction created : $transaction');
+                                  }
                                   //TODO: add to recent transaction or update if back to home screen
                                 } on Exception catch (e) {
                                   if (foundation.kDebugMode) {
@@ -262,8 +276,8 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                 }
                                 Navigator.of(context).pop();
                               },
-                              child: Text(
-                                "Lưu",
+                              child: const Text(
+                                'Lưu',
                                 style: TextStyle(
                                   fontSize: TextSize.medium,
                                 ),

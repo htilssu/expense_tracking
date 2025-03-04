@@ -33,16 +33,16 @@ class EtHomeAppbar extends StatelessWidget {
                 left: -60,
                 top: 30,
                 child: SvgPicture.asset(
-                  "assets/images/ellipse_3.svg",
+                  'assets/images/ellipse_3.svg',
                   colorFilter:
-                      ColorFilter.mode(Color(0xFF003F81), BlendMode.srcIn),
+                      const ColorFilter.mode(Color(0xFF003F81), BlendMode.srcIn),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 60,
                     ),
                     Row(
@@ -53,14 +53,14 @@ class EtHomeAppbar extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Xin chào",
+                              'Xin chào',
                               style: TextStyle(
                                   fontSize: TextSize.medium + 2,
                                   color:
                                       Theme.of(context).colorScheme.onPrimary),
                             ),
                             Text(
-                              user?.fullName ?? "",
+                              user?.fullName ?? '',
                               style: TextStyle(
                                   fontSize: TextSize.large,
                                   fontWeight: FontWeight.bold,
@@ -74,7 +74,7 @@ class EtHomeAppbar extends StatelessWidget {
                             FirebaseAuth.instance.signOut();
                             BlocProvider.of<UserBloc>(context).add(ClearUser());
                           },
-                          icon: EtNotify(false),
+                          icon: const EtNotify(false),
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white24,
                               shape: RoundedRectangleBorder(

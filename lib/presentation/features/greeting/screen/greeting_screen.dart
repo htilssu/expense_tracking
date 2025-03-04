@@ -50,37 +50,37 @@ class _GreetingScreenState extends State<GreetingScreen> {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: <Widget>[
-              SizedBox(
+              const SizedBox(
                 height: 150,
               ),
               SvgPicture.asset(
-                "assets/images/hold_money.svg",
+                'assets/images/hold_money.svg',
                 width: 300,
                 fit: BoxFit.cover,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
-              Text(
-                "Gain total control of your money",
+              const Text(
+                'Gain total control of your money',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 32,
                     color: Colors.black,
                     decoration: TextDecoration.none),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
-              Text(
-                "Become your own money manager and make every cent count",
+              const Text(
+                'Become your own money manager and make every cent count',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 16,
                     color: Colors.black45,
                     decoration: TextDecoration.none),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               GestureDetector(
@@ -94,32 +94,32 @@ class _GreetingScreenState extends State<GreetingScreen> {
                 },
                 child: StepIndicator(step, totalStep),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 16,
               ),
               EtButton(
                 onPressed: () {},
                 child: Text(
-                  "Đăng ký",
+                  'Đăng ký',
                   style: TextStyle(
                       fontSize: TextSize.medium,
                       color: Theme.of(context).colorScheme.onPrimary),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8,
               ),
               EtButton(
                   onPressed: () {
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return LoginScreen();
+                        return const LoginScreen();
                       },
                     ));
                   },
                   color: const Color(0x61339DEF),
                   child: Text(
-                    "Đăng nhập",
+                    'Đăng nhập',
                     style: TextStyle(
                       fontSize: TextSize.medium,
                       color: Theme.of(context).colorScheme.onPrimary,

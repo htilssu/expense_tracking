@@ -80,9 +80,9 @@ class _CategorySelectorState extends State<CategorySelector> {
               children: [
                 Text(
                   textAlign: TextAlign.start,
-                  _selectedCategory?.name ?? "Chọn danh mục",
+                  _selectedCategory?.name ?? 'Chọn danh mục',
                   style:
-                      TextStyle(fontSize: TextSize.medium, color: Colors.black),
+                      const TextStyle(fontSize: TextSize.medium, color: Colors.black),
                 ),
                 const Icon(
                   Icons.keyboard_arrow_down,

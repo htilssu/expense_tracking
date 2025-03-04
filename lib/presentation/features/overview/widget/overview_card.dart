@@ -1,35 +1,20 @@
 import 'package:expense_tracking/constants/text_constant.dart';
-import 'package:expense_tracking/presentation/bloc/user/user_bloc.dart';
+import 'package:expense_tracking/domain/dto/overview_data.dart';
+import 'package:expense_tracking/utils/currency_formatter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 class OverviewCard extends StatelessWidget {
-  const OverviewCard({super.key});
+  late OverviewData? overviewData;
+
+  OverviewCard({super.key, this.overviewData});
 
   @override
   Widget build(BuildContext context) {
-    var userBloc = BlocProvider.of<UserBloc>(context);
-    var user = (userBloc.state as UserLoaded).user;
-
-    var totalBalance = user.categories.fold(
-        0,
-        (previousValue, element) =>
-            previousValue + element.budget - element.amount);
-
-    var income = user.categories
-        .where(
-          (element) => element.type == "income",
-        )
-        .fold(
-          0,
-          (previousValue, element) =>
-              previousValue + element.budget - element.amount,
-        );
-
     return Container(
       decoration: BoxDecoration(
           boxShadow: [
-            BoxShadow(
+            const BoxShadow(
               color: Colors.black26,
               spreadRadius: 3,
               blurRadius: 10,
@@ -60,13 +45,29 @@ class OverviewCard extends StatelessWidget {
                             fontWeight: FontWeight.normal,
                             color: Theme.of(context).colorScheme.onPrimary),
                       ),
-                      Text(
-                        totalBalance.toString(),
-                        style: TextStyle(
-                            fontSize: TextSize.large,
-                            fontWeight: FontWeight.normal,
-                            color: Theme.of(context).colorScheme.onPrimary),
-                      )
+                      if (overviewData != null)
+                        Text(
+                          CurrencyFormatter.formatCurrency(
+                              overviewData!.totalBalance),
+                          style: TextStyle(
+                              fontSize: TextSize.large,
+                              fontWeight: FontWeight.normal,
+                              color: Theme.of(context).colorScheme.onPrimary),
+                        )
+                      else
+                        Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!.withAlpha(100),
+                          highlightColor: Colors.grey[200]!.withAlpha(120),
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 8),
+                            width: 130,
+                            height: 25,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(3),
+                              color: Colors.grey[300],
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                   Icon(
@@ -79,84 +80,108 @@ class OverviewCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  spacing: 4,
                   children: [
-                    Row(
-                      spacing: 8,
-                      children: [
-                        SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: Colors.white38,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Icons.arrow_downward,
-                              size: 16,
-                            ),
-                          ),
+                    const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.white38,
+                          shape: BoxShape.circle,
                         ),
-                        Text(
-                          'Thu nhập',
-                          style: TextStyle(
-                              fontSize: TextSize.medium,
-                              fontWeight: FontWeight.normal,
-                              color: Theme.of(context).colorScheme.onPrimary),
+                        child: Icon(
+                          Icons.arrow_downward,
+                          size: 16,
                         ),
-                      ],
+                      ),
                     ),
                     Text(
-                      '1.000.000.00',
+                      'Thu nhập',
                       style: TextStyle(
-                          fontSize: TextSize.medium + 2,
+                          fontSize: TextSize.medium,
                           fontWeight: FontWeight.normal,
                           color: Theme.of(context).colorScheme.onPrimary),
-                    )
+                    ),
                   ],
                 ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                Row(
+                  spacing: 4,
                   children: [
-                    Row(
-                      spacing: 8,
-                      children: [
-                        SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: Colors.white38,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Icons.arrow_upward,
-                              size: 16,
-                            ),
-                          ),
+                    const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.white38,
+                          shape: BoxShape.circle,
                         ),
-                        Text(
-                          'Chi tiêu',
-                          style: TextStyle(
-                              fontSize: TextSize.medium,
-                              fontWeight: FontWeight.normal,
-                              color: Theme.of(context).colorScheme.onPrimary),
+                        child: Icon(
+                          Icons.arrow_upward,
+                          size: 16,
                         ),
-                      ],
+                      ),
                     ),
                     Text(
-                      '1.000.000.00',
+                      'Chi tiêu',
                       style: TextStyle(
-                          fontSize: TextSize.medium + 2,
+                          fontSize: TextSize.medium,
                           fontWeight: FontWeight.normal,
                           color: Theme.of(context).colorScheme.onPrimary),
-                    )
+                    ),
                   ],
                 ),
+              ],
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                if (overviewData != null) ...[
+                  Text(
+                    CurrencyFormatter.formatCurrency(overviewData!.totalIncome),
+                    style: TextStyle(
+                        fontSize: TextSize.medium + 2,
+                        fontWeight: FontWeight.normal,
+                        color: Theme.of(context).colorScheme.onPrimary),
+                  ),
+                  Text(
+                    CurrencyFormatter.formatCurrency(overviewData!.totalExpense),
+                    style: TextStyle(
+                        fontSize: TextSize.medium + 2,
+                        fontWeight: FontWeight.normal,
+                        color: Theme.of(context).colorScheme.onPrimary),
+                  )
+                ] else ...[
+                  Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!.withAlpha(100),
+                    highlightColor: Colors.grey[200]!.withAlpha(120),
+                    child: Container(
+                      width: 80,
+                      height: 15,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3),
+                        color: Colors.grey[300],
+                      ),
+                    ),
+                  ),
+                  Shimmer.fromColors(
+                    baseColor: Colors.grey[300]!.withAlpha(100),
+                    highlightColor: Colors.grey[200]!.withAlpha(120),
+                    child: Container(
+                      width: 80,
+                      height: 15,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(3),
+                        color: Colors.grey[300],
+                      ),
+                    ),
+                  ),
+                ]
               ],
             )
           ],

@@ -9,9 +9,7 @@ class EmailPasswordRegisterService
   late FirebaseAuth auth;
 
   EmailPasswordRegisterService({FirebaseAuth? auth}) {
-    if (auth != null) {
-      this.auth = auth;
-    }
+    this.auth = auth ?? FirebaseAuth.instance;
   }
 
   @override
@@ -21,9 +19,9 @@ class EmailPasswordRegisterService
           email: userRegister.email, password: userRegister.password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        throw EmailExistException("Email đã được sử dụng");
+        throw EmailExistException('Email đã được sử dụng');
       } else {
-        throw Exception("Hãy thử lại sau");
+        throw Exception('Hãy thử lại sau');
       }
     }
   }

@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class CategoryRepositoryImpl implements CategoryRepository {
   CollectionReference<Map<String, dynamic>> docRef =
-      FirebaseFirestore.instance.collection("categories");
+      FirebaseFirestore.instance.collection('categories');
 
   @override
   Future<void> delete(String id) async {
@@ -47,7 +47,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   Future<List<Category>> getCategories() {
     var fireAuth = FirebaseAuth.instance;
     return docRef
-        .where("user", isEqualTo: fireAuth.currentUser!.uid)
+        .where('user', isEqualTo: fireAuth.currentUser!.uid)
         .get()
         .then(
           (value) => value.docs

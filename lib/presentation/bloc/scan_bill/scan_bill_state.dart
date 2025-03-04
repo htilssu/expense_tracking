@@ -16,7 +16,7 @@ final class BillLoading extends ScanBillState {
 }
 
 class BillInfo {
-  final double money;
+  final int money;
   final DateTime date;
   final String store;
   final Category category;

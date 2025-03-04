@@ -20,8 +20,8 @@ class GeminiClient extends LlmClient implements ImageAnalyzeClient {
     try {
       var res = await post(textEndpoint,
           headers: {
-            "Content-Type": "application/json;charset=utf-8",
-            "User-Agent": "TrezoApp",
+            'Content-Type': 'application/json;charset=utf-8',
+            'User-Agent': 'TrezoApp',
           },
           body: jsonEncode({
             'text': text,
@@ -30,7 +30,7 @@ class GeminiClient extends LlmClient implements ImageAnalyzeClient {
                   (e) => e.name,
                 )
                 .toList(),
-          })).timeout(Duration(seconds: 30));
+          })).timeout(const Duration(seconds: 30));
 
       if (res.statusCode == 200) {
         final body = utf8.decode(res.bodyBytes);
@@ -38,23 +38,23 @@ class GeminiClient extends LlmClient implements ImageAnalyzeClient {
 
         var tCategory = category.firstWhere(
           (element) {
-            return element.name == jsonMap["category"];
+            return element.name == jsonMap['category'];
           },
         );
 
         return BillInfo(
-          (jsonMap["money"] as int).toDouble(),
-          DateTime.tryParse(jsonMap["date"]) ?? DateTime.now(),
-          jsonMap["store"] ?? "",
+          (jsonMap['money'] as int),
+          DateTime.tryParse(jsonMap['date']) ?? DateTime.now(),
+          jsonMap['store'] ?? '',
           tCategory,
-          jsonMap["note"] ?? "",
+          jsonMap['note'] ?? '',
         );
       } else {
         throw Exception('Failed to analyze text');
       }
     } on TimeoutException catch (e) {
-      Logger.error("Timeout: $e");
-      return Future.error("Timeout: $e");
+      Logger.error('Timeout: $e');
+      return Future.error('Timeout: $e');
     }
   }
 
@@ -62,21 +62,21 @@ class GeminiClient extends LlmClient implements ImageAnalyzeClient {
   Future<BillInfo> analyzeImage(
       String imagePath, List<Category> category) async {
     try {
-      var request = MultipartRequest("POST", imageEndpoint);
-      request.headers.addEntries([MapEntry("User-Agent", "TrezoApp")]);
+      var request = MultipartRequest('POST', imageEndpoint);
+      request.headers.addEntries([const MapEntry('User-Agent', 'TrezoApp')]);
 
       for (var i = 0; i < category.length; i++) {
         request.files.add(MultipartFile.fromString(
-          "category",
+          'category',
           category[i].name,
         ));
       }
 
-      var file = await MultipartFile.fromPath("image", imagePath);
+      var file = await MultipartFile.fromPath('image', imagePath);
 
       request.files.add(file);
 
-      var res = await request.send().timeout(Duration(seconds: 30));
+      var res = await request.send().timeout(const Duration(seconds: 30));
 
       if (res.statusCode == 200) {
         final body = await res.stream.bytesToString();
@@ -84,35 +84,35 @@ class GeminiClient extends LlmClient implements ImageAnalyzeClient {
 
         var tCategory = category.firstWhere(
           (element) {
-            return element.name == jsonMap["category"];
+            return element.name == jsonMap['category'];
           },
         );
 
-        var date = jsonMap["date"] != null
-            ? DateTime.tryParse(jsonMap["date"]) ?? DateTime.now()
+        var date = jsonMap['date'] != null
+            ? DateTime.tryParse(jsonMap['date']) ?? DateTime.now()
             : DateTime.now();
 
-        var money = jsonMap["money"]["amount"];
+        var money = jsonMap['money']['amount'];
 
         if (money is int) {
-          money = money.toDouble();
-        } else if (money is double) {
           money = money;
+        } else if (money is double) {
+          money = money.toInt();
         }
 
         return BillInfo(
           money,
           date,
-          jsonMap["store"] ?? "",
+          jsonMap['store'] ?? '',
           tCategory,
-          jsonMap["note"] ?? "",
+          jsonMap['note'] ?? '',
         );
       } else {
         throw Exception('Failed to analyze text');
       }
     } on TimeoutException catch (e) {
-      Logger.error("Timeout: $e");
-      return Future.error("Timeout: $e");
+      Logger.error('Timeout: $e');
+      return Future.error('Timeout: $e');
     }
   }
 }

@@ -26,7 +26,7 @@ class RegisterScreenState extends State<RegisterScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   bool isShowPassword = false;
-  String errorMessage = "";
+  String errorMessage = '';
   bool isLoading = false;
   final _formKey = GlobalKey<FormState>();
 
@@ -37,9 +37,9 @@ class RegisterScreenState extends State<RegisterScreen> {
         elevation: 1,
         shadowColor: Colors.black,
         automaticallyImplyLeading: false,
-        title: Align(
+        title: const Align(
           alignment: Alignment.center,
-          child: Text("Đăng ký"),
+          child: Text('Đăng ký'),
         ),
       ),
       body: Padding(
@@ -55,8 +55,8 @@ class RegisterScreenState extends State<RegisterScreen> {
                   EtTextField(
                     validator: emailValidator,
                     controller: emailController,
-                    suffixIcon: Icon(Icons.email_rounded),
-                    label: "Email",
+                    suffixIcon: const Icon(Icons.email_rounded),
+                    label: 'Email',
                   ),
                   EtTextField(
                     validator: passwordValidator,
@@ -74,7 +74,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                             : Icons.visibility_off,
                       ),
                     ),
-                    label: "Mật khẩu",
+                    label: 'Mật khẩu',
                   ),
                   EtTextField(
                     validator: confirmPasswordValidator,
@@ -92,14 +92,14 @@ class RegisterScreenState extends State<RegisterScreen> {
                             : Icons.visibility_off,
                       ),
                     ),
-                    label: "Nhập lại mật khẩu",
+                    label: 'Nhập lại mật khẩu',
                   ),
                   if (errorMessage.isNotEmpty)
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         errorMessage,
-                        style: TextStyle(color: Colors.red),
+                        style: const TextStyle(color: Colors.red),
                       ),
                     ),
                   Column(
@@ -117,7 +117,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                                 ),
                               )
                             : Text(
-                                "Đăng ký",
+                                'Đăng ký',
                                 style: TextStyle(
                                   fontSize: TextSize.medium,
                                   color:
@@ -132,7 +132,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                           style: TextButton.styleFrom(
                             padding: EdgeInsets.zero,
                           ),
-                          child: Text("Đã có tài khoản? Đăng nhập ngay"))
+                          child: const Text('Đã có tài khoản? Đăng nhập ngay'))
                     ],
                   )
                 ],
@@ -146,7 +146,7 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _handleRegister() async {
     setState(() {
-      errorMessage = "";
+      errorMessage = '';
       isLoading = true;
     });
 
@@ -178,16 +178,15 @@ class RegisterScreenState extends State<RegisterScreen> {
       var user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         await UserRepositoryImpl()
-            .save(entity.User(user.uid, "", user.email!, "", ""));
+            .save(entity.User(user.uid, '', user.email!, '', ''));
 
         await CategoryServiceImpl().saveDefaultCategories();
 
-        Navigator.pop(context); // Quay lại màn hình trước đó (LoginScreen)
         return user.uid;
       }
     } on EmailExistException {
       setState(() {
-        errorMessage = "Email đã tồn tại, vui lòng chọn email khác";
+        errorMessage = 'Email đã tồn tại, vui lòng chọn email khác';
       });
     }
 
@@ -196,24 +195,24 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   String? emailValidator(String? text) {
     if (!Validator.isValidEmail(text!)) {
-      return "Email không đúng định dạng";
+      return 'Email không đúng định dạng';
     }
     return null;
   }
 
   String? passwordValidator(String? text) {
     if (passwordController.text.length < 6) {
-      return "Mật khẩu phải có ít nhất 6 ký tự";
+      return 'Mật khẩu phải có ít nhất 6 ký tự';
     }
     if (!Validator.isValidPassword(text!)) {
-      return "Mật khẩu phải có ít nhất 1 chữ hoa, 1 số, 1 ký tự đặc biệt";
+      return 'Mật khẩu phải có ít nhất 1 chữ hoa, 1 số, 1 ký tự đặc biệt';
     }
     return null;
   }
 
   String? confirmPasswordValidator(String? text) {
     if (passwordController.text != text) {
-      return "Mật khẩu không khớp";
+      return 'Mật khẩu không khớp';
     }
     return null;
   }

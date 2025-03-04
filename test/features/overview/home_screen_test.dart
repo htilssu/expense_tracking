@@ -27,11 +27,11 @@ void main() {
     categoryBloc = MockCategoryBloc();
 
     whenListen(
-        categoryBloc, Stream<CategoryState>.fromIterable([CategoryLoaded([])]),
+        categoryBloc, Stream<CategoryState>.fromIterable([const CategoryLoaded([])]),
         initialState: CategoryInitial());
-    whenListen(userBloc, Stream<UserState>.empty(),
+    whenListen(userBloc, const Stream<UserState>.empty(),
         initialState: UserLoaded(
-            user: User("123", "fullName", "email", "firstName", "lastName")));
+            user: User('123', 'fullName', 'email', 'firstName', 'lastName')));
   });
 
   Widget createHomeScreen() {

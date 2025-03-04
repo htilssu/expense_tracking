@@ -15,7 +15,7 @@ class _EtNavigationBarState extends State<EtNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.only(
+      borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(10),
         topRight: Radius.circular(10),
       ),
@@ -24,10 +24,10 @@ class _EtNavigationBarState extends State<EtNavigationBar> {
         elevation: 10,
         height: 60,
         color: Theme.of(context).colorScheme.primary,
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         // Tạo notch cho FAB
         child: ClipRRect(
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(16),
             topRight: Radius.circular(16),
           ),
@@ -35,32 +35,32 @@ class _EtNavigationBarState extends State<EtNavigationBar> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                icon: Icon(Icons.home),
+                icon: const Icon(Icons.home),
                 color: _selectedIndex == 0
                     ? Theme.of(context).colorScheme.onPrimary
-                    : Color(0xFFCCCCCC),
+                    : const Color(0xFFCCCCCC),
                 onPressed: () => _onItemTapped(0),
               ),
               IconButton(
-                icon: Icon(Icons.pie_chart_sharp),
+                icon: const Icon(Icons.pie_chart_sharp),
                 color: _selectedIndex == 1
                     ? Theme.of(context).colorScheme.onPrimary
-                    : Color(0xFFCCCCCC),
+                    : const Color(0xFFCCCCCC),
                 onPressed: () => _onItemTapped(1),
               ),
-              SizedBox(width: 48),
+              const SizedBox(width: 48),
               IconButton(
-                icon: Icon(Icons.notifications),
+                icon: const Icon(Icons.notifications),
                 color: _selectedIndex == 2
                     ? Theme.of(context).colorScheme.onPrimary
-                    : Color(0xFFCCCCCC),
+                    : const Color(0xFFCCCCCC),
                 onPressed: () => _onItemTapped(2),
               ),
               IconButton(
-                icon: Icon(Icons.person),
+                icon: const Icon(Icons.person),
                 color: _selectedIndex == 3
                     ? Theme.of(context).colorScheme.onPrimary
-                    : Color(0xFFCCCCCC),
+                    : const Color(0xFFCCCCCC),
                 onPressed: () => _onItemTapped(3),
               ),
             ],

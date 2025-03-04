@@ -29,7 +29,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
   void _handleLoadCategories(
       LoadCategories event, Emitter<CategoryState> emit) async {
     try {
-      emit(CategoryLoading());
+      emit(const CategoryLoading());
       var categories = await _categoryService.getCategories();
       emit(CategoryLoaded(categories));
     } catch (e) {

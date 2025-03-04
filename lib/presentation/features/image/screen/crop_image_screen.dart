@@ -41,12 +41,12 @@ class CropImageScreen extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) => BlocProvider.value(
                                 value: scanBillBloc,
-                                child: ScanBillScreen(),
+                                child: const ScanBillScreen(),
                               ),
                             ));
                       },
                       child: Text(
-                        "Hủy",
+                        'Hủy',
                         style: TextStyle(
                             color: Theme.of(context).colorScheme.onPrimary),
                       )),
@@ -61,7 +61,7 @@ class CropImageScreen extends StatelessWidget {
                       _cropController.crop();
                     },
                     child: Text(
-                      "Xong",
+                      'Xong',
                       style: TextStyle(
                           color: Theme.of(context).colorScheme.onPrimary),
                     ),
@@ -98,19 +98,19 @@ class CropImageScreen extends StatelessWidget {
                                 (categoryBloc.state as CategoryLoaded)
                                     .categories));
                           } else {
-                            throw Exception("CategoryBloc is not loaded");
+                            throw Exception('CategoryBloc is not loaded');
                           }
 
                           Navigator.pop(context, croppedImage.croppedImage);
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                               content: Text(
-                                  "Có lỗi xảy ra khi cắt ảnh, vui lòng thử lại")));
+                                  'Có lỗi xảy ra khi cắt ảnh, vui lòng thử lại')));
                         }
                       },
                     );
                   }
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 },

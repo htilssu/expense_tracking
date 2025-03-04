@@ -27,7 +27,7 @@ class _NoteInputState extends State<NoteInput> {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: Colors.grey,
           ),
         ),
@@ -52,12 +52,6 @@ class _NoteInputState extends State<NoteInput> {
   void _initializeController() {
     _controller = TextEditingController(
       text: widget.value,
-    );
-
-    _controller.addListener(
-      () {
-        widget.onChanged(_controller.text);
-      },
     );
   }
 }
