@@ -8,8 +8,8 @@ import '../../../../utils/currency_formatter.dart';
 class AmountInput extends StatefulWidget {
   const AmountInput({super.key, this.onChanged, required this.value});
 
-  final void Function(double)? onChanged;
-  final double value;
+  final void Function(int)? onChanged;
+  final int value;
 
   @override
   State<AmountInput> createState() => _AmountInputState();
@@ -40,14 +40,14 @@ class _AmountInputState extends State<AmountInput> {
 
     _controller.addListener(
       () {
-        var rawValue = _controller.text.replaceAll(RegExp(r"\D"), "");
-        var newValue = double.parse(rawValue);
+        var rawValue = _controller.text.replaceAll(RegExp(r'\D'), '');
+        var newValue = int.parse(rawValue);
         widget.onChanged?.call(newValue);
         var formattedValue = CurrencyFormatter.formatCurrency(newValue);
         _controller.value = _controller.value.copyWith(
           text: formattedValue,
           selection: TextSelection.collapsed(
-              offset: formattedValue.lastIndexOf(RegExp(r"\d")) + 1),
+              offset: formattedValue.lastIndexOf(RegExp(r'\d')) + 1),
         );
       },
     );
@@ -63,8 +63,8 @@ class _AmountInputState extends State<AmountInput> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.only(top: 16),
-      padding: EdgeInsets.all(16),
+      margin: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppTheme.placeholderColor,
         border: Border.all(
@@ -75,8 +75,8 @@ class _AmountInputState extends State<AmountInput> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "Nhập số tiền",
+          const Text(
+            'Nhập số tiền',
             style: TextStyle(
               fontSize: TextSize.medium,
             ),
@@ -86,23 +86,23 @@ class _AmountInputState extends State<AmountInput> {
             controller: _controller,
             onChanged: (value) {
               if (value.isNotEmpty) {
-                widget.onChanged?.call(double.parse(value));
+                widget.onChanged?.call(int.parse(value));
               }
             },
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
               LengthLimitingTextInputFormatter(13)
             ],
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: TextSize.large,
               fontWeight: FontWeight.bold,
             ),
             textAlign: TextAlign.center,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               border: InputBorder.none,
             ),
           ),
-          Text("VNĐ"),
+          const Text('VNĐ'),
         ],
       ),
     );

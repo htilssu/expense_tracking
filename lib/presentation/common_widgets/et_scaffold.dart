@@ -15,7 +15,7 @@ class EtScaffold extends StatelessWidget {
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
       floatingActionButton: FloatingActionButton(
-        shape: CircleBorder(
+        shape: const CircleBorder(
             side: BorderSide(
           color: Colors.white,
         )),
@@ -27,7 +27,7 @@ class EtScaffold extends StatelessWidget {
           ));
         },
         backgroundColor: Theme.of(context).colorScheme.primary,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       bottomNavigationBar: EtNavigationBar(onNavigation: onNavigation),
       body: body,

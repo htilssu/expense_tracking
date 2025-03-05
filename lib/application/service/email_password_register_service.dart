@@ -4,24 +4,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../exceptions/email_exist_exception.dart';
 
-class EmailPasswordRegisterService<T extends EmailPasswordRegister> implements RegisterService {
-  late T userRegister;
-  FirebaseAuth auth = FirebaseAuth.instance;
+class EmailPasswordRegisterService
+    implements RegisterService<EmailPasswordRegister> {
+  late FirebaseAuth auth;
 
-  EmailPasswordRegisterService(this.userRegister);
+  EmailPasswordRegisterService({FirebaseAuth? auth}) {
+    this.auth = auth ?? FirebaseAuth.instance;
+  }
 
   @override
-  Future<void> register() async {
+  Future<void> register(EmailPasswordRegister userRegister) async {
     try {
       await auth.createUserWithEmailAndPassword(
           email: userRegister.email, password: userRegister.password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
-        throw EmailExistException("Email đã được sử dụng");
+        throw EmailExistException('Email đã được sử dụng');
       } else {
-        throw Exception("Hãy thử lại sau");
+        throw Exception('Hãy thử lại sau');
       }
     }
   }
-
 }

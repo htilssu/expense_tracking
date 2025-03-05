@@ -24,267 +24,255 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.teal[100],
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.black),
-          onPressed: () {},
-        ),
-        title: Text(
-          'Analysis',
-          style: TextStyle(color: Colors.black, fontSize: 20),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications, color: Colors.black),
-            onPressed: () {},
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Total Balance và Total Expense
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.teal[50],
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.account_balance_wallet, color: Colors.green),
-                        SizedBox(width: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Số dư',
-                                style: TextStyle(
-                                    fontSize: 12, color: Colors.grey)),
-                            Text('\$7,783.00',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.teal[50],
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.trending_down, color: Colors.blue),
-                        SizedBox(width: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Đã chi tiêu',
-                                style: TextStyle(
-                                    fontSize: 12, color: Colors.grey)),
-                            Text('-\$1,187.40',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blue)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              // Progress Bar và Text
-              Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.teal[50],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: Container(
+        margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Total Balance và Total Expense
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    LinearProgressIndicator(
-                      value: 0.3,
-                      backgroundColor: Colors.grey[300],
-                      color: Colors.green,
-                      minHeight: 10,
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.teal[50],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.account_balance_wallet,
+                              color: Colors.green),
+                          SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Số dư',
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.grey)),
+                              Text('\$7,783.00',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 8),
-                    Text('30% Of Your Expenses, Looks Good.',
-                        style: TextStyle(fontSize: 14, color: Colors.black)),
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-              // Tabs (Daily, Weekly, Monthly, Year)
-              CustomSlidingSegmentedControl(
-                isStretch: true,
-                onValueChanged: (int value) {
-                  setState(() {
-                    _selectedSegment = value;
-                  });
-                },
-                curve: Curves.easeInCubic,
-                innerPadding: EdgeInsets.all(4),
-                thumbDecoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.primary,
-                    borderRadius: BorderRadius.circular(4)),
-                decoration: BoxDecoration(
-                    color: AppTheme.placeholderColor.withAlpha(30),
-                    borderRadius: BorderRadius.circular(7)),
-                children: {
-                  0: AnimatedDefaultTextStyle(
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    duration: Duration(milliseconds: 250),
-                    child: Text(
-                      "Hàng tuần",
-                      style: TextStyle(
-                          fontSize: TextSize.medium,
-                          color: _selectedSegment == 0
-                              ? Colors.white
-                              : Colors.black),
-                    ),
-                  ),
-                  1: AnimatedDefaultTextStyle(
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    duration: Duration(milliseconds: 250),
-                    child: Text(
-                      "Hàng tháng",
-                      style: TextStyle(
-                          fontSize: TextSize.medium,
-                          color: _selectedSegment == 1
-                              ? Colors.white
-                              : Colors.black),
-                    ),
-                  ),
-                  2: AnimatedDefaultTextStyle(
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    duration: Duration(milliseconds: 250),
-                    child: Text(
-                      "Hàng năm",
-                      style: TextStyle(
-                          fontSize: TextSize.medium,
-                          color: _selectedSegment == 2
-                              ? Colors.white
-                              : Colors.black),
-                    ),
-                  )
-                },
-              ),
-              SizedBox(height: 16),
-              // Biểu đồ Income & Expenses
-              Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.teal[50],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Income & Expenses',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold)),
-                        Row(
-                          children: [
-                            Icon(Icons.question_mark, color: Colors.grey),
-                            Icon(Icons.calendar_today, color: Colors.grey),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 8),
-                    // Placeholder cho biểu đồ (sử dụng Container đơn giản, bạn có thể thay bằng fl_chart)
-                    SizedBox(
-                      height: 200,
-                      child: CustomPaint(
-                        painter: BarChartPainter(),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.teal[50],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.trending_down, color: Colors.blue),
+                          SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Đã chi tiêu',
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.grey)),
+                              Text('-\$1,187.40',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue)),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: 16),
-              // Income và Expense Targets
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.teal[50],
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.arrow_upward, color: Colors.green),
-                        SizedBox(width: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Income',
-                                style: TextStyle(
-                                    fontSize: 12, color: Colors.grey)),
-                            Text('\$4,120.00',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ],
-                    ),
+                const SizedBox(height: 16),
+                // Progress Bar và Text
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.teal[50],
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.teal[50],
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.arrow_downward, color: Colors.blue),
-                        SizedBox(width: 8),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Expense',
-                                style: TextStyle(
-                                    fontSize: 12, color: Colors.grey)),
-                            Text('\$1,187.40',
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blue)),
-                          ],
-                        ),
-                      ],
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      LinearProgressIndicator(
+                        value: 0.3,
+                        backgroundColor: Colors.grey[300],
+                        color: Colors.green,
+                        minHeight: 10,
+                      ),
+                      const SizedBox(height: 8),
+                      const Text('30% Of Your Expenses, Looks Good.',
+                          style: TextStyle(fontSize: 14, color: Colors.black)),
+                    ],
                   ),
-                ],
-              ),
-              SizedBox(height: 16),
-              // Bottom Navigation Bar
-            ],
+                ),
+                const SizedBox(height: 16),
+                // Tabs (Daily, Weekly, Monthly, Year)
+                CustomSlidingSegmentedControl(
+                  isStretch: true,
+                  onValueChanged: (int value) {
+                    setState(() {
+                      _selectedSegment = value;
+                    });
+                  },
+                  curve: Curves.easeInCubic,
+                  innerPadding: const EdgeInsets.all(4),
+                  thumbDecoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(4)),
+                  decoration: BoxDecoration(
+                      color: AppTheme.placeholderColor.withAlpha(30),
+                      borderRadius: BorderRadius.circular(7)),
+                  children: {
+                    0: AnimatedDefaultTextStyle(
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      duration: const Duration(milliseconds: 250),
+                      child: Text(
+                        'Hàng tuần',
+                        style: TextStyle(
+                            fontSize: TextSize.medium,
+                            color: _selectedSegment == 0
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                    ),
+                    1: AnimatedDefaultTextStyle(
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      duration: const Duration(milliseconds: 250),
+                      child: Text(
+                        'Hàng tháng',
+                        style: TextStyle(
+                            fontSize: TextSize.medium,
+                            color: _selectedSegment == 1
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                    ),
+                    2: AnimatedDefaultTextStyle(
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      duration: const Duration(milliseconds: 250),
+                      child: Text(
+                        'Hàng năm',
+                        style: TextStyle(
+                            fontSize: TextSize.medium,
+                            color: _selectedSegment == 2
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                    )
+                  },
+                ),
+                const SizedBox(height: 16),
+                // Biểu đồ Income & Expenses
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.teal[50],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Income & Expenses',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                          Row(
+                            children: [
+                              Icon(Icons.question_mark, color: Colors.grey),
+                              Icon(Icons.calendar_today, color: Colors.grey),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      // Placeholder cho biểu đồ (sử dụng Container đơn giản, bạn có thể thay bằng fl_chart)
+                      SizedBox(
+                        height: 200,
+                        child: CustomPaint(
+                          painter: BarChartPainter(),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                // Income và Expense Targets
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.teal[50],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.arrow_upward, color: Colors.green),
+                          SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Income',
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.grey)),
+                              Text('\$4,120.00',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.teal[50],
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(Icons.arrow_downward, color: Colors.blue),
+                          SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Expense',
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.grey)),
+                              Text('\$1,187.40',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue)),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                // Bottom Navigation Bar
+              ],
+            ),
           ),
         ),
       ),
@@ -293,12 +281,12 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
 
   Widget _buildTab(String title, Color color) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
         color: color,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(title, style: TextStyle(color: Colors.white)),
+      child: Text(title, style: const TextStyle(color: Colors.white)),
     );
   }
 }

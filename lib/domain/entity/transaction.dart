@@ -5,12 +5,12 @@ import 'timestamp_entity.dart';
 class Transaction extends BaseTimeStampEntity {
   late String id;
   String note;
-  double value;
+  int value;
   String category;
   final String user;
 
   Transaction(this.note, this.value, this.category, this.user) {
-    id = Uuid().v4();
+    id = const Uuid().v4();
   }
 
   Transaction.withId(this.id, this.note, this.value, this.category, this.user);
@@ -19,7 +19,7 @@ class Transaction extends BaseTimeStampEntity {
     return Transaction.withId(
       map['id'] as String,
       map['note'] as String,
-      map['value'] as double,
+      map['value'] as int,
       map['category'] as String,
       map['user'] as String,
     )..timeStampFromMap(map);

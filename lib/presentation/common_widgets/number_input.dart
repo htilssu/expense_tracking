@@ -36,7 +36,7 @@ class _NumberInputState extends State<NumberInput> {
 
         widget.onChanged(double.parse(valueDouble));
       },
-      label: "Ngân sách",
+      label: 'Ngân sách',
       padding: const EdgeInsets.symmetric(horizontal: 16),
       keyboardType: TextInputType.number,
     );

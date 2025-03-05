@@ -25,7 +25,7 @@ class CreateCategoryScreen extends StatefulWidget {
 }
 
 class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
-  String _categoryName = "";
+  String _categoryName = '';
 
   double _budget = 0;
 
@@ -45,7 +45,7 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Danh mục mới"),
+        title: const Text('Danh mục mới'),
         centerTitle: true,
       ),
       body: Padding(
@@ -54,7 +54,7 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Padding(
-                padding: EdgeInsets.only(top: 16.0),
+                padding: const EdgeInsets.only(top: 16.0),
                 child: Column(
                   spacing: 16,
                   children: [
@@ -69,16 +69,16 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
                       ),
                       height: 100,
                       width: 100,
-                      child: Icon(Icons.add),
+                      child: const Icon(Icons.add),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     EtTextField(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return "Tên danh mục không được để trống";
+                          return 'Tên danh mục không được để trống';
                         }
                         return null;
                       },
@@ -89,14 +89,14 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
                               value.trim().isNotEmpty;
                         });
                       },
-                      label: "Tên danh mục",
+                      label: 'Tên danh mục',
                     ),
                     if (_isCategoryNameExist(_categoryName))
                       Container(
                         alignment: Alignment.centerLeft,
-                        child: Text(
+                        child: const Text(
                           textAlign: TextAlign.start,
-                          "Tên danh mục đã tồn tại",
+                          'Tên danh mục đã tồn tại',
                           style: TextStyle(color: Colors.red),
                         ),
                       ),
@@ -104,8 +104,8 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
                       spacing: 16,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Ngân sách (Budget)",
+                        const Text(
+                          'Ngân sách (Budget)',
                           textAlign: TextAlign.start,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -132,8 +132,8 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
                       : () async {
                           var categoryType =
                               categorySelectorCubit.state is IncomeCategory
-                                  ? "income"
-                                  : "expense";
+                                  ? 'income'
+                                  : 'expense';
                           var category = Category(_categoryName, 0,
                               _budget.toInt(), categoryType, Auth.uid());
 
@@ -143,7 +143,7 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
                           categoryBloc.add(AddCategory(category));
                           Navigator.of(context).pop();
                         },
-                  child: Text("Tạo danh mục"),
+                  child: const Text('Tạo danh mục'),
                 ),
               ),
             )

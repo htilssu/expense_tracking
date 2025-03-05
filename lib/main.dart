@@ -5,10 +5,14 @@ import 'package:expense_tracking/presentation/bloc/loading/loading_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:expense_tracking/presentation/features/loading_overlay.dart';
 import 'package:expense_tracking/presentation/features/main_page_view.dart';
+import 'package:expense_tracking/utils/auth.dart';
+import 'package:expense_tracking/utils/logging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:expense_tracking/domain/entity/user.dart' as entity;
 
 import 'constants/app_theme.dart';
 import 'presentation/bloc/user/user_bloc.dart';
@@ -20,15 +24,108 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late Future<entity.User?> _future;
+
+  bool shouldUpdateNewFuture = true;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        // Khi đang chờ kết nối
+        if (snapshot.data == null) {
+          shouldUpdateNewFuture = true;
+        }
+
+        if (snapshot.data != null) {
+          if (shouldUpdateNewFuture) {
+            _future = UserRepositoryImpl().findById(Auth.uid());
+            shouldUpdateNewFuture = false;
+          }
+
+          return FutureBuilder(
+            future: _future,
+            builder: (context, userSnapshot) {
+              if (userSnapshot.connectionState == ConnectionState.done) {
+                if (userSnapshot.hasData) {
+                  if (kDebugMode) {
+                    Logger.info('LogIn successfully: ${userSnapshot.data}');
+                  }
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider<UserBloc>(
+                        create: (context) => UserBloc.fromState(
+                            UserLoaded(user: userSnapshot.data!)),
+                      ),
+                      BlocProvider<CategoryBloc>(
+                        create: (context) => CategoryBloc()
+                          ..add(LoadCategories(userSnapshot.data!)),
+                      ),
+                      BlocProvider<LoadingCubit>(
+                        create: (context) => LoadingCubit(),
+                      ),
+                      BlocProvider<TransactionBloc>(
+                        create: (context) => TransactionBloc(
+                            TransactionInitial(userSnapshot.data!)),
+                      ),
+                    ],
+                    child: MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      title: 'Trezo',
+                      theme: AppTheme.lightTheme(),
+                      home: const LoadingOverlay(
+                        MainPageView(),
+                      ),
+                    ),
+                  );
+                } else {
+                  return MultiBlocProvider(
+                    providers: [
+                      BlocProvider<UserBloc>(
+                        create: (context) => UserBloc(),
+                      ),
+                      BlocProvider<LoadingCubit>(
+                        create: (context) => LoadingCubit(),
+                      ),
+                    ],
+                    child: MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      title: 'Trezo',
+                      theme: AppTheme.lightTheme(),
+                      home: const LoadingOverlay(
+                        LoginScreen(),
+                      ),
+                    ),
+                  );
+                }
+              }
+
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                home: Scaffold(
+                  body: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.only(top: 100),
+                    child: const CircularProgressIndicator(),
+                  ),
+                ),
+              );
+            },
+          );
+        }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -41,7 +138,7 @@ class MyApp extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Image.asset(
-                      "assets/images/pig_colorful.png",
+                      'assets/images/pig_colorful.png',
                       width: MediaQuery.of(context).size.width,
                     ),
                     const CircularProgressIndicator(),
@@ -52,96 +149,23 @@ class MyApp extends StatelessWidget {
           );
         }
 
-        // Nếu không có người dùng đăng nhập (snapshot.hasData là false)
-        if (!snapshot.hasData) {
-          return MultiBlocProvider(
-            providers: [
-              BlocProvider<UserBloc>(
-                create: (context) => UserBloc(),
-              ),
-              BlocProvider<LoadingCubit>(
-                create: (context) => LoadingCubit(),
-              ),
-            ],
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Trezo',
-              theme: AppTheme.lightTheme(),
-              home: LoadingOverlay(
-                const LoginScreen(),
-              ),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<UserBloc>(
+              create: (context) => UserBloc(),
             ),
-          );
-        }
-
-        // Nếu có người dùng đăng nhập, lấy thông tin từ repository
-        return FutureBuilder(
-          future: UserRepositoryImpl().findById(snapshot.data!.uid),
-          builder: (context, userSnapshot) {
-            if (userSnapshot.connectionState == ConnectionState.done) {
-              if (userSnapshot.hasData) {
-                return MultiBlocProvider(
-                  providers: [
-                    BlocProvider<UserBloc>(
-                      create: (context) => UserBloc.fromState(
-                          UserLoaded(user: userSnapshot.data!)),
-                    ),
-                    BlocProvider<CategoryBloc>(
-                      create: (context) => CategoryBloc()
-                        ..add(LoadCategories(userSnapshot.data!)),
-                    ),
-                    BlocProvider<LoadingCubit>(
-                      create: (context) => LoadingCubit(),
-                    ),
-                    BlocProvider<TransactionBloc>(
-                      create: (context) => TransactionBloc(
-                          TransactionInitial(userSnapshot.data!)),
-                    ),
-                  ],
-                  child: MaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    title: 'Trezo',
-                    theme: AppTheme.lightTheme(),
-                    home: LoadingOverlay(
-                      const MainPageView(),
-                    ),
-                  ),
-                );
-              } else {
-                // Trường hợp không tìm thấy user trong database
-                return MultiBlocProvider(
-                  providers: [
-                    BlocProvider<UserBloc>(
-                      create: (context) => UserBloc(),
-                    ),
-                    BlocProvider<LoadingCubit>(
-                      create: (context) => LoadingCubit(),
-                    ),
-                  ],
-                  child: MaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    title: 'Trezo',
-                    theme: AppTheme.lightTheme(),
-                    home: LoadingOverlay(
-                      const LoginScreen(),
-                    ),
-                  ),
-                );
-              }
-            }
-
-            // Đang tải thông tin người dùng
-            return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              home: Scaffold(
-                body: Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.only(top: 100),
-                  child: const CircularProgressIndicator(),
-                ),
-              ),
-            );
-          },
+            BlocProvider<LoadingCubit>(
+              create: (context) => LoadingCubit(),
+            ),
+          ],
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Trezo',
+            theme: AppTheme.lightTheme(),
+            home: const LoadingOverlay(
+              LoginScreen(),
+            ),
+          ),
         );
       },
     );

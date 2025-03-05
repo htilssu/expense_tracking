@@ -31,7 +31,7 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chọn danh mục"),
+        title: const Text('Chọn danh mục'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -45,7 +45,7 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
                 },
               ));
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.add,
               size: 26,
             ),
@@ -65,20 +65,20 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
                 if (state is IncomeCategory) {
                   categories = categories
                       .where(
-                        (element) => element.type == "income",
+                        (element) => element.type == 'income',
                       )
                       .toList();
                 } else {
                   categories = categories
                       .where(
-                        (element) => element.type == "expense",
+                        (element) => element.type == 'expense',
                       )
                       .toList();
                 }
 
                 return GridView.builder(
                   itemCount: categories.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                   ),
                   itemBuilder: (context, index) {
@@ -110,16 +110,16 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
                                   ],
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(100)),
-                              child: Center(
+                              child: const Center(
                                 child: Text(
-                                  "😊",
+                                  '😊',
                                   style: TextStyle(fontSize: TextSize.large),
                                 ),
                               ),
                             ),
                           ),
                           Text(c.name,
-                              style: TextStyle(fontSize: TextSize.medium)),
+                              style: const TextStyle(fontSize: TextSize.medium)),
                         ],
                       ),
                     );
@@ -139,8 +139,8 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
                   widget._onCategorySelected(_selectedCategory!);
                   Navigator.of(context).pop();
                 },
-                child: Text(
-                  "Xong",
+                child: const Text(
+                  'Xong',
                   style: TextStyle(fontSize: TextSize.medium),
                 ),
               ),

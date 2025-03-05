@@ -20,26 +20,26 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
     return showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Tùy chọn'),
-        content: Text('Bạn muốn làm gì với giao dịch này?'),
+        title: const Text('Tùy chọn'),
+        content: const Text('Bạn muốn làm gì với giao dịch này?'),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.pop(context, false); // Hủy bỏ
             },
-            child: Text('Hủy'),
+            child: const Text('Hủy'),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context, false); // Không xóa, chỉ chỉnh sửa
             },
-            child: Text('Chỉnh sửa'),
+            child: const Text('Chỉnh sửa'),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(context, true); // Xác nhận xóa
             },
-            child: Text('Xóa'),
+            child: const Text('Xóa'),
           ),
         ],
       ),
@@ -51,17 +51,17 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
+          const SliverAppBar(
             floating: false,
             pinned: false,
-            title: const Text('Lịch sử giao dịch'),
+            title: Text('Lịch sử giao dịch'),
             centerTitle: true,
           ),
           BlocBuilder<TransactionBloc, TransactionState>(
             builder: (context, state) {
               if (state is TransactionLoaded) {
                 return SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
                   sliver: SliverList(
                     delegate: SliverChildBuilderDelegate(
                       (context, index) {
@@ -76,8 +76,8 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                           secondaryBackground: Container(
                             color: Colors.red,
                             alignment: Alignment.centerRight,
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Row(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: const Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Icon(Icons.edit, color: Colors.white),
@@ -88,7 +88,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                           ),
                           onDismissed: (direction) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Đã xóa giao dịch')),
+                              const SnackBar(content: Text('Đã xóa giao dịch')),
                             );
                           },
                           confirmDismiss: (direction) async {
@@ -106,11 +106,11 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
               }
 
               return SliverPadding(
-                padding: EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      return TransactionItemSkeleton();
+                      return const TransactionItemSkeleton();
                     },
                     childCount: 10,
                   ),

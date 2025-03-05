@@ -5,7 +5,7 @@ import '../../domain/repository/transaction_repository.dart';
 
 class TransactionRepositoryImpl implements TransactionRepository {
   fs.CollectionReference<Map<String, dynamic>> ref =
-      fs.FirebaseFirestore.instance.collection("transactions");
+      fs.FirebaseFirestore.instance.collection('transactions');
 
   @override
   Future<void> delete(String id) async {
@@ -22,7 +22,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
   @override
   Future<List<Transaction>> findByCategory(
       String category, int page, int size) async {
-    return ref.where("category", isEqualTo: category).limit(size).get().then(
+    return ref.where('category', isEqualTo: category).limit(size).get().then(
         (value) =>
             value.docs.map((e) => Transaction.fromMap(e.data())).toList());
   }
@@ -64,8 +64,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
   Future<List<Transaction>> findRecentByUserId(
       String userId, int page, int size) {
     return ref
-        .where("user", isEqualTo: userId)
-        .orderBy("createdAt", descending: true)
+        .where('user', isEqualTo: userId)
+        .orderBy('createdAt', descending: true)
         .limit(size)
         .get()
         .then((value) =>

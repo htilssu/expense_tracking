@@ -14,10 +14,10 @@ class OllamaClient extends LlmClient {
 
   @override
   Future<BillInfo> analyzeText(String text, List<Category> category) async {
-    final headers = {"Content-Type": "application/json"};
+    final headers = {'Content-Type': 'application/json'};
 
     final body = jsonEncode({
-      "text": text,
+      'text': text,
     });
 
     try {
@@ -26,17 +26,17 @@ class OllamaClient extends LlmClient {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
         return BillInfo(
-            responseData["money"],
-            responseData["date"],
-            responseData["store"],
-            responseData["category"],
-            responseData["note"]);
+            responseData['money'],
+            responseData['date'],
+            responseData['store'],
+            responseData['category'],
+            responseData['note']);
       } else {
         if (foundation.kDebugMode) {
-          Logger.error("Response code is not 200");
+          Logger.error('Response code is not 200');
         }
 
-        return Future.error("Response code is not 200");
+        return Future.error('Response code is not 200');
       }
     } on TimeoutException catch (e) {
       if (foundation.kDebugMode) {
