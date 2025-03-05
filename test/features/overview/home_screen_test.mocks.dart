@@ -3,11 +3,17 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i5;
 
+import 'package:cloud_firestore/cloud_firestore.dart' as _i2;
+import 'package:expense_tracking/application/service/analysis_service_impl.dart'
+    as _i7;
 import 'package:expense_tracking/application/service/transaction_service_impl.dart'
-    as _i2;
-import 'package:expense_tracking/domain/entity/transaction.dart' as _i4;
+    as _i4;
+import 'package:expense_tracking/domain/dto/overview_data.dart' as _i3;
+import 'package:expense_tracking/domain/entity/transaction.dart' as _i6;
+import 'package:expense_tracking/domain/repository/category_repository.dart'
+    as _i8;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -24,22 +30,82 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeCollectionReference_0<T extends Object?> extends _i1.SmartFake
+    implements _i2.CollectionReference<T> {
+  _FakeCollectionReference_0(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeOverviewData_1 extends _i1.SmartFake implements _i3.OverviewData {
+  _FakeOverviewData_1(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
 /// A class which mocks [TransactionServiceImpl].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockTransactionServiceImpl extends _i1.Mock
-    implements _i2.TransactionServiceImpl {
+    implements _i4.TransactionServiceImpl {
   MockTransactionServiceImpl() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<List<_i4.Transaction>> getRecentTransactionsByUserId() =>
+  _i5.Future<List<_i6.Transaction>> getRecentTransactionsByUserId() =>
       (super.noSuchMethod(
             Invocation.method(#getRecentTransactionsByUserId, []),
-            returnValue: _i3.Future<List<_i4.Transaction>>.value(
-              <_i4.Transaction>[],
+            returnValue: _i5.Future<List<_i6.Transaction>>.value(
+              <_i6.Transaction>[],
             ),
           )
-          as _i3.Future<List<_i4.Transaction>>);
+          as _i5.Future<List<_i6.Transaction>>);
+}
+
+/// A class which mocks [AnalysisServiceImpl].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAnalysisServiceImpl extends _i1.Mock
+    implements _i7.AnalysisServiceImpl {
+  MockAnalysisServiceImpl() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  set categoryRepository(_i8.CategoryRepository? _categoryRepository) =>
+      super.noSuchMethod(
+        Invocation.setter(#categoryRepository, _categoryRepository),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  _i2.CollectionReference<Map<String, dynamic>> get refTransaction =>
+      (super.noSuchMethod(
+            Invocation.getter(#refTransaction),
+            returnValue: _FakeCollectionReference_0<Map<String, dynamic>>(
+              this,
+              Invocation.getter(#refTransaction),
+            ),
+          )
+          as _i2.CollectionReference<Map<String, dynamic>>);
+
+  @override
+  set refTransaction(
+    _i2.CollectionReference<Map<String, dynamic>>? _refTransaction,
+  ) => super.noSuchMethod(
+    Invocation.setter(#refTransaction, _refTransaction),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  _i5.Future<_i3.OverviewData> getOverviewData() =>
+      (super.noSuchMethod(
+            Invocation.method(#getOverviewData, []),
+            returnValue: _i5.Future<_i3.OverviewData>.value(
+              _FakeOverviewData_1(
+                this,
+                Invocation.method(#getOverviewData, []),
+              ),
+            ),
+          )
+          as _i5.Future<_i3.OverviewData>);
 }

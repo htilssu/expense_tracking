@@ -127,7 +127,7 @@ void main() {
     testWidgets('Cập nhật UI khi ScanBillBloc ở trạng thái BillScanned',
         (tester) async {
       final billInfo = BillInfo(
-        1000.0,
+        1000,
         DateTime.now(),
         'Test Store',
         Category('Food', 0, 0, 'expense', 'user1', icon: 'food'),
