@@ -269,7 +269,18 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                           Logger.info(
                                               'Transaction created : $transaction');
                                         }
-                                        //TODO: add to recent transaction or update if back to home screen
+                                        if (_category?.type == 'income') {
+                                    CategoryRepositoryImpl()
+                                        .update(_category!..budget += _amount);
+                                  } else {
+                                    CategoryRepositoryImpl()
+                                        .update(_category!..amount += _amount);
+                                  }
+
+                                  if (foundation.kDebugMode) {
+                                    Logger.info(
+                                        'Transaction created : $transaction');
+                                  }//TODO: add to recent transaction or update if back to home screen
                                       } on Exception catch (e) {
                                         if (foundation.kDebugMode) {
                                           Logger.error(e.toString());
