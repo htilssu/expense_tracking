@@ -26,7 +26,7 @@ class Category extends BaseTimeStampEntity implements Equatable {
         Category('Thu nhập khác', 0, 0, 'income', 'user', icon: 'other'),
       ];
 
-  late String id = Uuid().v4();
+  late String id = const Uuid().v4();
   final String name;
   final String? icon;
   final String type;
@@ -57,8 +57,8 @@ class Category extends BaseTimeStampEntity implements Equatable {
     return Category.withId(
       map['id'] as String,
       map['name'] as String,
-      map['amount'] as int,
-      map['budget'] as int,
+      map['amount'],
+      map['budget'],
       map['type'] as String,
       map['user'] as String,
       icon: map['icon'] as String?,

@@ -45,18 +45,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   EtTextField(
                     validator: (p0) {
                       if (p0 == null || p0.isEmpty) {
-                        return "Tên đăng nhập không được để trống";
+                        return 'Tên đăng nhập không được để trống';
                       }
                       return null;
                     },
                     controller: emailController,
-                    suffixIcon: Icon(Icons.email_rounded),
-                    label: "Tên đăng nhập",
+                    suffixIcon: const Icon(Icons.email_rounded),
+                    label: 'Tên đăng nhập',
                   ),
                   EtTextField(
                     validator: (p0) {
                       if (p0 == null || p0.isEmpty) {
-                        return "Mật khẩu không được để trống";
+                        return 'Mật khẩu không được để trống';
                       }
                       return null;
                     },
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             : Icons.visibility_off,
                       ),
                     ),
-                    label: "Mật khẩu",
+                    label: 'Mật khẩu',
                   ),
                   if (errorMessage.isNotEmpty)
                     Align(
@@ -82,13 +82,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text(
                         errorMessage,
                         textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.red),
+                        style: const TextStyle(color: Colors.red),
                       ),
                     ),
                   EtButton(
                     onPressed: () {
                       setState(() {
-                        errorMessage = "";
+                        errorMessage = '';
                       });
                       if (!_formKey.currentState!.validate()) return;
                       onEmailPasswordLogin().then(
@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     },
                     child: Text(
-                      "Đăng nhập",
+                      'Đăng nhập',
                       style: TextStyle(
                           fontSize: TextSize.medium,
                           color: Theme.of(context).colorScheme.onPrimary),
@@ -116,11 +116,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          "Bạn không có tài khoản?",
+                        const Text(
+                          'Bạn không có tài khoản?',
                         ),
                         TextButton(
-                            style: ButtonStyle(
+                            style: const ButtonStyle(
                                 minimumSize: WidgetStatePropertyAll(Size.zero),
                                 padding: WidgetStatePropertyAll(
                                     EdgeInsets.symmetric(horizontal: 3))),
@@ -132,19 +132,19 @@ class _LoginScreenState extends State<LoginScreen> {
                                         const RegisterScreen(),
                                   ));
                             },
-                            child: Text(
-                              "Đăng ký",
+                            child: const Text(
+                              'Đăng ký',
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ))
                       ],
                     ),
                   ),
-                  Row(
+                  const Row(
                     children: [
                       Expanded(child: Divider()),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: Text("Hoặc"),
+                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        child: Text('Hoặc'),
                       ),
                       Expanded(child: Divider())
                     ],
@@ -155,12 +155,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SvgPicture.asset(
-                          "assets/images/google.svg",
+                          'assets/images/google.svg',
                           height: 26,
                           width: 26,
                           fit: BoxFit.cover,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 8,
                         ),
                         Text(
@@ -177,12 +177,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SvgPicture.asset(
-                          "assets/images/facebook.svg",
+                          'assets/images/facebook.svg',
                           height: 32,
                           width: 32,
                           fit: BoxFit.cover,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 8,
                         ),
                         Text(
@@ -216,15 +216,15 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     } on UserNotFoundException {
       setState(() {
-        errorMessage = "Người dùng không tồn tại";
+        errorMessage = 'Người dùng không tồn tại';
       });
     } on WrongPasswordException {
       setState(() {
-        errorMessage = "Mật khẩu không đúng";
+        errorMessage = 'Mật khẩu không đúng';
       });
     } on Exception {
       setState(() {
-        errorMessage = "Đã có lỗi xảy ra, vui lòng thử lại sau";
+        errorMessage = 'Đã có lỗi xảy ra, vui lòng thử lại sau';
       });
     }
 

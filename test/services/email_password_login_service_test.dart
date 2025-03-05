@@ -4,6 +4,7 @@ import 'package:expense_tracking/exceptions/user_disabled_exception.dart';
 import 'package:expense_tracking/exceptions/user_notfound_exception.dart';
 import 'package:expense_tracking/exceptions/wrong_password_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart' as mock;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -33,6 +34,10 @@ void main() {
       email: loginData.email,
       password: loginData.password,
     )).thenAnswer((_) async => MockUserCredential());
+
+    when(mockFirebaseAuth.currentUser).thenAnswer(
+      (realInvocation) => mock.MockUser(),
+    );
 
     // Act: Gọi phương thức login
     await loginService.login(loginData);

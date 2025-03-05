@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class BaseTimeStampEntity extends Equatable {
@@ -6,8 +7,8 @@ abstract class BaseTimeStampEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
   }
 
@@ -16,15 +17,8 @@ abstract class BaseTimeStampEntity extends Equatable {
   }
 
   void timeStampFromMap(Map<String, dynamic> map) {
-    var createdAtString = map['createdAt'] as String?;
-    var updatedAtString = map['updatedAt'] as String?;
-
-    if (createdAtString != null) {
-      createdAt = DateTime.parse(createdAtString);
-    }
-
-    if (updatedAtString != null) {
-      updatedAt = DateTime.parse(updatedAtString);
-    }
+    //create datetime from timestamp;
+     createdAt = (map['createdAt'] as Timestamp).toDate();
+     updatedAt = (map['updatedAt'] as Timestamp).toDate();
   }
 }

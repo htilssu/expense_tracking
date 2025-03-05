@@ -12,10 +12,10 @@ void main() {
   });
 
   group(
-    "Login screen test",
+    'Login screen test',
     () {
-      testWidgets("Test widget not missing", (widgetTester) async {
-        await widgetTester.pumpWidget(MaterialApp(home: LoginScreen()));
+      testWidgets('Test widget not missing', (widgetTester) async {
+        await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
 
         // Verify the email and password fields are present
         expect(find.byType(EtTextField), findsNWidgets(2));
@@ -23,7 +23,7 @@ void main() {
         // Verify the login button is present
         expect(
             find.descendant(
-                of: find.byType(EtButton), matching: find.text("Đăng nhập")),
+                of: find.byType(EtButton), matching: find.text('Đăng nhập')),
             findsOneWidget);
 
         // Verify the Google login button is present
@@ -34,10 +34,10 @@ void main() {
       });
 
       testWidgets(
-          "Press login button with empty email expect show error message",
+          'Press login button with empty email expect show error message',
           (widgetTester) async {
         // Build the LoginScreen widget.
-        await widgetTester.pumpWidget(MaterialApp(home: LoginScreen()));
+        await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
 
         //put empty email
         await widgetTester.enterText(find.byType(EtTextField).first, '');
@@ -54,9 +54,9 @@ void main() {
       });
 
       testWidgets(
-          "Press login button with empty password expect show error message",
+          'Press login button with empty password expect show error message',
           (widgetTester) async {
-        await widgetTester.pumpWidget(MaterialApp(home: LoginScreen()));
+        await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
 
         //put empty password
         await widgetTester.enterText(find.byType(EtTextField).last, '');
@@ -71,13 +71,13 @@ void main() {
       });
 
       testWidgets(
-        "Press Register button expect go to register screen",
+        'Press Register button expect go to register screen',
         (widgetTester) async {
-          await widgetTester.pumpWidget(MaterialApp(home: LoginScreen()));
+          await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
 
           // Tap the register button.
           await widgetTester.tap(find.ancestor(
-            of: find.text("Đăng ký"),
+            of: find.text('Đăng ký'),
             matching: find.byType(TextButton),
           ));
 
@@ -91,10 +91,10 @@ void main() {
       );
 
       testWidgets(
-        "Press hide and show password expect change hide password state",
+        'Press hide and show password expect change hide password state',
         (widgetTester) async {
           // Build the LoginScreen widget.
-          await widgetTester.pumpWidget(MaterialApp(home: LoginScreen()));
+          await widgetTester.pumpWidget(const MaterialApp(home: LoginScreen()));
 
           // Tap the hide password button.
           var hidePasswordButton = find.byIcon(Icons.visibility);

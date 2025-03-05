@@ -1,6 +1,9 @@
+import 'package:expense_tracking/application/service/analysis_service_impl.dart';
 import 'package:expense_tracking/application/service/transaction_service_impl.dart';
 import 'package:expense_tracking/constants/app_theme.dart';
 import 'package:expense_tracking/constants/text_constant.dart';
+import 'package:expense_tracking/domain/dto/overview_data.dart';
+import 'package:expense_tracking/domain/service/analysis_service.dart';
 import 'package:expense_tracking/domain/service/transaction_service.dart';
 import 'package:expense_tracking/infrastructure/repository/transaction_repostory_impl.dart';
 import 'package:expense_tracking/presentation/bloc/category/category_bloc.dart';
@@ -17,16 +20,17 @@ import '../../transaction/screen/create_transaction_screen.dart';
 import '../../transaction/widget/transaction_item.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key, TransactionService? transactionService}) {
-    if (transactionService != null) {
-      this.transactionService = transactionService;
-    } else {
-      this.transactionService =
-          TransactionServiceImpl(TransactionRepositoryImpl());
-    }
+  HomeScreen(
+      {super.key,
+      TransactionService? transactionService,
+      AnalysisService? analysisService}) {
+    this.transactionService = transactionService ??
+        TransactionServiceImpl(TransactionRepositoryImpl());
+    this.analysisService = analysisService ?? AnalysisServiceImpl();
   }
 
   late TransactionService transactionService;
+  late AnalysisService analysisService;
 
   @override
   State<HomeScreen> createState() => HomeScreenState();
@@ -61,16 +65,23 @@ class HomeScreenState extends State<HomeScreen>
           height: 320,
           child: Stack(
             children: [
-              EtHomeAppbar(),
+              const EtHomeAppbar(),
               Positioned(
                   top: 280 - 40 - 150 / 2,
                   left: 0,
                   child: Container(
                       alignment: Alignment.topCenter,
-                      padding: EdgeInsets.symmetric(horizontal: 32),
+                      padding: const EdgeInsets.symmetric(horizontal: 32),
                       width: MediaQuery.of(context).size.width,
                       height: 150,
-                      child: OverviewCard()))
+                      child: FutureBuilder<OverviewData>(
+                        future: widget.analysisService.getOverviewData(),
+                        builder: (context, snapshot) {
+                          return OverviewCard(
+                            overviewData: snapshot.data,
+                          );
+                        },
+                      )))
             ],
           ),
         ),
@@ -79,8 +90,8 @@ class HomeScreenState extends State<HomeScreen>
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                "Lịch sử",
+              const Text(
+                'Lịch sử',
                 style: TextStyle(
                     fontSize: TextSize.medium, fontWeight: FontWeight.bold),
               ),
@@ -94,12 +105,13 @@ class HomeScreenState extends State<HomeScreen>
                         ));
                   },
                   style: TextButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
                     overlayColor: Colors.transparent,
                   ),
-                  child: Text(
+                  child: const Text(
                     textAlign: TextAlign.end,
-                    "Xem tất cả",
+                    'Xem tất cả',
                     style: TextStyle(
                       fontSize: TextSize.small + 3,
                     ),
@@ -117,7 +129,7 @@ class HomeScreenState extends State<HomeScreen>
                     state is CategoryLoaded) {
                   return Expanded(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: SmartRefresher(
                         enablePullDown: true,
                         onRefresh: _onRefresh,
@@ -128,7 +140,7 @@ class HomeScreenState extends State<HomeScreen>
                         controller: _refreshController,
                         child: ListView(
                           padding: EdgeInsets.zero,
-                          physics: BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           children: [
                             for (Transaction transaction in snapshot.data!)
                               TransactionItem(transaction),
@@ -143,12 +155,13 @@ class HomeScreenState extends State<HomeScreen>
                     state is CategoryLoading) {
                   return Expanded(
                       child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: ListView(
                       padding: EdgeInsets.zero,
-                      physics: BouncingScrollPhysics(),
+                      physics: const BouncingScrollPhysics(),
                       children: [
-                        for (int i = 0; i < 5; i++) TransactionItemSkeleton()
+                        for (int i = 0; i < 5; i++)
+                          const TransactionItemSkeleton()
                       ],
                     ),
                   ));
@@ -156,7 +169,7 @@ class HomeScreenState extends State<HomeScreen>
 
                 return Expanded(
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: SmartRefresher(
                       enablePullDown: true,
                       onRefresh: _onRefresh,
@@ -168,8 +181,8 @@ class HomeScreenState extends State<HomeScreen>
                         spacing: 8,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            "Không có giao dịch nào",
+                          const Text(
+                            'Không có giao dịch nào',
                             style: TextStyle(fontSize: TextSize.medium),
                           ),
                           IconButton(
@@ -190,8 +203,8 @@ class HomeScreenState extends State<HomeScreen>
                                 size: 32,
                                 color: Theme.of(context).colorScheme.primary,
                               )),
-                          Text(
-                            "Thêm giao dịch",
+                          const Text(
+                            'Thêm giao dịch',
                             style: TextStyle(fontSize: TextSize.medium),
                           ),
                         ],

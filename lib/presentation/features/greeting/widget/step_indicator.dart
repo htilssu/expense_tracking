@@ -20,7 +20,7 @@ class StepIndicator extends StatelessWidget {
             width: i == currentStep ? 15 : 10,
           ),
           if (i != total)
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
         ]

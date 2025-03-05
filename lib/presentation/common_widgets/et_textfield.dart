@@ -13,7 +13,7 @@ class EtTextField extends StatelessWidget {
 
   const EtTextField(
       {super.key,
-      this.label = "",
+      this.label = '',
       this.controller,
       this.onChanged,
       this.padding,
@@ -35,7 +35,7 @@ class EtTextField extends StatelessWidget {
           controller: controller,
           decoration: InputDecoration(
               suffixIcon: suffixIcon,
-              label: Text(label, style: TextStyle(fontSize: TextSize.medium)),
+              label: Text(label, style: const TextStyle(fontSize: TextSize.medium)),
               contentPadding: padding,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
