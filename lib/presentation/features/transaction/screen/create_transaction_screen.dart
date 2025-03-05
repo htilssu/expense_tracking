@@ -250,32 +250,34 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                             margin: EdgeInsets.only(
                                 bottom: MediaQuery.of(context).padding.bottom),
                             child: EtButton(
-                              onPressed: () {
-                                final transaction = Transaction(
-                                    _note, _amount, _category!.id, Auth.uid());
-                                try {
-                                  widget.creationTransactionService
-                                      .handle(transaction);
-                                  if (_category?.type == 'income') {
-                                    CategoryRepositoryImpl()
-                                        .update(_category!..budget += _amount);
-                                  } else {
-                                    CategoryRepositoryImpl()
-                                        .update(_category!..amount += _amount);
-                                  }
+                              onPressed: _amount != 0 && _category != null
+                                  ? () {
+                                      final transaction = Transaction(_note,
+                                          _amount, _category!.id, Auth.uid());
+                                      try {
+                                        widget.creationTransactionService
+                                            .handle(transaction);
+                                        if (_category?.type == 'income') {
+                                          CategoryRepositoryImpl().update(
+                                              _category!..budget += _amount);
+                                        } else {
+                                          CategoryRepositoryImpl().update(
+                                              _category!..amount += _amount);
+                                        }
 
-                                  if (foundation.kDebugMode) {
-                                    Logger.info(
-                                        'Transaction created : $transaction');
-                                  }
-                                  //TODO: add to recent transaction or update if back to home screen
-                                } on Exception catch (e) {
-                                  if (foundation.kDebugMode) {
-                                    Logger.error(e.toString());
-                                  }
-                                }
-                                Navigator.of(context).pop();
-                              },
+                                        if (foundation.kDebugMode) {
+                                          Logger.info(
+                                              'Transaction created : $transaction');
+                                        }
+                                        //TODO: add to recent transaction or update if back to home screen
+                                      } on Exception catch (e) {
+                                        if (foundation.kDebugMode) {
+                                          Logger.error(e.toString());
+                                        }
+                                      }
+                                      Navigator.of(context).pop();
+                                    }
+                                  : null,
                               child: const Text(
                                 'Lưu',
                                 style: TextStyle(
