@@ -66,13 +66,13 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
                   categories = categories
                       .where(
                         (element) => element.type == 'income',
-                      )
+                  )
                       .toList();
                 } else {
                   categories = categories
                       .where(
                         (element) => element.type == 'expense',
-                      )
+                  )
                       .toList();
                 }
 
@@ -101,9 +101,10 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
                                   boxShadow: [
                                     BoxShadow(
                                       color: c == _selectedCategory
-                                          ? Theme.of(context)
-                                              .colorScheme
-                                              .primary
+                                          ? Theme
+                                          .of(context)
+                                          .colorScheme
+                                          .primary
                                           : Colors.black12,
                                       blurRadius: 10,
                                     )
@@ -119,7 +120,8 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
                             ),
                           ),
                           Text(c.name,
-                              style: const TextStyle(fontSize: TextSize.medium)),
+                              style: const TextStyle(
+                                  fontSize: TextSize.medium)),
                         ],
                       ),
                     );
@@ -130,10 +132,13 @@ class _CategorySelectorScreenState extends State<CategorySelectorScreen> {
           ),
           Container(
             margin:
-                EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+            EdgeInsets.only(bottom: MediaQuery
+                .of(context)
+                .padding
+                .bottom),
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+              const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
               child: EtButton(
                 onPressed: () {
                   widget._onCategorySelected(_selectedCategory!);
