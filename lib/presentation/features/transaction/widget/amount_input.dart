@@ -39,8 +39,11 @@ class _AmountInputState extends State<AmountInput> {
     );
 
     _controller.addListener(
-      () {
+          () {
         var rawValue = _controller.text.replaceAll(RegExp(r'\D'), '');
+        if (rawValue.isEmpty) {
+          rawValue = '0';
+        }
         var newValue = int.parse(rawValue);
         widget.onChanged?.call(newValue);
         var formattedValue = CurrencyFormatter.formatCurrency(newValue);
@@ -84,11 +87,6 @@ class _AmountInputState extends State<AmountInput> {
           TextField(
             keyboardType: TextInputType.number,
             controller: _controller,
-            onChanged: (value) {
-              if (value.isNotEmpty) {
-                widget.onChanged?.call(int.parse(value));
-              }
-            },
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
               LengthLimitingTextInputFormatter(13)
