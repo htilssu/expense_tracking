@@ -99,4 +99,16 @@ void main() {
     // Act & Assert: Kiểm tra rằng phương thức login ném ra Exception
     expect(() => loginService.login(loginData), throwsA(isA<Exception>()));
   });
+  //testcase 6 : Đăng nhập thất bại do email trống
+  test('Đăng nhập thất bại do email trống', () async {
+    final emptyEmailData = EmailPasswordLogin(email: '', password: 'password123');
+
+    expect(() => loginService.login(emptyEmailData), throwsA(isA<ArgumentError>()));
+  });
+//test case 7: Đăng nhập thất bại do password trống
+  test('Đăng nhập thất bại do password trống', () async {
+    final emptyPasswordData = EmailPasswordLogin(email: 'test@example.com', password: '');
+
+    expect(() => loginService.login(emptyPasswordData), throwsA(isA<ArgumentError>()));
+  });
 }

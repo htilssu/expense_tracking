@@ -11,6 +11,9 @@ import '../../exceptions/wrong_password_exception.dart';
 class EmailPasswordLoginService extends LoginService<EmailPasswordLogin> {
   @override
   Future<void> login(EmailPasswordLogin data) async {
+    if (data.email.isEmpty || data.password.isEmpty) {
+      throw ArgumentError('Email và mật khẩu không được để trống');
+    }
     try {
       await auth?.signInWithEmailAndPassword(
           email: data.email, password: data.password);
