@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:expense_tracking/exceptions/authenticate_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart';

@@ -5,7 +5,6 @@ import 'package:expense_tracking/presentation/bloc/loading/loading_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:expense_tracking/presentation/features/loading_overlay.dart';
 import 'package:expense_tracking/presentation/features/main_page_view.dart';
-import 'package:expense_tracking/utils/auth.dart';
 import 'package:expense_tracking/utils/logging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
