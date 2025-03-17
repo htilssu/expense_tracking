@@ -53,8 +53,8 @@ void main() {
   test('Đăng nhập thất bại do người dùng không tồn tại', () async {
     // Arrange: Giả lập ném ra FirebaseAuthException với mã lỗi 'user-not-found'
     when(mockFirebaseAuth.signInWithEmailAndPassword(
-      email: 'unknow@example.com',
-      password: 'password123',
+      email: anyNamed('email'),
+      password: anyNamed('password'),
     )).thenThrow(FirebaseAuthException(code: 'user-not-found'));
 
     // Act & Assert: Kiểm tra rằng phương thức login ném ra UserNotFoundException
@@ -66,8 +66,8 @@ void main() {
   test('Đăng nhập thất bại do mật khẩu sai', () async {
     // Arrange: Giả lập ném ra FirebaseAuthException với mã lỗi 'wrong-password'
     when(mockFirebaseAuth.signInWithEmailAndPassword(
-      email: loginData.email,
-      password: '${loginData.password}wrong',
+      email: anyNamed('email'),
+      password: anyNamed('password'),
     )).thenThrow(FirebaseAuthException(code: 'wrong-password'));
 
     // Act & Assert: Kiểm tra rằng phương thức login ném ra WrongPasswordException

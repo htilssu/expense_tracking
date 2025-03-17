@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_tracking/application/service/analysis_service_impl.dart';
-import 'package:expense_tracking/domain/dto/overview_data.dart';
 import 'package:expense_tracking/domain/entity/category.dart';
 import 'package:expense_tracking/domain/repository/category_repository.dart';
 import 'package:expense_tracking/utils/auth.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 
 @GenerateMocks([CategoryRepository])
 import 'analysis_service_test.mocks.dart';
@@ -97,13 +96,3 @@ void main() {
   });
 }
 
-// Mock class for Firebase if needed
-class MockAggregateQuerySnapshot extends Mock
-    implements AggregateQuerySnapshot {
-  @override
-  num? getSum(String field) =>
-      super.noSuchMethod(
-        Invocation.method(#getSum, [field]),
-        returnValueForMissingStub: 0,
-      ) as num?;
-}

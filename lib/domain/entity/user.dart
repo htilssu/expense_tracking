@@ -3,21 +3,21 @@ import 'package:expense_tracking/domain/entity/timestamp_entity.dart';
 
 class User extends BaseTimeStampEntity {
   late String id;
-  late String fullName;
   late String email;
   late String firstName;
   late String lastName;
+  late int money;
   late String avatar;
   List<Category> categories = [];
 
-  User(this.id, this.fullName, this.email, this.firstName, this.lastName,
-      {this.avatar = ''});
+  User(this.id, this.email,this.money, this.firstName, this.lastName, {this.avatar = ''});
 
   @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'email': email,
+      'money': money,
       'firstName': firstName,
       'lastName': lastName,
       'avatar': avatar,
@@ -29,8 +29,8 @@ class User extends BaseTimeStampEntity {
     try {
       return User(
         data['id'],
-        '${data['lastName']} ${data['firstName']}',
         data['email'],
+        data['money'],
         data['firstName'],
         data['lastName'],
         avatar: data['avatar'],
@@ -38,6 +38,10 @@ class User extends BaseTimeStampEntity {
     } catch (e) {
       throw Exception('Invalid User data');
     }
+  }
+
+  String get fullName {
+    return '$firstName $lastName';
   }
 
   @override
