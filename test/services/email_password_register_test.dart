@@ -164,12 +164,12 @@ void main() {
   // ✅ Test case 11: Mật khẩu nhập lại không khớp
   test('Mật khẩu nhập lại không khớp', () async {
     final registerData = EmailPasswordRegister('test@gmail.com', '07102004aA@');
-    final rePassword = '07102004bB@';
+    const rePassword = '07102004bB@';
 
     expect(
           () {
         if (registerData.password != rePassword) {
-          throw FormatException('Mật khẩu nhập lại không khớp');
+          throw const FormatException('Mật khẩu nhập lại không khớp');
         }
         return registerService.register(registerData);
       },

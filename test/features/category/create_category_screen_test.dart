@@ -12,9 +12,9 @@ void main() {
   });
 
   group(
-    "Create Category Screen Test",
+    'Create Category Screen Test',
         () {
-      testWidgets("Test widget not missing", (widgetTester) async {
+      testWidgets('Test widget not missing', (widgetTester) async {
         await widgetTester.pumpWidget(
           MaterialApp(
             home: BlocProvider(
@@ -25,16 +25,16 @@ void main() {
         );
 
         // Kiểm tra sự tồn tại của các widget quan trọng
-        expect(find.text("Danh mục mới"), findsOneWidget);
+        expect(find.text('Danh mục mới'), findsOneWidget);
         expect(find.byType(EtTextField), findsNWidgets(2));
         expect(
           find.descendant(
-              of: find.byType(EtButton), matching: find.text("Tạo danh mục")),
+              of: find.byType(EtButton), matching: find.text('Tạo danh mục')),
           findsOneWidget,
         );
       });
 
-      testWidgets("Press create category button with empty name expect error",
+      testWidgets('Press create category button with empty name expect error',
               (widgetTester) async {
             await widgetTester.pumpWidget(
               MaterialApp(
@@ -47,7 +47,7 @@ void main() {
 
             await widgetTester.tap(find.descendant(
               of: find.byType(EtButton),
-              matching: find.text("Tạo danh mục"),
+              matching: find.text('Tạo danh mục'),
             ));
             await widgetTester.pump();
 
@@ -55,7 +55,7 @@ void main() {
             expect(find.text('Tên danh mục không được để trống'), findsOneWidget);
           });
 
-      testWidgets("Enter category name and budget then press create",
+      testWidgets('Enter category name and budget then press create',
               (widgetTester) async {
             await widgetTester.pumpWidget(
               MaterialApp(
@@ -67,19 +67,19 @@ void main() {
             );
 
             await widgetTester.enterText(
-                find.byType(EtTextField).first, "Ăn uống");
+                find.byType(EtTextField).first, 'Ăn uống');
             await widgetTester.enterText(
-                find.byType(EtTextField).last, "500000");
+                find.byType(EtTextField).last, '500000');
 
             await widgetTester.tap(find.descendant(
               of: find.byType(EtButton),
-              matching: find.text("Tạo danh mục"),
+              matching: find.text('Tạo danh mục'),
             ));
             await widgetTester.pump();
 
             // Kiểm tra xem màn hình xử lý khi tạo danh mục hợp lệ
-            expect(find.text("Ăn uống"), findsOneWidget);
-            expect(find.text("500000"), findsOneWidget);
+            expect(find.text('Ăn uống'), findsOneWidget);
+            expect(find.text('500000'), findsOneWidget);
           });
     },
   );
