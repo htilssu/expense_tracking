@@ -20,10 +20,9 @@ import '../../transaction/screen/create_transaction_screen.dart';
 import '../../transaction/widget/transaction_item.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen(
-      {super.key,
-      TransactionService? transactionService,
-      AnalysisService? analysisService}) {
+  HomeScreen({super.key,
+    TransactionService? transactionService,
+    AnalysisService? analysisService}) {
     this.transactionService = transactionService ??
         TransactionServiceImpl(TransactionRepositoryImpl());
     this.analysisService = analysisService ?? AnalysisServiceImpl();
@@ -40,7 +39,7 @@ class HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
   late Future<List<Transaction>> _transactionsFuture;
   final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
+  RefreshController(initialRefresh: false);
 
   @override
   void initState() {
@@ -49,7 +48,7 @@ class HomeScreenState extends State<HomeScreen>
         widget.transactionService.getRecentTransactionsByUserId();
   }
 
-  Future<void> _refreshTransactions() async {
+  Future<void> refreshTransactions() async {
     setState(() {
       _transactionsFuture =
           widget.transactionService.getRecentTransactionsByUserId();
@@ -72,7 +71,10 @@ class HomeScreenState extends State<HomeScreen>
                   child: Container(
                       alignment: Alignment.topCenter,
                       padding: const EdgeInsets.symmetric(horizontal: 32),
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
                       height: 150,
                       child: FutureBuilder<OverviewData>(
                         future: widget.analysisService.getOverviewData(),
@@ -101,12 +103,12 @@ class HomeScreenState extends State<HomeScreen>
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              const TransactionHistoryScreen(),
+                          const TransactionHistoryScreen(),
                         ));
                   },
                   style: TextButton.styleFrom(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+                    const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
                     overlayColor: Colors.transparent,
                   ),
                   child: const Text(
@@ -135,7 +137,10 @@ class HomeScreenState extends State<HomeScreen>
                         onRefresh: _onRefresh,
                         header: WaterDropMaterialHeader(
                           backgroundColor:
-                              Theme.of(context).colorScheme.primary,
+                          Theme
+                              .of(context)
+                              .colorScheme
+                              .primary,
                         ),
                         controller: _refreshController,
                         child: ListView(
@@ -155,16 +160,16 @@ class HomeScreenState extends State<HomeScreen>
                     state is CategoryLoading) {
                   return Expanded(
                       child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: ListView(
-                      padding: EdgeInsets.zero,
-                      physics: const BouncingScrollPhysics(),
-                      children: [
-                        for (int i = 0; i < 5; i++)
-                          const TransactionItemSkeleton()
-                      ],
-                    ),
-                  ));
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          physics: const BouncingScrollPhysics(),
+                          children: [
+                            for (int i = 0; i < 5; i++)
+                              const TransactionItemSkeleton()
+                          ],
+                        ),
+                      ));
                 }
 
                 return Expanded(
@@ -174,7 +179,10 @@ class HomeScreenState extends State<HomeScreen>
                       enablePullDown: true,
                       onRefresh: _onRefresh,
                       header: WaterDropMaterialHeader(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        backgroundColor: Theme
+                            .of(context)
+                            .colorScheme
+                            .primary,
                       ),
                       controller: _refreshController,
                       child: Column(
@@ -201,7 +209,10 @@ class HomeScreenState extends State<HomeScreen>
                               icon: Icon(
                                 Icons.add,
                                 size: 32,
-                                color: Theme.of(context).colorScheme.primary,
+                                color: Theme
+                                    .of(context)
+                                    .colorScheme
+                                    .primary,
                               )),
                           const Text(
                             'Thêm giao dịch',
@@ -221,7 +232,7 @@ class HomeScreenState extends State<HomeScreen>
   }
 
   void _onRefresh() async {
-    await _refreshTransactions();
+    await refreshTransactions();
     _refreshController.refreshCompleted();
   }
 

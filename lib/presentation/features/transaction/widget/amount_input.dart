@@ -27,10 +27,11 @@ class _AmountInputState extends State<AmountInput> {
   }
 
   @override
-  void didUpdateWidget(covariant AmountInput oldWidget) {
+  void didUpdateWidget(AmountInput oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value) {
-      _initializeController();
+      var formattedValue = CurrencyFormatter.formatCurrency(widget.value);
+      _controller.text = formattedValue;
     }
   }
 

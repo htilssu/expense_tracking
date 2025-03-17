@@ -25,8 +25,12 @@ class CreateTransactionScreen extends StatefulWidget {
   late CreationTransactionService creationTransactionService =
       CreationTransactionServiceImpl();
 
+  late Future<void>? refreshRecentTransaction;
+
   CreateTransactionScreen(
-      {super.key, CreationTransactionService? creationTransactionService}) {
+      {super.key,
+      CreationTransactionService? creationTransactionService,
+      this.refreshRecentTransaction}) {
     if (creationTransactionService != null) {
       this.creationTransactionService = creationTransactionService;
     } else {
@@ -70,6 +74,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
   void _onAmountChanged(int amount) {
     setState(() {
       _amount = amount;
+      Logger.info('setting amount');
     });
   }
 
@@ -259,7 +264,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                 bottom: MediaQuery.of(context).padding.bottom),
                             child: EtButton(
                               onPressed: _amount != 0 && _category != null
-                                  ? () {
+                                  ? () async {
                                       final transaction = Transaction(_note,
                                           _amount, _category!.id, Auth.uid());
                                       try {
@@ -294,6 +299,11 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                           Logger.error(e.toString());
                                         }
                                       }
+
+                                      if (widget.refreshRecentTransaction != null) {
+                                        await widget.refreshRecentTransaction;
+                                      }
+
                                       Navigator.of(context).pop();
                                     }
                                   : null,
