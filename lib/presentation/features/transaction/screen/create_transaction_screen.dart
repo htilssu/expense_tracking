@@ -47,22 +47,30 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
   String _note = '';
   late final ScanBillBloc _scanBillBloc;
   late CustomSegmentedController<int> _customSegmentController;
+  late final FocusNode _focusNode;
 
   @override
   void dispose() {
     super.dispose();
+    _focusNode.dispose();
   }
 
   void _onNoteChanged(String note) {
-    _note = note;
+    setState(() {
+      _note = note;
+    });
   }
 
   void onCategorySelected(Category category) {
-    _category = category;
+    setState(() {
+      _category = category;
+    });
   }
 
   void _onAmountChanged(int amount) {
-    _amount = amount;
+    setState(() {
+      _amount = amount;
+    });
   }
 
   @override
@@ -270,17 +278,17 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                               'Transaction created : $transaction');
                                         }
                                         if (_category?.type == 'income') {
-                                    CategoryRepositoryImpl()
-                                        .update(_category!..budget += _amount);
-                                  } else {
-                                    CategoryRepositoryImpl()
-                                        .update(_category!..amount += _amount);
-                                  }
+                                          CategoryRepositoryImpl().update(
+                                              _category!..budget += _amount);
+                                        } else {
+                                          CategoryRepositoryImpl().update(
+                                              _category!..amount += _amount);
+                                        }
 
-                                  if (foundation.kDebugMode) {
-                                    Logger.info(
-                                        'Transaction created : $transaction');
-                                  }//TODO: add to recent transaction or update if back to home screen
+                                        if (foundation.kDebugMode) {
+                                          Logger.info(
+                                              'Transaction created : $transaction');
+                                        } //TODO: add to recent transaction or update if back to home screen
                                       } on Exception catch (e) {
                                         if (foundation.kDebugMode) {
                                           Logger.error(e.toString());

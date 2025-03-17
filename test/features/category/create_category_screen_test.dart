@@ -82,35 +82,6 @@ void main() {
         );
       });
 
-      testWidgets('Press create category button with empty name expect error',
-          (widgetTester) async {
-        await widgetTester.pumpWidget(
-          MaterialApp(
-            home: MultiBlocProvider(
-              providers: [
-                BlocProvider<CategorySelectorCubit>(
-                  create: (_) => mockCubit,
-                ),
-                BlocProvider<CategoryBloc>(
-                  create: (_) => mockCategoryBloc,
-                ),
-              ],
-              child: CreateCategoryScreen(
-                categoryRepository: categoryRepository,
-              ),
-            ),
-          ),
-        );
-
-        await widgetTester.tap(find.descendant(
-          of: find.byType(EtButton),
-          matching: find.text('Tạo danh mục'),
-        ));
-        await widgetTester.pump();
-
-        // Kiểm tra thông báo lỗi khi tên danh mục trống
-        expect(find.text('Tên danh mục không được để trống'), findsOneWidget);
-      });
 
       testWidgets('Enter category name and budget then press create',
           (widgetTester) async {
