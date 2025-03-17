@@ -69,7 +69,7 @@ dependencies:
   flutter_slidable: ^4.0.0
   build_runner: ^2.4.15
   firebase_auth_mocks: ^0.14.1
-
+  firebase_core_platform_interface: ^5.4.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

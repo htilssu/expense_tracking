@@ -190,7 +190,7 @@ void main() {
       )),
     );
   });
-  // ✅ Test case 13: Email trống
+  // ✅ Test case 13: Mat khau khong co ki tu so
   test('Mật khẩu thiếu số', () async {
     final registerData = EmailPasswordRegister('test@gmail.com', 'abcdefghA@');
 

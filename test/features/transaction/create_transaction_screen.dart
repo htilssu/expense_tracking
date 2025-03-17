@@ -33,10 +33,9 @@ void main() {
     // Mock initial states
     whenListen(
       mockScanBillBloc,
-      Stream<ScanBillState>.value([] as ScanBillState),
+      Stream.value(ScanBillInitial()),
       initialState: ScanBillInitial(),
     );
-
     whenListen(
       mockCategoryCubit,
       Stream<CategorySelectorState>.value([] as CategorySelectorState),
