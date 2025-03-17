@@ -101,7 +101,7 @@ void main() {
   });
   //testcase 6 : Đăng nhập thất bại do email trống
   test('Đăng nhập thất bại do email trống', () async {
-    final emptyEmailData = EmailPasswordLogin(email: '', password: 'password123');
+    final emptyEmailData = EmailPasswordLogin(email: '', password: 'password123@');
 
     expect(() => loginService.login(emptyEmailData), throwsA(isA<ArgumentError>()));
   });
