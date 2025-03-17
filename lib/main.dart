@@ -32,9 +32,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late Future<entity.User?> _future;
-
-  bool shouldUpdateNewFuture = true;
+  late Future<entity.User?>? _future;
 
   @override
   void initState() {
@@ -47,14 +45,11 @@ class _MyAppState extends State<MyApp> {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.data == null) {
-          shouldUpdateNewFuture = true;
+          _future = null;
         }
 
         if (snapshot.data != null) {
-          if (shouldUpdateNewFuture) {
-            _future = UserRepositoryImpl().findById(Auth.uid());
-            shouldUpdateNewFuture = false;
-          }
+          _future ??= UserRepositoryImpl().findById(snapshot.data!.uid);
 
           return FutureBuilder(
             future: _future,
