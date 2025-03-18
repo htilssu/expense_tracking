@@ -15,7 +15,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'create_transaction_screen.mocks.dart';
+import 'create_transaction_screen_test.mocks.dart';
+
 
 @GenerateMocks([CreationTransactionServiceImpl])
 void main() {
@@ -33,13 +34,13 @@ void main() {
     // Mock initial states
     whenListen(
       mockScanBillBloc,
-      Stream<ScanBillState>.value(ScanBillInitial()),
+      Stream<ScanBillState>.value([] as ScanBillState),
       initialState: ScanBillInitial(),
     );
 
     whenListen(
       mockCategoryCubit,
-      Stream<CategorySelectorState>.value(IncomeCategory()),
+      Stream<CategorySelectorState>.value([] as CategorySelectorState),
       initialState: IncomeCategory(),
     );
   });
