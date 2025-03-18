@@ -25,12 +25,10 @@ class CreateTransactionScreen extends StatefulWidget {
   late CreationTransactionService creationTransactionService =
       CreationTransactionServiceImpl();
 
-  late Future<void>? refreshRecentTransaction;
-
-  CreateTransactionScreen(
-      {super.key,
-      CreationTransactionService? creationTransactionService,
-      this.refreshRecentTransaction}) {
+  CreateTransactionScreen({
+    super.key,
+    CreationTransactionService? creationTransactionService,
+  }) {
     if (creationTransactionService != null) {
       this.creationTransactionService = creationTransactionService;
     } else {
@@ -51,12 +49,10 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
   String _note = '';
   late final ScanBillBloc _scanBillBloc;
   late CustomSegmentedController<int> _customSegmentController;
-  late final FocusNode _focusNode;
 
   @override
   void dispose() {
     super.dispose();
-    _focusNode.dispose();
   }
 
   void _onNoteChanged(String note) {
@@ -293,15 +289,12 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                         if (foundation.kDebugMode) {
                                           Logger.info(
                                               'Transaction created : $transaction');
-                                        } //TODO: add to recent transaction or update if back to home screen
+                                        }
+                                        //TODO: add to recent transaction or update if back to home screen
                                       } on Exception catch (e) {
                                         if (foundation.kDebugMode) {
                                           Logger.error(e.toString());
                                         }
-                                      }
-
-                                      if (widget.refreshRecentTransaction != null) {
-                                        await widget.refreshRecentTransaction;
                                       }
 
                                       Navigator.of(context).pop();

@@ -61,7 +61,8 @@ void main() {
 
     test('getRecentTransactionsByUserId should propagate exceptions', () async {
       // Arrange
-      when(mockRepository.findRecentByUserId('test-user-id', 1, 5))
+      Auth.uidFunction = () => 'unknown_user';
+      when(mockRepository.findRecentByUserId('unknown_user', 1, 5))
           .thenThrow(Exception('Database error'));
 
       // Act & Assert
@@ -69,7 +70,7 @@ void main() {
         () => transactionService.getRecentTransactionsByUserId(),
         throwsException,
       );
-      verify(mockRepository.findRecentByUserId('test-user-id', 1, 5)).called(1);
+      verify(mockRepository.findRecentByUserId('unknown_user', 1, 5)).called(1);
     });
   });
 }
