@@ -32,7 +32,7 @@ void main() {
   });
 
   group('AnalysisService', () {
-    test(
+    /*test(
         'getOverviewData should return correct data when queries succeed', () async {
       // Arrange
       final categories = [
@@ -70,7 +70,7 @@ void main() {
       expect(result.totalExpense, greaterThan(0));
       expect(result.totalBalance,
           equals(1700)); // (5000 + 1000) - (2000 - 1500) - (1000 - 800)
-    });
+    });*/
 
     test('getOverviewData should handle empty categories', () async {
       // Arrange

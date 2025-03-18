@@ -33,12 +33,13 @@ void main() {
     // Mock initial states
     whenListen(
       mockScanBillBloc,
-      Stream.value(ScanBillInitial()),
+      Stream<ScanBillState>.value(ScanBillInitial()),
       initialState: ScanBillInitial(),
     );
+
     whenListen(
       mockCategoryCubit,
-      Stream<CategorySelectorState>.value([] as CategorySelectorState),
+      Stream<CategorySelectorState>.value(IncomeCategory()),
       initialState: IncomeCategory(),
     );
   });

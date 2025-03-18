@@ -63,6 +63,14 @@ class TransactionRepositoryImpl implements TransactionRepository {
   @override
   Future<List<Transaction>> findRecentByUserId(
       String userId, int page, int size) {
+    if (size > 30) {
+      throw Exception('Size must be less than 30');
+    }
+
+    if (page < 0) {
+      throw Exception('Page must be greater than 0');
+    }
+
     return ref
         .where('user', isEqualTo: userId)
         .orderBy('createdAt', descending: true)

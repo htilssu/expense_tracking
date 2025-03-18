@@ -82,6 +82,7 @@ void main() {
         );
       });
 
+
       testWidgets('Enter category name and budget then press create',
           (widgetTester) async {
         Auth.uidFunction = () => 'test_uid';

@@ -6,9 +6,11 @@ import 'package:flutter/services.dart';
 import '../../../../utils/currency_formatter.dart';
 
 class AmountInput extends StatefulWidget {
-  const AmountInput({super.key, this.onChanged, required this.value});
+  const AmountInput(
+      {super.key, this.onChanged, required this.value, this.focusNode});
 
   final void Function(int)? onChanged;
+  final FocusNode? focusNode;
   final int value;
 
   @override
@@ -25,10 +27,11 @@ class _AmountInputState extends State<AmountInput> {
   }
 
   @override
-  void didUpdateWidget(covariant AmountInput oldWidget) {
+  void didUpdateWidget(AmountInput oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value) {
-      _initializeController();
+      var formattedValue = CurrencyFormatter.formatCurrency(widget.value);
+      _controller.text = formattedValue;
     }
   }
 
@@ -39,7 +42,7 @@ class _AmountInputState extends State<AmountInput> {
     );
 
     _controller.addListener(
-          () {
+      () {
         var rawValue = _controller.text.replaceAll(RegExp(r'\D'), '');
         if (rawValue.isEmpty) {
           rawValue = '0';
@@ -85,6 +88,7 @@ class _AmountInputState extends State<AmountInput> {
             ),
           ),
           TextField(
+            focusNode: widget.focusNode,
             keyboardType: TextInputType.number,
             controller: _controller,
             inputFormatters: [
