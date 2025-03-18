@@ -46,6 +46,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
   int _selectedSegment = 0;
   late int _amount;
   Category? _category;
+  late BillInfo? billInfo;
   String _note = '';
   late final ScanBillBloc _scanBillBloc;
   late CustomSegmentedController<int> _customSegmentController;
@@ -97,16 +98,16 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
           } else if (state is BillScanned) {
             //scan successfully and return a transaction
             loadingCubit.hideLoading();
-            var billInfo = state.billInfo;
+            billInfo = state.billInfo;
 
             //update UI when build is done
             WidgetsBinding.instance.addPostFrameCallback((_) {
               setState(() {
-                _amount = billInfo.money;
-                _note = billInfo.note;
-                _selectedSegment = billInfo.category.type == 'income' ? 0 : 1;
+                _amount = billInfo!.money;
+                _note = billInfo!.note;
+                _selectedSegment = billInfo!.category.type == 'income' ? 0 : 1;
                 _customSegmentController.value = _selectedSegment;
-                _category = billInfo.category;
+                _category = billInfo!.category;
               });
             });
 
@@ -263,9 +264,15 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                   ? () async {
                                       final transaction = Transaction(_note,
                                           _amount, _category!.id, Auth.uid());
+                                      if (billInfo != null) {
+                                        transaction.createdAt = billInfo!.date;
+                                      }
                                       try {
                                         widget.creationTransactionService
                                             .handle(transaction);
+
+                                        billInfo = null;
+
                                         if (_category?.type == 'income') {
                                           CategoryRepositoryImpl().update(
                                               _category!..budget += _amount);

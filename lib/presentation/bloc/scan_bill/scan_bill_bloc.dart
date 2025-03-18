@@ -8,9 +8,7 @@ import 'package:meta/meta.dart';
 
 import '../../../domain/entity/category.dart';
 
-part 'scan_bill_event.dart';
-
-part 'scan_bill_state.dart';
+part 'scan_bill_event.dart';part 'scan_bill_state.dart';
 
 class ScanBillBloc extends Bloc<ScanBillEvent, ScanBillState> {
   final LlmClient _llmClient = GeminiClient();
