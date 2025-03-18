@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_tracking/application/service/analysis_service_impl.dart';
-import 'package:expense_tracking/domain/entity/category.dart';
 import 'package:expense_tracking/domain/repository/category_repository.dart';
 import 'package:expense_tracking/utils/auth.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';

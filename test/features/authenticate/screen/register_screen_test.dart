@@ -14,14 +14,14 @@ void main() {
   });
 
   testWidgets('Hiển thị đúng các widget trong RegisterScreen', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: RegisterScreen()));
+    await tester.pumpWidget(const MaterialApp(home: RegisterScreen()));
     expect(find.text('Đăng ký'), findsNWidgets(2));
     expect(find.byType(TextFormField), findsNWidgets(3));
     expect(find.byType(ElevatedButton), findsOneWidget);
   });
 
   testWidgets('Kiểm tra nhập email không hợp lệ', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: RegisterScreen()));
+    await tester.pumpWidget(const MaterialApp(home: RegisterScreen()));
     await tester.enterText(find.byType(TextFormField).at(0), 'invalid-email');
     await tester.tap(find.byType(ElevatedButton));
     await tester.pump();
@@ -29,7 +29,7 @@ void main() {
   });
 
   testWidgets('Kiểm tra nhập mật khẩu không hợp lệ', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: RegisterScreen()));
+    await tester.pumpWidget(const MaterialApp(home: RegisterScreen()));
     await tester.enterText(find.byType(TextFormField).at(1), '123');
     await tester.tap(find.byType(ElevatedButton));
     await tester.pump();
@@ -37,7 +37,7 @@ void main() {
   });
 
   testWidgets('Kiểm tra mật khẩu không khớp', (WidgetTester tester) async {
-    await tester.pumpWidget(MaterialApp(home: RegisterScreen()));
+    await tester.pumpWidget(const MaterialApp(home: RegisterScreen()));
     await tester.enterText(find.byType(TextFormField).at(1), 'Password@1');
     await tester.enterText(find.byType(TextFormField).at(2), 'Password@2');
     await tester.tap(find.byType(ElevatedButton));

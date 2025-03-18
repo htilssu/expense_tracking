@@ -45,7 +45,7 @@ void main() {
     test('delete - should call delete on document reference', () async {
       // Arrange
       when(mockCollectionRef.doc(any)).thenReturn(mockDocRef);
-      when(mockDocRef.delete()).thenAnswer((_) async => null);
+      when(mockDocRef.delete()).thenAnswer((_) async {});
 
       // Act
       await repository.delete('1');
@@ -87,7 +87,7 @@ void main() {
     test('save - should save transaction', () async {
       // Arrange
       when(mockCollectionRef.doc(any)).thenReturn(mockDocRef);
-      when(mockDocRef.set(any)).thenAnswer((_) async => null);
+      when(mockDocRef.set(any)).thenAnswer((_) async {});
 
       // Act
       final result = await repository.save(testTransaction);
