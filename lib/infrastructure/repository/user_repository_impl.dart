@@ -3,8 +3,11 @@ import 'package:expense_tracking/domain/entity/user.dart';
 import 'package:expense_tracking/domain/repository/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
-  final CollectionReference<Map<String, dynamic>> db =
-      FirebaseFirestore.instance.collection('users');
+  late CollectionReference<Map<String, dynamic>> db;
+
+  UserRepositoryImpl({CollectionReference<Map<String, dynamic>>? db}) {
+    this.db = db ?? FirebaseFirestore.instance.collection('users');
+  }
 
   @override
   Future<void> delete(String id) async {
