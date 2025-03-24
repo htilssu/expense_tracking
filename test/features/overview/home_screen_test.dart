@@ -35,8 +35,8 @@ void main() {
         Stream<CategoryState>.fromIterable([const CategoryLoaded([])]),
         initialState: CategoryInitial());
     whenListen(userBloc, const Stream<UserState>.empty(),
-        initialState: UserLoaded(
-            user: User('123', 'fullName', 'email', 'firstName', 'lastName')));
+        initialState:
+            UserLoaded(user: User('123', 'email', 0, 'firstName', 'lastName')));
   });
 
   Widget createHomeScreen() {

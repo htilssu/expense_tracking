@@ -1,23 +1,24 @@
+import 'package:expense_tracking/domain/entity/Clonable.dart';
 import 'package:expense_tracking/domain/entity/category.dart';
 import 'package:expense_tracking/domain/entity/timestamp_entity.dart';
 
-class User extends BaseTimeStampEntity {
+class User extends BaseTimeStampEntity implements Cloneable {
   late String id;
-  late String fullName;
   late String email;
   late String firstName;
   late String lastName;
+  late int money;
   late String avatar;
   List<Category> categories = [];
 
-  User(this.id, this.fullName, this.email, this.firstName, this.lastName,
-      {this.avatar = ''});
+  User(this.id, this.email, this.money, this.firstName, this.lastName, {this.avatar = ''});
 
   @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'email': email,
+      'money': money,
       'firstName': firstName,
       'lastName': lastName,
       'avatar': avatar,
@@ -29,8 +30,8 @@ class User extends BaseTimeStampEntity {
     try {
       return User(
         data['id'],
-        '${data['lastName']} ${data['firstName']}',
         data['email'],
+        data['money'],
         data['firstName'],
         data['lastName'],
         avatar: data['avatar'],
@@ -40,7 +41,16 @@ class User extends BaseTimeStampEntity {
     }
   }
 
+  String get fullName {
+    return '$firstName $lastName';
+  }
+
   @override
   List<Object?> get props =>
-      [id, email, firstName, lastName, avatar, categories];
+      [id, email, firstName, lastName, money, avatar, categories];
+
+  @override
+  User clone() {
+    return User.fromMap(toMap())..updatedAt = DateTime.now();
+  }
 }

@@ -7,8 +7,8 @@ abstract class BaseTimeStampEntity extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
+      'createdAt': Timestamp.fromDate(createdAt),
+      'updatedAt': Timestamp.fromDate(updatedAt),
     };
   }
 

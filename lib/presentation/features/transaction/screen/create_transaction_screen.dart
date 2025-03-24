@@ -5,6 +5,7 @@ import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:expense_tracking/domain/entity/transaction.dart';
 import 'package:expense_tracking/domain/service/creation_transaction_service.dart';
 import 'package:expense_tracking/infrastructure/repository/category_repository_impl.dart';
+import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
 import 'package:expense_tracking/presentation/bloc/category_selector/category_selector_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/loading/loading_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/scan_bill/scan_bill_bloc.dart';
@@ -19,19 +20,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/entity/category.dart';
 import '../../../../utils/auth.dart';
+import '../../../bloc/user/user_bloc.dart';
 import '../widget/category_selector.dart';
 
 class CreateTransactionScreen extends StatefulWidget {
   late CreationTransactionService creationTransactionService =
       CreationTransactionServiceImpl();
 
-  CreateTransactionScreen(
-      {super.key, CreationTransactionService? creationTransactionService}) {
-    if (creationTransactionService != null) {
-      this.creationTransactionService = creationTransactionService;
-    } else {
-      creationTransactionService = CreationTransactionServiceImpl();
-    }
+  CreateTransactionScreen({
+    super.key,
+    CreationTransactionService? creationTransactionService,
+  }) {
+    this.creationTransactionService =
+        creationTransactionService ?? CreationTransactionServiceImpl();
   }
 
   @override
@@ -44,6 +45,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
   int _selectedSegment = 0;
   late int _amount;
   Category? _category;
+  late BillInfo? billInfo;
   String _note = '';
   late final ScanBillBloc _scanBillBloc;
   late CustomSegmentedController<int> _customSegmentController;
@@ -54,15 +56,22 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
   }
 
   void _onNoteChanged(String note) {
-    _note = note;
+    setState(() {
+      _note = note;
+    });
   }
 
   void onCategorySelected(Category category) {
-    _category = category;
+    setState(() {
+      _category = category;
+    });
   }
 
   void _onAmountChanged(int amount) {
-    _amount = amount;
+    setState(() {
+      _amount = amount;
+      Logger.info('setting amount');
+    });
   }
 
   @override
@@ -88,16 +97,16 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
           } else if (state is BillScanned) {
             //scan successfully and return a transaction
             loadingCubit.hideLoading();
-            var billInfo = state.billInfo;
+            billInfo = state.billInfo;
 
             //update UI when build is done
             WidgetsBinding.instance.addPostFrameCallback((_) {
               setState(() {
-                _amount = billInfo.money;
-                _note = billInfo.note;
-                _selectedSegment = billInfo.category.type == 'income' ? 0 : 1;
+                _amount = billInfo!.money;
+                _note = billInfo!.note;
+                _selectedSegment = billInfo!.category.type == 'income' ? 0 : 1;
                 _customSegmentController.value = _selectedSegment;
-                _category = billInfo.category;
+                _category = billInfo!.category;
               });
             });
 
@@ -251,41 +260,54 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                 bottom: MediaQuery.of(context).padding.bottom),
                             child: EtButton(
                               onPressed: _amount != 0 && _category != null
-                                  ? () {
+                                  ? () async {
+                                      var userBloc =
+                                          BlocProvider.of<UserBloc>(context);
+                                      var user =
+                                          (userBloc.state as UserLoaded).user;
                                       final transaction = Transaction(_note,
                                           _amount, _category!.id, Auth.uid());
+
+                                      if (billInfo != null) {
+                                        transaction.createdAt = billInfo!.date;
+                                      }
+
                                       try {
                                         widget.creationTransactionService
                                             .handle(transaction);
+
+                                        billInfo = null;
+
                                         if (_category?.type == 'income') {
-                                          CategoryRepositoryImpl().update(
-                                              _category!..budget += _amount);
+
+                                              _category!.budget += _amount;
+                                          user.money += _amount;
                                         } else {
-                                          CategoryRepositoryImpl().update(
-                                              _category!..amount += _amount);
+
+                                              _category!.amount += _amount;
+                                          user.money -= _amount;
                                         }
+
+                                        userBloc
+                                            .add(UpdateUserEvent(user.clone()));
+
+                                        UserRepositoryImpl().update(user);
+
+                                        CategoryRepositoryImpl()
+                                            .update(_category!);
 
                                         if (foundation.kDebugMode) {
                                           Logger.info(
                                               'Transaction created : $transaction');
                                         }
-                                        if (_category?.type == 'income') {
-                                    CategoryRepositoryImpl()
-                                        .update(_category!..budget += _amount);
-                                  } else {
-                                    CategoryRepositoryImpl()
-                                        .update(_category!..amount += _amount);
-                                  }
 
-                                  if (foundation.kDebugMode) {
-                                    Logger.info(
-                                        'Transaction created : $transaction');
-                                  }//TODO: add to recent transaction or update if back to home screen
+                                        //TODO: add to recent transaction or update if back to home screen
                                       } on Exception catch (e) {
                                         if (foundation.kDebugMode) {
                                           Logger.error(e.toString());
                                         }
                                       }
+
                                       Navigator.of(context).pop();
                                     }
                                   : null,

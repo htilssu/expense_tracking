@@ -21,15 +21,15 @@ class CreateCategoryScreen extends StatefulWidget {
   }
 
   @override
-  State<CreateCategoryScreen> createState() => _CreateCategoryScreenState();
+  State<CreateCategoryScreen> createState() => CreateCategoryScreenState();
 }
 
-class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
+class CreateCategoryScreenState extends State<CreateCategoryScreen> {
   String _categoryName = '';
 
   double _budget = 0;
 
-  List<Category> _categories = [];
+  List<Category> categories = [];
 
   bool _canCreateCategory = false;
 
@@ -38,7 +38,7 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
     var categoryBloc = BlocProvider.of<CategoryBloc>(context);
     var categoryState = categoryBloc.state;
     if (categoryState is CategoryLoaded) {
-      _categories = categoryState.categories;
+      categories = categoryState.categories;
     }
 
     var categorySelectorCubit = BlocProvider.of<CategorySelectorCubit>(context);
@@ -85,13 +85,13 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
                       onChanged: (value) {
                         _categoryName = value;
                         setState(() {
-                          _canCreateCategory = !_isCategoryNameExist(value) &&
+                          _canCreateCategory = !isCategoryNameExist(value) &&
                               value.trim().isNotEmpty;
                         });
                       },
                       label: 'Tên danh mục',
                     ),
-                    if (_isCategoryNameExist(_categoryName))
+                    if (isCategoryNameExist(_categoryName))
                       Container(
                         alignment: Alignment.centerLeft,
                         child: const Text(
@@ -134,6 +134,7 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
                               categorySelectorCubit.state is IncomeCategory
                                   ? 'income'
                                   : 'expense';
+
                           var category = Category(_categoryName, 0,
                               _budget.toInt(), categoryType, Auth.uid());
 
@@ -153,7 +154,7 @@ class _CreateCategoryScreenState extends State<CreateCategoryScreen> {
     );
   }
 
-  bool _isCategoryNameExist(String categoryName) {
-    return _categories.any((element) => element.name == categoryName);
+  bool isCategoryNameExist(String categoryName) {
+    return categories.any((element) => element.name == categoryName);
   }
 }

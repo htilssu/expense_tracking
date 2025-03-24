@@ -3,16 +3,25 @@ part of 'user_bloc.dart';
 @immutable
 sealed class UserEvent extends Equatable {}
 
-final class LoadUser extends UserEvent {
+final class LoadUserEvent extends UserEvent {
   final String uid;
 
-  LoadUser(this.uid);
+  LoadUserEvent(this.uid);
 
   @override
   List<Object?> get props => [uid];
 }
 
-final class ClearUser extends UserEvent {
+final class ClearUserEvent extends UserEvent {
   @override
   List<Object?> get props => [];
+}
+
+final class UpdateUserEvent extends UserEvent {
+  User user;
+
+  UpdateUserEvent(this.user);
+
+  @override
+  List<Object?> get props => [user];
 }

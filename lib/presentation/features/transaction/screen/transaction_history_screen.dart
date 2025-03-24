@@ -4,6 +4,7 @@ import 'package:expense_tracking/presentation/features/transaction/widget/transa
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../constants/text_constant.dart';
 import '../../../../domain/entity/transaction.dart';
 
 class TransactionHistoryScreen extends StatefulWidget {
@@ -31,7 +32,7 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.pop(context, false); // Không xóa, chỉ chỉnh sửa
+              Navigator.pop(context, false);
             },
             child: const Text('Chỉnh sửa'),
           ),
@@ -48,64 +49,64 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          const SliverAppBar(
-            floating: false,
-            pinned: false,
-            title: Text('Lịch sử giao dịch'),
-            centerTitle: true,
-          ),
-          BlocBuilder<TransactionBloc, TransactionState>(
-            builder: (context, state) {
-              if (state is TransactionLoaded) {
-                return SliverPadding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  sliver: SliverList(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final transaction = state.transactions[index];
-                        return Dismissible(
-                          key: Key(transaction.id.toString()),
-                          // Đảm bảo mỗi item có key duy nhất
-                          direction: DismissDirection.endToStart,
-                          // Chỉ cho phép vuốt từ phải sang trái
-                          background: Container(),
-                          // Để trống nếu không cần tùy chọn khi vuốt sang phải
-                          secondaryBackground: Container(
-                            color: Colors.red,
-                            alignment: Alignment.centerRight,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Icon(Icons.edit, color: Colors.white),
-                                SizedBox(width: 20),
-                                Icon(Icons.delete, color: Colors.white),
-                              ],
-                            ),
-                          ),
-                          onDismissed: (direction) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Đã xóa giao dịch')),
-                            );
-                          },
-                          confirmDismiss: (direction) async {
-                            // Hiển thị dialog xác nhận hoặc xử lý tùy chọn
-                            return await _showOptionsDialog(
-                                context, transaction);
-                          },
-                          child: TransactionItem(transaction),
-                        );
-                      },
-                      childCount: state.transactions.length,
-                    ),
-                  ),
-                );
-              }
+    return BlocBuilder<TransactionBloc, TransactionState>(
+        builder: (context, state) {
+      if (state is TransactionLoaded) {
+        if (state.transactions.isEmpty) {
+          return _getNoTransactionWidget();
+        }
+      }
 
-              return SliverPadding(
+      return Scaffold(
+        body: CustomScrollView(
+          slivers: [
+            const SliverAppBar(
+              floating: false,
+              pinned: false,
+              title: Text('Lịch sử giao dịch'),
+              centerTitle: true,
+            ),
+            if (state is TransactionLoaded)
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                      final transaction = state.transactions[index];
+                      return Dismissible(
+                        key: Key(transaction.id.toString()),
+                        direction: DismissDirection.endToStart,
+                        background: Container(),
+                        secondaryBackground: Container(
+                          color: Colors.red,
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Icon(Icons.edit, color: Colors.white),
+                              SizedBox(width: 20),
+                              Icon(Icons.delete, color: Colors.white),
+                            ],
+                          ),
+                        ),
+                        onDismissed: (direction) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Đã xóa giao dịch')),
+                          );
+                        },
+                        confirmDismiss: (direction) async {
+                          return await _showOptionsDialog(context, transaction);
+                        },
+                        child: TransactionItem(transaction),
+                      );
+                    },
+                    childCount: state.transactions.length,
+                  ),
+                ),
+              )
+            else
+              SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 sliver: SliverList(
                   delegate: SliverChildBuilderDelegate(
@@ -115,11 +116,24 @@ class _TransactionHistoryScreenState extends State<TransactionHistoryScreen> {
                     childCount: 10,
                   ),
                 ),
-              );
-            },
+              )
+          ],
+        ),
+      );
+    });
+  }
+
+  Widget _getNoTransactionWidget() {
+    return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text('Lịch sử giao dịch'),
+        ),
+        body: const Center(
+          child: Text(
+            'Không có giao dịch nào',
+            style: TextStyle(fontSize: TextSize.medium),
           ),
-        ],
-      ),
-    );
+        ));
   }
 }

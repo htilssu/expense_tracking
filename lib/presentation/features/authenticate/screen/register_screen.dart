@@ -165,7 +165,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     });
 
     if (result != null) {
-      BlocProvider.of<UserBloc>(context).add(LoadUser(result));
+      BlocProvider.of<UserBloc>(context).add(LoadUserEvent(result));
       Navigator.pop(context); // Quay lại LoginScreen
     }
   }
@@ -178,7 +178,7 @@ class RegisterScreenState extends State<RegisterScreen> {
       var user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         await UserRepositoryImpl()
-            .save(entity.User(user.uid, '', user.email!, '', ''));
+            .save(entity.User(user.uid, user.email!,0, '', ''));
 
         await CategoryServiceImpl().saveDefaultCategories();
 

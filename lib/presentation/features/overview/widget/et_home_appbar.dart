@@ -72,7 +72,7 @@ class EtHomeAppbar extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             FirebaseAuth.instance.signOut();
-                            BlocProvider.of<UserBloc>(context).add(ClearUser());
+                            BlocProvider.of<UserBloc>(context).add(ClearUserEvent());
                           },
                           icon: const EtNotify(false),
                           style: ElevatedButton.styleFrom(

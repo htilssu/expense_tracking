@@ -49,11 +49,9 @@ class HomeScreenState extends State<HomeScreen>
         widget.transactionService.getRecentTransactionsByUserId();
   }
 
-  Future<void> _refreshTransactions() async {
-    setState(() {
-      _transactionsFuture =
-          widget.transactionService.getRecentTransactionsByUserId();
-    });
+  Future<void> refreshTransactions() async {
+    _transactionsFuture =
+        widget.transactionService.getRecentTransactionsByUserId();
   }
 
   @override
@@ -221,7 +219,8 @@ class HomeScreenState extends State<HomeScreen>
   }
 
   void _onRefresh() async {
-    await _refreshTransactions();
+    await refreshTransactions();
+    setState(() {});
     _refreshController.refreshCompleted();
   }
 
