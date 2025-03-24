@@ -11,8 +11,7 @@ class User extends BaseTimeStampEntity implements Cloneable {
   late String avatar;
   List<Category> categories = [];
 
-  User(this.id, this.email, this.money, this.firstName, this.lastName,
-      {this.avatar = ''});
+  User(this.id, this.email, this.money, this.firstName, this.lastName, {this.avatar = ''});
 
   @override
   Map<String, dynamic> toMap() {

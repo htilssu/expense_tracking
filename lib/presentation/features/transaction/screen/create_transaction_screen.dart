@@ -279,10 +279,12 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                         billInfo = null;
 
                                         if (_category?.type == 'income') {
-                                          _category!.budget += _amount;
+
+                                              _category!.budget += _amount;
                                           user.money += _amount;
                                         } else {
-                                          _category!.amount += _amount;
+
+                                              _category!.amount += _amount;
                                           user.money -= _amount;
                                         }
 
