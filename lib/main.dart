@@ -5,7 +5,6 @@ import 'package:expense_tracking/presentation/bloc/loading/loading_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:expense_tracking/presentation/features/loading_overlay.dart';
 import 'package:expense_tracking/presentation/features/main_page_view.dart';
-import 'package:expense_tracking/utils/auth.dart';
 import 'package:expense_tracking/utils/logging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,9 +31,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late Future<entity.User?> _future;
-
-  bool shouldUpdateNewFuture = true;
+  late Future<entity.User?>? _future;
 
   @override
   void initState() {
@@ -47,14 +44,11 @@ class _MyAppState extends State<MyApp> {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.data == null) {
-          shouldUpdateNewFuture = true;
+          _future = null;
         }
 
         if (snapshot.data != null) {
-          if (shouldUpdateNewFuture) {
-            _future = UserRepositoryImpl().findById(Auth.uid());
-            shouldUpdateNewFuture = false;
-          }
+          _future ??= UserRepositoryImpl().findById(snapshot.data!.uid);
 
           return FutureBuilder(
             future: _future,

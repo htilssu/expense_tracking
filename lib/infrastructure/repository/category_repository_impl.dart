@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expense_tracking/domain/entity/category.dart';
 import 'package:expense_tracking/domain/repository/category_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:expense_tracking/utils/auth.dart';
 
 class CategoryRepositoryImpl implements CategoryRepository {
   CollectionReference<Map<String, dynamic>> docRef =
@@ -45,9 +45,9 @@ class CategoryRepositoryImpl implements CategoryRepository {
 
   @override
   Future<List<Category>> getCategories() {
-    var fireAuth = FirebaseAuth.instance;
+    var userId = Auth.uid();
     return docRef
-        .where('user', isEqualTo: fireAuth.currentUser!.uid)
+        .where('user', isEqualTo: userId)
         .get()
         .then(
           (value) => value.docs

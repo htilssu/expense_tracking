@@ -84,8 +84,8 @@ class AnalysisServiceImpl extends AnalysisService {
     );
 
     return OverviewData(
-        totalIncome: income.toInt(),
         totalBalance: balance,
+        totalIncome: income.toInt(),
         totalExpense: expense.toInt());
   }
 }

@@ -9,7 +9,7 @@ import 'package:http/http.dart';
 
 import '../utils/logging.dart';
 
-class GeminiClient extends LlmClient implements ImageAnalyzeClient {
+class GeminiClient implements ImageAnalyzeClient, LlmClient {
   Uri textEndpoint =
       Uri.parse('https://expensetrackingserver.vercel.app/gemini/text');
   Uri imageEndpoint =
