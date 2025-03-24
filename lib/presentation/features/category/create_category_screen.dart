@@ -134,6 +134,7 @@ class CreateCategoryScreenState extends State<CreateCategoryScreen> {
                               categorySelectorCubit.state is IncomeCategory
                                   ? 'income'
                                   : 'expense';
+
                           var category = Category(_categoryName, 0,
                               _budget.toInt(), categoryType, Auth.uid());
 

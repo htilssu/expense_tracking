@@ -165,7 +165,7 @@ class RegisterScreenState extends State<RegisterScreen> {
     });
 
     if (result != null) {
-      BlocProvider.of<UserBloc>(context).add(LoadUser(result));
+      BlocProvider.of<UserBloc>(context).add(LoadUserEvent(result));
       Navigator.pop(context); // Quay lại LoginScreen
     }
   }

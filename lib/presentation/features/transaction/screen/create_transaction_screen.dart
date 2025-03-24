@@ -5,6 +5,7 @@ import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:expense_tracking/domain/entity/transaction.dart';
 import 'package:expense_tracking/domain/service/creation_transaction_service.dart';
 import 'package:expense_tracking/infrastructure/repository/category_repository_impl.dart';
+import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
 import 'package:expense_tracking/presentation/bloc/category_selector/category_selector_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/loading/loading_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/scan_bill/scan_bill_bloc.dart';
@@ -19,6 +20,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../domain/entity/category.dart';
 import '../../../../utils/auth.dart';
+import '../../../bloc/user/user_bloc.dart';
 import '../widget/category_selector.dart';
 
 class CreateTransactionScreen extends StatefulWidget {
@@ -29,11 +31,8 @@ class CreateTransactionScreen extends StatefulWidget {
     super.key,
     CreationTransactionService? creationTransactionService,
   }) {
-    if (creationTransactionService != null) {
-      this.creationTransactionService = creationTransactionService;
-    } else {
-      creationTransactionService = CreationTransactionServiceImpl();
-    }
+    this.creationTransactionService =
+        creationTransactionService ?? CreationTransactionServiceImpl();
   }
 
   @override
@@ -262,11 +261,17 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                             child: EtButton(
                               onPressed: _amount != 0 && _category != null
                                   ? () async {
+                                      var userBloc =
+                                          BlocProvider.of<UserBloc>(context);
+                                      var user =
+                                          (userBloc.state as UserLoaded).user;
                                       final transaction = Transaction(_note,
                                           _amount, _category!.id, Auth.uid());
+
                                       if (billInfo != null) {
                                         transaction.createdAt = billInfo!.date;
                                       }
+
                                       try {
                                         widget.creationTransactionService
                                             .handle(transaction);
@@ -274,29 +279,26 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                         billInfo = null;
 
                                         if (_category?.type == 'income') {
-                                          CategoryRepositoryImpl().update(
-                                              _category!..budget += _amount);
+                                          _category!.budget += _amount;
+                                          user.money += _amount;
                                         } else {
-                                          CategoryRepositoryImpl().update(
-                                              _category!..amount += _amount);
+                                          _category!.amount += _amount;
+                                          user.money -= _amount;
                                         }
+
+                                        userBloc
+                                            .add(UpdateUserEvent(user.clone()));
+
+                                        UserRepositoryImpl().update(user);
+
+                                        CategoryRepositoryImpl()
+                                            .update(_category!);
 
                                         if (foundation.kDebugMode) {
                                           Logger.info(
                                               'Transaction created : $transaction');
                                         }
-                                        if (_category?.type == 'income') {
-                                          CategoryRepositoryImpl().update(
-                                              _category!..budget += _amount);
-                                        } else {
-                                          CategoryRepositoryImpl().update(
-                                              _category!..amount += _amount);
-                                        }
 
-                                        if (foundation.kDebugMode) {
-                                          Logger.info(
-                                              'Transaction created : $transaction');
-                                        }
                                         //TODO: add to recent transaction or update if back to home screen
                                       } on Exception catch (e) {
                                         if (foundation.kDebugMode) {
