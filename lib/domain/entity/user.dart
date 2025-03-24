@@ -1,7 +1,8 @@
+import 'package:expense_tracking/domain/entity/Clonable.dart';
 import 'package:expense_tracking/domain/entity/category.dart';
 import 'package:expense_tracking/domain/entity/timestamp_entity.dart';
 
-class User extends BaseTimeStampEntity {
+class User extends BaseTimeStampEntity implements Cloneable {
   late String id;
   late String email;
   late String firstName;
@@ -10,7 +11,7 @@ class User extends BaseTimeStampEntity {
   late String avatar;
   List<Category> categories = [];
 
-  User(this.id, this.email,this.money, this.firstName, this.lastName, {this.avatar = ''});
+  User(this.id, this.email, this.money, this.firstName, this.lastName, {this.avatar = ''});
 
   @override
   Map<String, dynamic> toMap() {
@@ -46,5 +47,10 @@ class User extends BaseTimeStampEntity {
 
   @override
   List<Object?> get props =>
-      [id, email, firstName, lastName, avatar, categories];
+      [id, email, firstName, lastName, money, avatar, categories];
+
+  @override
+  User clone() {
+    return User.fromMap(toMap())..updatedAt = DateTime.now();
+  }
 }

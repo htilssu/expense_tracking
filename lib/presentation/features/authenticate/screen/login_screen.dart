@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       onEmailPasswordLogin().then(
                         (value) {
                           if (context.mounted) {
-                            BlocProvider.of<UserBloc>(context).add(LoadUser(
+                            BlocProvider.of<UserBloc>(context).add(LoadUserEvent(
                                 FirebaseAuth.instance.currentUser!.uid));
                           }
                         },

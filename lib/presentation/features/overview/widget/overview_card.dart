@@ -1,7 +1,9 @@
 import 'package:expense_tracking/constants/text_constant.dart';
 import 'package:expense_tracking/domain/dto/overview_data.dart';
+import 'package:expense_tracking/presentation/bloc/user/user_bloc.dart';
 import 'package:expense_tracking/utils/currency_formatter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
 class OverviewCard extends StatelessWidget {
@@ -45,29 +47,34 @@ class OverviewCard extends StatelessWidget {
                             fontWeight: FontWeight.normal,
                             color: Theme.of(context).colorScheme.onPrimary),
                       ),
-                      if (overviewData != null)
-                        Text(
-                          CurrencyFormatter.formatCurrency(
-                              overviewData!.totalBalance),
-                          style: TextStyle(
-                              fontSize: TextSize.large,
-                              fontWeight: FontWeight.normal,
-                              color: Theme.of(context).colorScheme.onPrimary),
-                        )
-                      else
-                        Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!.withAlpha(100),
-                          highlightColor: Colors.grey[200]!.withAlpha(120),
-                          child: Container(
-                            margin: const EdgeInsets.only(top: 8),
-                            width: 130,
-                            height: 25,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(3),
-                              color: Colors.grey[300],
+                      BlocBuilder<UserBloc, UserState>(
+                        builder: (context, state) {
+                          if (state is UserLoaded) {
+                            return Text(
+                              CurrencyFormatter.formatCurrency(
+                                  state.user.money),
+                              style: TextStyle(
+                                  fontSize: TextSize.large,
+                                  fontWeight: FontWeight.normal,
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary),
+                            );
+                          }
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!.withAlpha(100),
+                            highlightColor: Colors.grey[200]!.withAlpha(120),
+                            child: Container(
+                              margin: const EdgeInsets.only(top: 8),
+                              width: 130,
+                              height: 25,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(3),
+                                color: Colors.grey[300],
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
+                      ),
                     ],
                   ),
                   Icon(
@@ -150,7 +157,8 @@ class OverviewCard extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onPrimary),
                   ),
                   Text(
-                    CurrencyFormatter.formatCurrency(overviewData!.totalExpense),
+                    CurrencyFormatter.formatCurrency(
+                        overviewData!.totalExpense),
                     style: TextStyle(
                         fontSize: TextSize.medium + 2,
                         fontWeight: FontWeight.normal,

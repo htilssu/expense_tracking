@@ -15,20 +15,22 @@ class UserBloc extends Bloc<UserEvent, UserState> {
   final CategoryService _categoryService = CategoryServiceImpl();
 
   UserBloc() : super(UserInitial()) {
-    on<LoadUser>(_onLoadUser);
-    on<ClearUser>(_onClearUser);
+    on<LoadUserEvent>(_onLoadUser);
+    on<ClearUserEvent>(_onClearUser);
+    on<UpdateUserEvent>(_onUpdateUser);
   }
 
   UserBloc.fromState(super.initialState) {
-    on<LoadUser>(_onLoadUser);
-    on<ClearUser>(_onClearUser);
+    on<LoadUserEvent>(_onLoadUser);
+    on<ClearUserEvent>(_onClearUser);
+    on<UpdateUserEvent>(_onUpdateUser);
 
     if (state is UserLoaded) {
-      add(LoadUser((state as UserLoaded).user.id));
+      add(LoadUserEvent((state as UserLoaded).user.id));
     }
   }
 
-  Future<void> _onLoadUser(LoadUser event, Emitter<UserState> emit) async {
+  Future<void> _onLoadUser(LoadUserEvent event, Emitter<UserState> emit) async {
     try {
       var user = await _userRepository.findById(event.uid);
       var categories = await _categoryService.getCategories();
@@ -44,7 +46,15 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     }
   }
 
-  void _onClearUser(ClearUser event, Emitter<UserState> emit) {
+  void _onClearUser(ClearUserEvent event, Emitter<UserState> emit) {
     emit(UserInitial());
+  }
+
+  void _onUpdateUser(UpdateUserEvent event, Emitter<UserState> emit) {
+    if (state is UserLoaded) {
+      emit(UserLoaded(user: event.user));
+    } else {
+      emit(UserError(message: 'Người dùng không tồn tại'));
+    }
   }
 }
