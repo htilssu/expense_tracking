@@ -1,8 +1,11 @@
 import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
+import 'package:expense_tracking/presentation/bloc/user/user_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../constants/app_theme.dart';
 import '../../../../constants/text_constant.dart';
+import '../../../../utils/currency_formatter.dart';
 
 class AnalysisScreen extends StatefulWidget {
   const AnalysisScreen({super.key});
@@ -22,6 +25,8 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var user = (BlocProvider.of<UserBloc>(context).state as UserLoaded).user;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Container(
@@ -42,19 +47,19 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                         color: Colors.teal[50],
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Row(
+                      child: Row(
                         children: [
-                          Icon(Icons.account_balance_wallet,
+                          const Icon(Icons.account_balance_wallet,
                               color: Colors.green),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Số dư',
+                              const Text('Số dư',
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.grey)),
-                              Text('\$7,783.00',
-                                  style: TextStyle(
+                              Text(CurrencyFormatter.formatCurrency(user.money),
+                                  style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold)),
                             ],
@@ -68,18 +73,18 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                         color: Colors.teal[50],
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Row(
+                      child: Row(
                         children: [
-                          Icon(Icons.trending_down, color: Colors.blue),
-                          SizedBox(width: 8),
+                          const Icon(Icons.trending_down, color: Colors.blue),
+                          const SizedBox(width: 8),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Đã chi tiêu',
+                              const Text('Đã chi tiêu',
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.grey)),
-                              Text('-\$1,187.40',
-                                  style: TextStyle(
+                              Text(CurrencyFormatter.formatCurrency(user.money),
+                                  style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.blue)),
