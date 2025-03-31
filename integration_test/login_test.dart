@@ -21,10 +21,9 @@ void main() {
       await tester.pumpWidget(const MyApp());
 
       // Nhập email hợp lệ
-      await tester.enterText(
-          find.byType(TextField).at(0), 'testhihi@gmail.com');
+      await tester.enterText(find.byType(TextField).at(0), 'test@example.com');
       // Nhập mật khẩu hợp lệ
-      await tester.enterText(find.byType(TextField).at(1), 'Test@2004');
+      await tester.enterText(find.byType(TextField).at(1), 'password123');
 
       // Nhấn nút "Đăng nhập"
       await tester.tap(find.widgetWithText(ElevatedButton, 'Đăng nhập'));
