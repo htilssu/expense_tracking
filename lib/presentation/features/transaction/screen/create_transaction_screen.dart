@@ -45,7 +45,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
   int _selectedSegment = 0;
   late int _amount;
   Category? _category;
-  late BillInfo? billInfo;
+  BillInfo? billInfo;
   String _note = '';
   late final ScanBillBloc _scanBillBloc;
   late CustomSegmentedController<int> _customSegmentController;
@@ -279,12 +279,10 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                         billInfo = null;
 
                                         if (_category?.type == 'income') {
-
-                                              _category!.budget += _amount;
+                                          _category!.budget += _amount;
                                           user.money += _amount;
                                         } else {
-
-                                              _category!.amount += _amount;
+                                          _category!.amount += _amount;
                                           user.money -= _amount;
                                         }
 
