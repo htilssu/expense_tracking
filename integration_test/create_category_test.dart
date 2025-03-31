@@ -57,7 +57,12 @@ void main() {
         await tester.pumpWidget(await buildTestWidget());
         await tester.pumpAndSettle();
 
-        await tester.tap(find.widgetWithIcon(IconButton, Icons.add).first);
+        await tester.tap(
+          find.descendant(
+            of: find.byType(FloatingActionButton),
+            matching: find.byIcon(Icons.add),
+          ),
+        );
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(CategorySelector).first);
@@ -66,7 +71,7 @@ void main() {
         await tester.tap(find.widgetWithIcon(IconButton, Icons.add).first);
         await tester.pumpAndSettle();
 
-        await tester.enterText(find.byType(EtTextField).first, 'Mua sắm2');
+        await tester.enterText(find.byType(EtTextField).first, 'Mua sắm 5');
         await tester.enterText(find.byType(NumberInput).first, '500000');
         await tester.pumpAndSettle();
 
@@ -83,7 +88,14 @@ void main() {
         await tester.pumpWidget(await buildTestWidget());
         await tester.pumpAndSettle();
 
-        await tester.tap(find.widgetWithIcon(IconButton, Icons.add).first);
+        await tester.tap(
+          find.descendant(
+            of: find.byType(FloatingActionButton),
+            matching: find.byIcon(Icons.add),
+          ),
+        );
+        await tester.pumpAndSettle();
+
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(CategorySelector).first);
@@ -108,7 +120,12 @@ void main() {
         await tester.pumpWidget(await buildTestWidget());
         await tester.pumpAndSettle();
 
-        await tester.tap(find.widgetWithIcon(IconButton, Icons.add).first);
+        await tester.tap(
+          find.descendant(
+            of: find.byType(FloatingActionButton),
+            matching: find.byIcon(Icons.add),
+          ),
+        );
         await tester.pumpAndSettle();
 
         await tester.tap(find.byType(CategorySelector).first);
@@ -117,7 +134,7 @@ void main() {
         await tester.tap(find.widgetWithIcon(IconButton, Icons.add).first);
         await tester.pumpAndSettle();
 
-        await tester.enterText(find.byType(EtTextField).first, 'Nhau de3');
+        await tester.enterText(find.byType(EtTextField).first, 'Nhau de 5');
         await tester.pumpAndSettle();
 
         await tester.tap(find.widgetWithText(ElevatedButton, 'Tạo danh mục'));
@@ -128,31 +145,35 @@ void main() {
       });
     });
 
+      testWidgets('should show error when category name already exists', (WidgetTester tester) async {
+        await tester.runAsync(() async {
+          await tester.pumpWidget(await buildTestWidget());
+          await tester.pumpAndSettle();
 
-    testWidgets('should show error when category name already exists', (WidgetTester tester) async {
-      await tester.runAsync(() async {
-        await tester.pumpWidget(await buildTestWidget());
-        await tester.pumpAndSettle();
+          await tester.tap(
+            find.descendant(
+              of: find.byType(FloatingActionButton),
+              matching: find.byIcon(Icons.add),
+            ),
+          );
+          await tester.pumpAndSettle();
 
-        await tester.tap(find.widgetWithIcon(IconButton, Icons.add).first);
-        await tester.pumpAndSettle();
+          await tester.tap(find.byType(CategorySelector).first);
+          await tester.pumpAndSettle();
 
-        await tester.tap(find.byType(CategorySelector).first);
-        await tester.pumpAndSettle();
+          await tester.tap(find.widgetWithIcon(IconButton, Icons.add).first);
+          await tester.pumpAndSettle();
 
-        await tester.tap(find.widgetWithIcon(IconButton, Icons.add).first);
-        await tester.pumpAndSettle();
+          await tester.enterText(find.byType(EtTextField).first, 'Nhau de 5');
+          await tester.pumpAndSettle();
 
-        await tester.enterText(find.byType(Text).first, 'Mua sắm');
-        await tester.pumpAndSettle();
+          await tester.tap(find.widgetWithText(ElevatedButton, 'Tạo danh mục'));
+          await tester.pumpAndSettle();
 
-        await tester.tap(find.widgetWithText(ElevatedButton, 'Tạo danh mục'));
-        await tester.pumpAndSettle();
-
-        expect(find.text('Tên danh mục đã tồn tại'), findsOneWidget);
-        expect(find.byType(CreateCategoryScreen), findsOneWidget);
+          expect(find.text('Tên danh mục đã tồn tại'), findsOneWidget);
+          expect(find.byType(CreateCategoryScreen), findsOneWidget);
+        });
       });
-    });
   });
 }
 

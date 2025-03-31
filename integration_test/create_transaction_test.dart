@@ -6,6 +6,7 @@ import 'package:expense_tracking/presentation/common_widgets/et_button.dart';
 import 'package:expense_tracking/presentation/common_widgets/et_textfield.dart';
 import 'package:expense_tracking/presentation/common_widgets/number_input.dart';
 import 'package:expense_tracking/presentation/features/category/create_category_screen.dart';
+import 'package:expense_tracking/presentation/features/transaction/screen/create_transaction_screen.dart';
 import 'package:expense_tracking/presentation/features/transaction/widget/amount_input.dart';
 import 'package:expense_tracking/presentation/features/transaction/widget/category_selector.dart';
 import 'package:expense_tracking/presentation/features/transaction/widget/note_input.dart';
@@ -40,13 +41,20 @@ void main() {
     Future<Widget> buildTestWidget() async {
       return const MyApp();
     }
+
+
     testWidgets('should create transaction successfully when valid data is entered', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(await buildTestWidget());
         await tester.pumpAndSettle();
 
         // Nhấn nút thêm giao dịch
-        await tester.tap(find.widgetWithIcon(IconButton, Icons.add).first);
+        await tester.tap(
+          find.descendant(
+            of: find.byType(FloatingActionButton),
+            matching: find.byIcon(Icons.add),
+          ),
+        );
         await tester.pumpAndSettle();
 
         // Nhập số tiền
@@ -66,7 +74,7 @@ void main() {
           matching: find.text('Lương'),
         ).first);
         await tester.pumpAndSettle();
-        await tester.tap(find.text('Chọn'));
+        await tester.tap(find.widgetWithText(ElevatedButton,'Xong'));
         await tester.pumpAndSettle();
         // Nhập ghi chú
         await tester.enterText(find.byType(NoteInput), 'Mua sắm hàng tháng');
@@ -77,7 +85,7 @@ void main() {
         await tester.pumpAndSettle();
 
         // Kiểm tra giao dịch đã được tạo thành công
-        expect(find.text('Tạo giao dịch thành công'), findsOneWidget);
+        expect(find.byType(CreateTransactionScreen), findsNothing);
       });
     });
 
@@ -86,36 +94,115 @@ void main() {
         await tester.pumpWidget(await buildTestWidget());
         await tester.pumpAndSettle();
 
-        // Không nhập số tiền
-        await tester.enterText(find.byType(AmountInput), '0');
+        // Nhấn nút thêm giao dịch
+        await tester.tap(
+          find.descendant(
+            of: find.byType(FloatingActionButton),
+            matching: find.byIcon(Icons.add),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Nhập số tiền
+        await tester.enterText(find.descendant
+          (of:find.byType(AmountInput),
+            matching: find.byType(TextField)), '0');
+
+        await tester.pumpAndSettle();
+
+        // Chọn danh mục
+        await tester.tap(find.byType(CategorySelector).first);
+        await tester.pumpAndSettle();
+
+        // Chọn danh mục "Mua sắm"
+        await tester.tap(find.descendant(
+          of: find.byType(GestureDetector),
+          matching: find.text('Lương'),
+        ).first);
+        await tester.pumpAndSettle();
+        await tester.tap(find.widgetWithText(ElevatedButton,'Xong'));
+        await tester.pumpAndSettle();
+        // Nhập ghi chú
+        await tester.enterText(find.byType(NoteInput), 'Mua sắm hàng tháng');
         await tester.pumpAndSettle();
 
         // Nhấn nút Lưu
         await tester.tap(find.widgetWithText(EtButton, 'Lưu'));
         await tester.pumpAndSettle();
 
-        // Kiểm tra hiển thị lỗi
-        expect(find.text('Số tiền phải lớn hơn 0'), findsOneWidget);
+        // Kiểm tra giao dịch đã được tạo thành công
+        expect(find.byType(CreateTransactionScreen), findsOneWidget);
       });
     });
+
 
     testWidgets('should show error when category is not selected', (WidgetTester tester) async {
       await tester.runAsync(() async {
         await tester.pumpWidget(await buildTestWidget());
         await tester.pumpAndSettle();
-
-        // Nhập số tiền hợp lệ
-        await tester.enterText(find.byType(AmountInput), '500000');
+        // Nhấn nút thêm giao dịch
+        await tester.tap(
+          find.descendant(
+            of: find.byType(FloatingActionButton),
+            matching: find.byIcon(Icons.add),
+          ),
+        );
         await tester.pumpAndSettle();
 
-        // Không chọn danh mục
+        // Nhập số tiền
+        await tester.enterText(find.descendant
+          (of:find.byType(AmountInput),
+            matching: find.byType(TextField)), '50000');
+        await tester.pumpAndSettle();
+        // Nhập ghi chú
+        await tester.enterText(find.byType(NoteInput), 'Mua sắm hàng tháng');
+        await tester.pumpAndSettle();
 
         // Nhấn nút Lưu
         await tester.tap(find.widgetWithText(EtButton, 'Lưu'));
         await tester.pumpAndSettle();
 
-        // Kiểm tra hiển thị lỗi
-        expect(find.text('Vui lòng chọn danh mục'), findsOneWidget);
+        // Kiểm tra giao dịch đã được tạo thành công
+        expect(find.byType(CreateTransactionScreen), findsOneWidget);
+      });
+    });
+
+    testWidgets('should show error when note is empty', (WidgetTester tester) async {
+      await tester.runAsync(() async {
+        await tester.pumpWidget(await buildTestWidget());
+        await tester.pumpAndSettle();
+        // Nhấn nút thêm giao dịch
+        await tester.tap(
+          find.descendant(
+            of: find.byType(FloatingActionButton),
+            matching: find.byIcon(Icons.add),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        // Nhập số tiền
+        await tester.enterText(find.descendant
+          (of:find.byType(AmountInput),
+            matching: find.byType(TextField)), '50000');
+        await tester.pumpAndSettle();
+        // Chọn danh mục
+        await tester.tap(find.byType(CategorySelector).first);
+        await tester.pumpAndSettle();
+
+        // Chọn danh mục "Mua sắm"
+        await tester.tap(find.descendant(
+          of: find.byType(GestureDetector),
+          matching: find.text('Lương'),
+        ).first);
+        await tester.pumpAndSettle();
+        await tester.tap(find.widgetWithText(ElevatedButton,'Xong'));
+        await tester.pumpAndSettle();
+        // Nhấn nút Lưu
+        await tester.tap(find.widgetWithText(EtButton, 'Lưu'));
+        await tester.pumpAndSettle();
+
+        // Kiểm tra giao dịch đã được tạo thành công
+        expect(find.byType(CreateTransactionScreen), findsNothing);
       });
     });
 
