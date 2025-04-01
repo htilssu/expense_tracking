@@ -71,7 +71,7 @@ void main() {
         await tester.tap(find.widgetWithIcon(IconButton, Icons.add).first);
         await tester.pumpAndSettle();
 
-        await tester.enterText(find.byType(EtTextField).first, 'Mua sắm 5');
+        await tester.enterText(find.byType(EtTextField).first, 'Mua sắm${DateTime.now().millisecondsSinceEpoch}');
         await tester.enterText(find.byType(NumberInput).first, '500000');
         await tester.pumpAndSettle();
 
@@ -134,7 +134,7 @@ void main() {
         await tester.tap(find.widgetWithIcon(IconButton, Icons.add).first);
         await tester.pumpAndSettle();
 
-        await tester.enterText(find.byType(EtTextField).first, 'Nhau de 5');
+        await tester.enterText(find.byType(EtTextField).first, 'Nhau de${DateTime.now().millisecondsSinceEpoch}');
         await tester.pumpAndSettle();
 
         await tester.tap(find.widgetWithText(ElevatedButton, 'Tạo danh mục'));
@@ -164,7 +164,7 @@ void main() {
           await tester.tap(find.widgetWithIcon(IconButton, Icons.add).first);
           await tester.pumpAndSettle();
 
-          await tester.enterText(find.byType(EtTextField).first, 'Nhau de 5');
+          await tester.enterText(find.byType(EtTextField).first, 'Lương');
           await tester.pumpAndSettle();
 
           await tester.tap(find.widgetWithText(ElevatedButton, 'Tạo danh mục'));
