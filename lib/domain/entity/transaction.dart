@@ -1,25 +1,28 @@
+import 'package:uuid/uuid.dart';
+
 import 'timestamp_entity.dart';
 
 class Transaction extends BaseTimeStampEntity {
-  late final String id;
-  final String note;
-  final double value;
-  final String category;
+  late String id;
+  String note;
+  int value;
+  String category;
   final String user;
 
-  Transaction(this.id, this.note, this.value, this.category, this.user);
+  Transaction(this.note, this.value, this.category, this.user) {
+    id = const Uuid().v4();
+  }
+
+  Transaction.withId(this.id, this.note, this.value, this.category, this.user);
 
   factory Transaction.fromMap(Map<String, dynamic> map) {
-    var t = Transaction(
+    return Transaction.withId(
       map['id'] as String,
       map['note'] as String,
-      map['value'] as double,
+      map['value'] as int,
       map['category'] as String,
       map['user'] as String,
-    );
-    t.timeStampFromMap(map);
-
-    return t;
+    )..timeStampFromMap(map);
   }
 
   // Convert a Transaction to a Map
@@ -34,4 +37,9 @@ class Transaction extends BaseTimeStampEntity {
       ...super.toMap(),
     };
   }
+
+  @override
+  List<Object?> get props => [id, note, value, category, user];
 }
+
+enum TransactionType { income, expense }

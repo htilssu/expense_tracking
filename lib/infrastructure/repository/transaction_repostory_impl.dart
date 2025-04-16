@@ -4,8 +4,12 @@ import 'package:expense_tracking/domain/entity/transaction.dart';
 import '../../domain/repository/transaction_repository.dart';
 
 class TransactionRepositoryImpl implements TransactionRepository {
-  fs.CollectionReference<Map<String, dynamic>> ref =
-      fs.FirebaseFirestore.instance.collection("transactions");
+  late fs.CollectionReference<Map<String, dynamic>> ref;
+
+  TransactionRepositoryImpl(
+      {fs.CollectionReference<Map<String, dynamic>>? ref}) {
+    this.ref = ref ?? fs.FirebaseFirestore.instance.collection('transactions');
+  }
 
   @override
   Future<void> delete(String id) async {
@@ -22,7 +26,7 @@ class TransactionRepositoryImpl implements TransactionRepository {
   @override
   Future<List<Transaction>> findByCategory(
       String category, int page, int size) async {
-    return ref.where("category", isEqualTo: category).limit(size).get().then(
+    return ref.where('category', isEqualTo: category).limit(size).get().then(
         (value) =>
             value.docs.map((e) => Transaction.fromMap(e.data())).toList());
   }
@@ -51,22 +55,49 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<List<Transaction>> findRecent(int page, int size) async {
-    return ref.orderBy("createdAt", descending: true).limit(size).get().then(
-        (value) =>
-            value.docs.map((e) => Transaction.fromMap(e.data())).toList());
-  }
-
-  @override
   Future<Transaction> save(Transaction entity) async {
-    return ref.add(entity.toMap()).then((value) {
-      entity.id = value.id;
-      return entity;
-    });
+    return ref.doc(entity.id).set(entity.toMap()).then((value) => entity);
   }
 
   @override
   Future<Transaction> update(Transaction entity) async {
     return ref.doc(entity.id).update(entity.toMap()).then((value) => entity);
+  }
+
+  @override
+  Future<List<Transaction>> findRecentByUserId(
+      String userId, int page, int size) {
+    if (size > 30) {
+      throw Exception('Size must be less than 30');
+    }
+
+    if (page < 0) {
+      throw Exception('Page must be greater than 0');
+    }
+
+    return ref
+        .where('user', isEqualTo: userId)
+        .orderBy('createdAt', descending: true)
+        .limit(size)
+        .get()
+        .then((value) =>
+            value.docs.map((e) => Transaction.fromMap(e.data())).toList());
+  }
+
+  @override
+  Future<List<Transaction>> findByMonthAndCategoryIds(String userId,
+      DateTime startDate, DateTime endDate, List<String> categoryIds) async {
+    if (categoryIds.isEmpty) {
+      return [];
+    }
+
+    var query = ref
+        .where('user', isEqualTo: userId)
+        .where('category', whereIn: categoryIds)
+        .where('createdAt', isGreaterThanOrEqualTo: startDate)
+        .where('createdAt', isLessThanOrEqualTo: endDate);
+
+    var snapshot = await query.get();
+    return snapshot.docs.map((e) => Transaction.fromMap(e.data())).toList();
   }
 }

@@ -5,7 +5,10 @@ coverage:
         target: auto
         threshold: 5%
 comment:
-  layout: "header, diff, changes,flags, files, sunburst, footer"
+  layout: "condensed_header, condensed_files, condensed_footer"
+  require_head: false     # default true
+  require_base: false
+
 
 
 ignore:
@@ -13,3 +16,5 @@ ignore:
   - "**/constants"
   - "**/domain"
   - "**/exceptions"
+  - "**/dto"
+  - "**/presentation"

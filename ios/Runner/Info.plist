@@ -47,5 +47,7 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>NSFaceIDUsageDescription</key>
+		<string>Ứng dụng sử dụng Face ID để xác thực đăng nhập an toàn</string>
 	</dict>
 </plist>

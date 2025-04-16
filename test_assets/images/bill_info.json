@@ -1,0 +1,13 @@
+{
+  "money": 250000,
+  "date": "2023-12-20T10:30:00",
+  "store": "Nhà hàng ABC",
+  "category": {
+    "name": "Ăn uống",
+    "amount": 0,
+    "budget": 1000000,
+    "type": "expense",
+    "userId": "test_user_id"
+  },
+  "note": "Ăn trưa với đồng nghiệp"
+}

@@ -1,6 +1,6 @@
 class TextSize {
-  static double small = 10;
-  static double medium = 16;
-  static double large = 24;
-  static double xLarge = 32;
+  static const double small = 10;
+  static const double medium = 14;
+  static const double large = 24;
+  static const double xLarge = 32;
 }
