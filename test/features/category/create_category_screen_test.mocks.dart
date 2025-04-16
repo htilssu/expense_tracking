@@ -34,12 +34,12 @@ import 'package:mockito/src/dummies.dart' as _i7;
 class _FakeCollectionReference_0<T extends Object?> extends _i1.SmartFake
     implements _i2.CollectionReference<T> {
   _FakeCollectionReference_0(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
 class _FakeCategory_1 extends _i1.SmartFake implements _i3.Category {
   _FakeCategory_1(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
 /// A class which mocks [CategoryRepositoryImpl].
@@ -50,18 +50,17 @@ class MockCategoryRepositoryImpl extends _i1.Mock
   @override
   _i2.CollectionReference<Map<String, dynamic>> get docRef =>
       (super.noSuchMethod(
-            Invocation.getter(#docRef),
-            returnValue: _FakeCollectionReference_0<Map<String, dynamic>>(
-              this,
-              Invocation.getter(#docRef),
-            ),
-            returnValueForMissingStub:
-                _FakeCollectionReference_0<Map<String, dynamic>>(
-                  this,
-                  Invocation.getter(#docRef),
-                ),
-          )
-          as _i2.CollectionReference<Map<String, dynamic>>);
+        Invocation.getter(#docRef),
+        returnValue: _FakeCollectionReference_0<Map<String, dynamic>>(
+          this,
+          Invocation.getter(#docRef),
+        ),
+        returnValueForMissingStub:
+            _FakeCollectionReference_0<Map<String, dynamic>>(
+          this,
+          Invocation.getter(#docRef),
+        ),
+      ) as _i2.CollectionReference<Map<String, dynamic>>);
 
   @override
   set docRef(_i2.CollectionReference<Map<String, dynamic>>? _docRef) =>
@@ -71,59 +70,50 @@ class MockCategoryRepositoryImpl extends _i1.Mock
       );
 
   @override
-  _i5.Future<void> delete(String? id) =>
-      (super.noSuchMethod(
-            Invocation.method(#delete, [id]),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
-          )
-          as _i5.Future<void>);
+  _i5.Future<void> delete(String? id) => (super.noSuchMethod(
+        Invocation.method(#delete, [id]),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 
   @override
-  _i5.Future<_i3.Category?> findById(String? id) =>
-      (super.noSuchMethod(
-            Invocation.method(#findById, [id]),
-            returnValue: _i5.Future<_i3.Category?>.value(),
-            returnValueForMissingStub: _i5.Future<_i3.Category?>.value(),
-          )
-          as _i5.Future<_i3.Category?>);
+  _i5.Future<_i3.Category?> findById(String? id) => (super.noSuchMethod(
+        Invocation.method(#findById, [id]),
+        returnValue: _i5.Future<_i3.Category?>.value(),
+        returnValueForMissingStub: _i5.Future<_i3.Category?>.value(),
+      ) as _i5.Future<_i3.Category?>);
 
   @override
-  _i5.Future<_i3.Category> save(_i3.Category? entity) =>
-      (super.noSuchMethod(
-            Invocation.method(#save, [entity]),
-            returnValue: _i5.Future<_i3.Category>.value(
-              _FakeCategory_1(this, Invocation.method(#save, [entity])),
-            ),
-            returnValueForMissingStub: _i5.Future<_i3.Category>.value(
-              _FakeCategory_1(this, Invocation.method(#save, [entity])),
-            ),
-          )
-          as _i5.Future<_i3.Category>);
+  _i5.Future<_i3.Category> save(_i3.Category? entity) => (super.noSuchMethod(
+        Invocation.method(#save, [entity]),
+        returnValue: _i5.Future<_i3.Category>.value(
+          _FakeCategory_1(this, Invocation.method(#save, [entity])),
+        ),
+        returnValueForMissingStub: _i5.Future<_i3.Category>.value(
+          _FakeCategory_1(this, Invocation.method(#save, [entity])),
+        ),
+      ) as _i5.Future<_i3.Category>);
 
   @override
-  _i5.Future<_i3.Category> update(_i3.Category? entity) =>
-      (super.noSuchMethod(
-            Invocation.method(#update, [entity]),
-            returnValue: _i5.Future<_i3.Category>.value(
-              _FakeCategory_1(this, Invocation.method(#update, [entity])),
-            ),
-            returnValueForMissingStub: _i5.Future<_i3.Category>.value(
-              _FakeCategory_1(this, Invocation.method(#update, [entity])),
-            ),
-          )
-          as _i5.Future<_i3.Category>);
+  _i5.Future<_i3.Category> update(_i3.Category? entity) => (super.noSuchMethod(
+        Invocation.method(#update, [entity]),
+        returnValue: _i5.Future<_i3.Category>.value(
+          _FakeCategory_1(this, Invocation.method(#update, [entity])),
+        ),
+        returnValueForMissingStub: _i5.Future<_i3.Category>.value(
+          _FakeCategory_1(this, Invocation.method(#update, [entity])),
+        ),
+      ) as _i5.Future<_i3.Category>);
 
   @override
-  _i5.Future<List<_i3.Category>> getCategories() =>
+  _i5.Future<List<_i3.Category>> getCategories({int? month, int? year}) =>
       (super.noSuchMethod(
-            Invocation.method(#getCategories, []),
-            returnValue: _i5.Future<List<_i3.Category>>.value(<_i3.Category>[]),
-            returnValueForMissingStub: _i5.Future<List<_i3.Category>>.value(
-              <_i3.Category>[],
-            ),
-          )
-          as _i5.Future<List<_i3.Category>>);
+        Invocation.method(#getCategories, [], {#month: month, #year: year}),
+        returnValue: _i5.Future<List<_i3.Category>>.value(<_i3.Category>[]),
+        returnValueForMissingStub: _i5.Future<List<_i3.Category>>.value(
+          <_i3.Category>[],
+        ),
+      ) as _i5.Future<List<_i3.Category>>);
 }
 
 /// A class which mocks [CategorySelectorCubit].
@@ -132,57 +122,50 @@ class MockCategoryRepositoryImpl extends _i1.Mock
 class MockCategorySelectorCubit extends _i1.Mock
     implements _i6.CategorySelectorCubit {
   @override
-  _i6.CategorySelectorState get state =>
-      (super.noSuchMethod(
-            Invocation.getter(#state),
-            returnValue: _i7.dummyValue<_i6.CategorySelectorState>(
-              this,
-              Invocation.getter(#state),
-            ),
-            returnValueForMissingStub: _i7
-                .dummyValue<_i6.CategorySelectorState>(
-                  this,
-                  Invocation.getter(#state),
-                ),
-          )
-          as _i6.CategorySelectorState);
+  _i6.CategorySelectorState get state => (super.noSuchMethod(
+        Invocation.getter(#state),
+        returnValue: _i7.dummyValue<_i6.CategorySelectorState>(
+          this,
+          Invocation.getter(#state),
+        ),
+        returnValueForMissingStub: _i7.dummyValue<_i6.CategorySelectorState>(
+          this,
+          Invocation.getter(#state),
+        ),
+      ) as _i6.CategorySelectorState);
 
   @override
-  _i5.Stream<_i6.CategorySelectorState> get stream =>
-      (super.noSuchMethod(
-            Invocation.getter(#stream),
-            returnValue: _i5.Stream<_i6.CategorySelectorState>.empty(),
-            returnValueForMissingStub:
-                _i5.Stream<_i6.CategorySelectorState>.empty(),
-          )
-          as _i5.Stream<_i6.CategorySelectorState>);
+  _i5.Stream<_i6.CategorySelectorState> get stream => (super.noSuchMethod(
+        Invocation.getter(#stream),
+        returnValue: _i5.Stream<_i6.CategorySelectorState>.empty(),
+        returnValueForMissingStub:
+            _i5.Stream<_i6.CategorySelectorState>.empty(),
+      ) as _i5.Stream<_i6.CategorySelectorState>);
 
   @override
-  bool get isClosed =>
-      (super.noSuchMethod(
-            Invocation.getter(#isClosed),
-            returnValue: false,
-            returnValueForMissingStub: false,
-          )
-          as bool);
+  bool get isClosed => (super.noSuchMethod(
+        Invocation.getter(#isClosed),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
 
   @override
   void incomeCubit() => super.noSuchMethod(
-    Invocation.method(#incomeCubit, []),
-    returnValueForMissingStub: null,
-  );
+        Invocation.method(#incomeCubit, []),
+        returnValueForMissingStub: null,
+      );
 
   @override
   void expenseCubit() => super.noSuchMethod(
-    Invocation.method(#expenseCubit, []),
-    returnValueForMissingStub: null,
-  );
+        Invocation.method(#expenseCubit, []),
+        returnValueForMissingStub: null,
+      );
 
   @override
   void emit(_i6.CategorySelectorState? state) => super.noSuchMethod(
-    Invocation.method(#emit, [state]),
-    returnValueForMissingStub: null,
-  );
+        Invocation.method(#emit, [state]),
+        returnValueForMissingStub: null,
+      );
 
   @override
   void onChange(_i8.Change<_i6.CategorySelectorState>? change) =>
@@ -193,24 +176,22 @@ class MockCategorySelectorCubit extends _i1.Mock
 
   @override
   void addError(Object? error, [StackTrace? stackTrace]) => super.noSuchMethod(
-    Invocation.method(#addError, [error, stackTrace]),
-    returnValueForMissingStub: null,
-  );
+        Invocation.method(#addError, [error, stackTrace]),
+        returnValueForMissingStub: null,
+      );
 
   @override
   void onError(Object? error, StackTrace? stackTrace) => super.noSuchMethod(
-    Invocation.method(#onError, [error, stackTrace]),
-    returnValueForMissingStub: null,
-  );
+        Invocation.method(#onError, [error, stackTrace]),
+        returnValueForMissingStub: null,
+      );
 
   @override
-  _i5.Future<void> close() =>
-      (super.noSuchMethod(
-            Invocation.method(#close, []),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
-          )
-          as _i5.Future<void>);
+  _i5.Future<void> close() => (super.noSuchMethod(
+        Invocation.method(#close, []),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 }
 
 /// A class which mocks [CategoryBloc].
@@ -218,97 +199,91 @@ class MockCategorySelectorCubit extends _i1.Mock
 /// See the documentation for Mockito's code generation for more information.
 class MockCategoryBloc extends _i1.Mock implements _i9.CategoryBloc {
   @override
-  _i9.CategoryState get state =>
-      (super.noSuchMethod(
-            Invocation.getter(#state),
-            returnValue: _i7.dummyValue<_i9.CategoryState>(
-              this,
-              Invocation.getter(#state),
-            ),
-            returnValueForMissingStub: _i7.dummyValue<_i9.CategoryState>(
-              this,
-              Invocation.getter(#state),
-            ),
-          )
-          as _i9.CategoryState);
+  _i9.CategoryState get state => (super.noSuchMethod(
+        Invocation.getter(#state),
+        returnValue: _i7.dummyValue<_i9.CategoryState>(
+          this,
+          Invocation.getter(#state),
+        ),
+        returnValueForMissingStub: _i7.dummyValue<_i9.CategoryState>(
+          this,
+          Invocation.getter(#state),
+        ),
+      ) as _i9.CategoryState);
 
   @override
-  _i5.Stream<_i9.CategoryState> get stream =>
-      (super.noSuchMethod(
-            Invocation.getter(#stream),
-            returnValue: _i5.Stream<_i9.CategoryState>.empty(),
-            returnValueForMissingStub: _i5.Stream<_i9.CategoryState>.empty(),
-          )
-          as _i5.Stream<_i9.CategoryState>);
+  _i5.Stream<_i9.CategoryState> get stream => (super.noSuchMethod(
+        Invocation.getter(#stream),
+        returnValue: _i5.Stream<_i9.CategoryState>.empty(),
+        returnValueForMissingStub: _i5.Stream<_i9.CategoryState>.empty(),
+      ) as _i5.Stream<_i9.CategoryState>);
 
   @override
-  bool get isClosed =>
-      (super.noSuchMethod(
-            Invocation.getter(#isClosed),
-            returnValue: false,
-            returnValueForMissingStub: false,
-          )
-          as bool);
+  bool get isClosed => (super.noSuchMethod(
+        Invocation.getter(#isClosed),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
 
   @override
   void add(_i9.CategoryEvent? event) => super.noSuchMethod(
-    Invocation.method(#add, [event]),
-    returnValueForMissingStub: null,
-  );
+        Invocation.method(#add, [event]),
+        returnValueForMissingStub: null,
+      );
 
   @override
   void onEvent(_i9.CategoryEvent? event) => super.noSuchMethod(
-    Invocation.method(#onEvent, [event]),
-    returnValueForMissingStub: null,
-  );
+        Invocation.method(#onEvent, [event]),
+        returnValueForMissingStub: null,
+      );
 
   @override
   void emit(_i9.CategoryState? state) => super.noSuchMethod(
-    Invocation.method(#emit, [state]),
-    returnValueForMissingStub: null,
-  );
+        Invocation.method(#emit, [state]),
+        returnValueForMissingStub: null,
+      );
 
   @override
   void on<E extends _i9.CategoryEvent>(
     _i8.EventHandler<E, _i9.CategoryState>? handler, {
     _i8.EventTransformer<E>? transformer,
-  }) => super.noSuchMethod(
-    Invocation.method(#on, [handler], {#transformer: transformer}),
-    returnValueForMissingStub: null,
-  );
+  }) =>
+      super.noSuchMethod(
+        Invocation.method(#on, [handler], {#transformer: transformer}),
+        returnValueForMissingStub: null,
+      );
 
   @override
   void onTransition(
     _i8.Transition<_i9.CategoryEvent, _i9.CategoryState>? transition,
-  ) => super.noSuchMethod(
-    Invocation.method(#onTransition, [transition]),
-    returnValueForMissingStub: null,
-  );
+  ) =>
+      super.noSuchMethod(
+        Invocation.method(#onTransition, [transition]),
+        returnValueForMissingStub: null,
+      );
 
   @override
-  _i5.Future<void> close() =>
-      (super.noSuchMethod(
-            Invocation.method(#close, []),
-            returnValue: _i5.Future<void>.value(),
-            returnValueForMissingStub: _i5.Future<void>.value(),
-          )
-          as _i5.Future<void>);
+  _i5.Future<void> close() => (super.noSuchMethod(
+        Invocation.method(#close, []),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
 
   @override
   void onChange(_i8.Change<_i9.CategoryState>? change) => super.noSuchMethod(
-    Invocation.method(#onChange, [change]),
-    returnValueForMissingStub: null,
-  );
+        Invocation.method(#onChange, [change]),
+        returnValueForMissingStub: null,
+      );
 
   @override
   void addError(Object? error, [StackTrace? stackTrace]) => super.noSuchMethod(
-    Invocation.method(#addError, [error, stackTrace]),
-    returnValueForMissingStub: null,
-  );
+        Invocation.method(#addError, [error, stackTrace]),
+        returnValueForMissingStub: null,
+      );
 
   @override
   void onError(Object? error, StackTrace? stackTrace) => super.noSuchMethod(
-    Invocation.method(#onError, [error, stackTrace]),
-    returnValueForMissingStub: null,
-  );
+        Invocation.method(#onError, [error, stackTrace]),
+        returnValueForMissingStub: null,
+      );
 }

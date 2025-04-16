@@ -26,7 +26,7 @@ import 'package:mockito/mockito.dart' as _i1;
 
 class _FakeTransaction_0 extends _i1.SmartFake implements _i2.Transaction {
   _FakeTransaction_0(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
 /// A class which mocks [TransactionRepository].
@@ -45,12 +45,11 @@ class MockTransactionRepository extends _i1.Mock
     int? size,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#findByCategory, [category, page, size]),
-            returnValue: _i4.Future<List<_i2.Transaction>>.value(
-              <_i2.Transaction>[],
-            ),
-          )
-          as _i4.Future<List<_i2.Transaction>>);
+        Invocation.method(#findByCategory, [category, page, size]),
+        returnValue: _i4.Future<List<_i2.Transaction>>.value(
+          <_i2.Transaction>[],
+        ),
+      ) as _i4.Future<List<_i2.Transaction>>);
 
   @override
   _i4.Future<List<_i2.Transaction>> findRecentByUserId(
@@ -59,22 +58,39 @@ class MockTransactionRepository extends _i1.Mock
     int? size,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#findRecentByUserId, [userId, page, size]),
-            returnValue: _i4.Future<List<_i2.Transaction>>.value(
-              <_i2.Transaction>[],
-            ),
-          )
-          as _i4.Future<List<_i2.Transaction>>);
+        Invocation.method(#findRecentByUserId, [userId, page, size]),
+        returnValue: _i4.Future<List<_i2.Transaction>>.value(
+          <_i2.Transaction>[],
+        ),
+      ) as _i4.Future<List<_i2.Transaction>>);
+
+  @override
+  _i4.Future<List<_i2.Transaction>> findByMonthAndCategoryIds(
+    String? userId,
+    DateTime? startDate,
+    DateTime? endDate,
+    List<String>? categoryIds,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(#findByMonthAndCategoryIds, [
+          userId,
+          startDate,
+          endDate,
+          categoryIds,
+        ]),
+        returnValue: _i4.Future<List<_i2.Transaction>>.value(
+          <_i2.Transaction>[],
+        ),
+      ) as _i4.Future<List<_i2.Transaction>>);
 
   @override
   _i4.Future<List<_i2.Transaction>> findAll(int? page, int? size) =>
       (super.noSuchMethod(
-            Invocation.method(#findAll, [page, size]),
-            returnValue: _i4.Future<List<_i2.Transaction>>.value(
-              <_i2.Transaction>[],
-            ),
-          )
-          as _i4.Future<List<_i2.Transaction>>);
+        Invocation.method(#findAll, [page, size]),
+        returnValue: _i4.Future<List<_i2.Transaction>>.value(
+          <_i2.Transaction>[],
+        ),
+      ) as _i4.Future<List<_i2.Transaction>>);
 
   @override
   _i4.Future<List<_i2.Transaction>> findByField(
@@ -83,47 +99,40 @@ class MockTransactionRepository extends _i1.Mock
     int? size,
   ) =>
       (super.noSuchMethod(
-            Invocation.method(#findByField, [query, page, size]),
-            returnValue: _i4.Future<List<_i2.Transaction>>.value(
-              <_i2.Transaction>[],
-            ),
-          )
-          as _i4.Future<List<_i2.Transaction>>);
+        Invocation.method(#findByField, [query, page, size]),
+        returnValue: _i4.Future<List<_i2.Transaction>>.value(
+          <_i2.Transaction>[],
+        ),
+      ) as _i4.Future<List<_i2.Transaction>>);
 
   @override
-  _i4.Future<_i2.Transaction?> findById(String? id) =>
-      (super.noSuchMethod(
-            Invocation.method(#findById, [id]),
-            returnValue: _i4.Future<_i2.Transaction?>.value(),
-          )
-          as _i4.Future<_i2.Transaction?>);
+  _i4.Future<_i2.Transaction?> findById(String? id) => (super.noSuchMethod(
+        Invocation.method(#findById, [id]),
+        returnValue: _i4.Future<_i2.Transaction?>.value(),
+      ) as _i4.Future<_i2.Transaction?>);
 
   @override
   _i4.Future<_i2.Transaction> update(_i2.Transaction? entity) =>
       (super.noSuchMethod(
-            Invocation.method(#update, [entity]),
-            returnValue: _i4.Future<_i2.Transaction>.value(
-              _FakeTransaction_0(this, Invocation.method(#update, [entity])),
-            ),
-          )
-          as _i4.Future<_i2.Transaction>);
+        Invocation.method(#update, [entity]),
+        returnValue: _i4.Future<_i2.Transaction>.value(
+          _FakeTransaction_0(this, Invocation.method(#update, [entity])),
+        ),
+      ) as _i4.Future<_i2.Transaction>);
 
   @override
-  _i4.Future<void> delete(String? id) =>
-      (super.noSuchMethod(
-            Invocation.method(#delete, [id]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
-          )
-          as _i4.Future<void>);
+  _i4.Future<void> delete(String? id) => (super.noSuchMethod(
+        Invocation.method(#delete, [id]),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
   _i4.Future<_i2.Transaction> save(_i2.Transaction? entity) =>
       (super.noSuchMethod(
-            Invocation.method(#save, [entity]),
-            returnValue: _i4.Future<_i2.Transaction>.value(
-              _FakeTransaction_0(this, Invocation.method(#save, [entity])),
-            ),
-          )
-          as _i4.Future<_i2.Transaction>);
+        Invocation.method(#save, [entity]),
+        returnValue: _i4.Future<_i2.Transaction>.value(
+          _FakeTransaction_0(this, Invocation.method(#save, [entity])),
+        ),
+      ) as _i4.Future<_i2.Transaction>);
 }

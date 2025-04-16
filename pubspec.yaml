@@ -2,7 +2,7 @@ name: expense_tracking
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none"
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -30,15 +30,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.8
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
   flutter_bloc: ^8.1.6
   flutter_svg: ^2.0.16
-  flutterfire_cli: ^1.0.1-dev.4
   firebase_core: ^3.9.0
   cloud_firestore: ^5.6.0
   firebase_messaging: ^15.2.1
@@ -47,7 +43,7 @@ dependencies:
   equatable: ^2.0.7
   meta: ^1.15.0
   flutter_native_splash: ^2.4.4
-  intl: ^0.18.1
+  intl: ^0.19.0
   shimmer: ^3.0.0
   custom_sliding_segmented_control: ^1.8.4
   mockito: ^5.4.5
@@ -55,7 +51,7 @@ dependencies:
   bloc: ^8.1.4
   uuid: ^4.5.1
   flutter_tesseract_ocr: ^0.4.28
-  fl_chart: ^0.70.2
+  fl_chart: ^0.65.0
   camera: ^0.10.5+9
   path_provider: ^2.1.5
   path: ^1.9.0
@@ -70,6 +66,11 @@ dependencies:
   build_runner: ^2.4.15
   firebase_auth_mocks: ^0.14.1
   fake_cloud_firestore: ^3.1.0
+  pie_chart: ^5.4.0
+  shared_preferences: ^2.5.3
+  local_auth: ^2.3.0
+  month_picker_dialog: ^6.0.3
+  month_year_picker: ^0.4.0+1
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +80,8 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  flutter_gen_runner: ^5.3.1
+  intl_utils: ^2.8.5
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -91,15 +94,16 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  generate: true
 
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/icons/
   # An images assets can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
@@ -125,3 +129,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_intl:
+  enabled: true
+  main_locale: vi
+  arb_dir: lib/l10n
+  output_dir: lib/generated

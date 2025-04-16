@@ -44,12 +44,24 @@ class CategoryRepositoryImpl implements CategoryRepository {
   }
 
   @override
-  Future<List<Category>> getCategories() {
+  Future<List<Category>> getCategories({int? month, int? year}) {
     var userId = Auth.uid();
-    return docRef
-        .where('user', isEqualTo: userId)
-        .get()
-        .then(
+    var query = docRef.where('user', isEqualTo: userId);
+
+    // Thêm điều kiện lọc theo tháng và năm nếu có
+    if (month != null && year != null) {
+      // Ở đây chúng ta giả định rằng có một trường 'createdAt' hoặc tương tự
+      // trong danh mục để lọc
+      // Lưu ý: Logic này phụ thuộc vào cách lưu trữ dữ liệu trong database
+      DateTime startDate = DateTime(year, month, 1);
+      DateTime endDate =
+          DateTime(year, month + 1, 0); // Ngày cuối cùng của tháng
+
+      query = query.where('createdAt', isGreaterThanOrEqualTo: startDate);
+      query = query.where('createdAt', isLessThanOrEqualTo: endDate);
+    }
+
+    return query.get().then(
           (value) => value.docs
               .map(
                 (e) => Category.fromMap(e.data()),

@@ -40,6 +40,10 @@ class GeminiClient implements ImageAnalyzeClient, LlmClient {
           (element) {
             return element.name == jsonMap['category'];
           },
+          orElse: () => category.isNotEmpty
+              ? category.first
+              : Category('Chi phí khác', 0, 0, 'expense', 'user',
+                  icon: 'other'),
         );
 
         return BillInfo(
@@ -86,6 +90,10 @@ class GeminiClient implements ImageAnalyzeClient, LlmClient {
           (element) {
             return element.name == jsonMap['category'];
           },
+          orElse: () => category.isNotEmpty
+              ? category.first
+              : Category('Chi phí khác', 0, 0, 'expense', 'user',
+                  icon: 'other'),
         );
 
         var date = jsonMap['date'] != null

@@ -18,32 +18,30 @@ class TransactionRepositoryImpl implements TransactionRepository {
 
   @override
   Future<List<Transaction>> findAll(int page, int size) async {
-    return ref.limit(size).get().then((value) =>
-        value.docs
-            .map((e) => Transaction.fromMap(e.data()))
-            .toList(growable: false));
+    return ref.limit(size).get().then((value) => value.docs
+        .map((e) => Transaction.fromMap(e.data()))
+        .toList(growable: false));
   }
 
   @override
-  Future<List<Transaction>> findByCategory(String category, int page,
-      int size) async {
+  Future<List<Transaction>> findByCategory(
+      String category, int page, int size) async {
     return ref.where('category', isEqualTo: category).limit(size).get().then(
-            (value) =>
+        (value) =>
             value.docs.map((e) => Transaction.fromMap(e.data())).toList());
   }
 
   @override
-  Future<List<Transaction>> findByField(Map<String, dynamic> query, int page,
-      int size) async {
+  Future<List<Transaction>> findByField(
+      Map<String, dynamic> query, int page, int size) async {
     fs.Query<Map<String, dynamic>> q = ref;
     query.forEach((key, value) {
       q = q.where(key, isEqualTo: value);
     });
 
-    return q.limit(size).get().then((value) =>
-        value.docs
-            .map((e) => Transaction.fromMap(e.data()))
-            .toList(growable: false));
+    return q.limit(size).get().then((value) => value.docs
+        .map((e) => Transaction.fromMap(e.data()))
+        .toList(growable: false));
   }
 
   @override
@@ -67,8 +65,8 @@ class TransactionRepositoryImpl implements TransactionRepository {
   }
 
   @override
-  Future<List<Transaction>> findRecentByUserId(String userId, int page,
-      int size) {
+  Future<List<Transaction>> findRecentByUserId(
+      String userId, int page, int size) {
     if (size > 30) {
       throw Exception('Size must be less than 30');
     }
@@ -83,6 +81,23 @@ class TransactionRepositoryImpl implements TransactionRepository {
         .limit(size)
         .get()
         .then((value) =>
-        value.docs.map((e) => Transaction.fromMap(e.data())).toList());
+            value.docs.map((e) => Transaction.fromMap(e.data())).toList());
+  }
+
+  @override
+  Future<List<Transaction>> findByMonthAndCategoryIds(String userId,
+      DateTime startDate, DateTime endDate, List<String> categoryIds) async {
+    if (categoryIds.isEmpty) {
+      return [];
+    }
+
+    var query = ref
+        .where('user', isEqualTo: userId)
+        .where('category', whereIn: categoryIds)
+        .where('createdAt', isGreaterThanOrEqualTo: startDate)
+        .where('createdAt', isLessThanOrEqualTo: endDate);
+
+    var snapshot = await query.get();
+    return snapshot.docs.map((e) => Transaction.fromMap(e.data())).toList();
   }
 }

@@ -1,6 +1,7 @@
 import 'package:expense_tracking/exceptions/user_notfound_exception.dart';
 import 'package:expense_tracking/exceptions/wrong_password_exception.dart';
 import 'package:expense_tracking/presentation/features/authenticate/screen/register_screen.dart';
+import 'package:expense_tracking/utils/biometric_auth.dart';
 import 'package:expense_tracking/utils/logging.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,62 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   String errorMessage = '';
   final _formKey = GlobalKey<FormState>();
+  bool _isBiometricsAvailable = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isShowPassword = false;
+    _checkBiometricAvailability();
+  }
+
+  // Kiểm tra xem thiết bị có hỗ trợ sinh trắc học không và người dùng đã bật tính năng chưa
+  Future<void> _checkBiometricAvailability() async {
+    final canCheckBiometrics = await BiometricAuth.canCheckBiometrics();
+    final availableBiometrics = await BiometricAuth.getAvailableBiometrics();
+    final isEnabled = await BiometricAuth.isBiometricEnabled();
+
+    if (canCheckBiometrics && availableBiometrics.isNotEmpty && isEnabled) {
+      setState(() {
+        _isBiometricsAvailable = true;
+      });
+
+      // Tự động hiển thị xác thực sinh trắc học nếu người dùng đã bật tính năng
+      _authenticateWithBiometrics();
+    }
+  }
+
+  // Xác thực bằng sinh trắc học
+  Future<void> _authenticateWithBiometrics() async {
+    try {
+      // Lấy ID người dùng đã lưu
+      final savedUserId = await BiometricAuth.getBiometricUser();
+
+      if (savedUserId != null) {
+        final authenticated = await BiometricAuth.authenticate(
+          reason: 'Xác thực để đăng nhập vào ứng dụng',
+        );
+
+        if (authenticated) {
+          // Xác thực thành công, đăng nhập người dùng
+          try {
+            // Đăng nhập người dùng với ID đã lưu
+            if (context.mounted) {
+              BlocProvider.of<UserBloc>(context)
+                  .add(LoadUserEvent(savedUserId));
+            }
+          } catch (e) {
+            Logger.error('Lỗi khi đăng nhập bằng sinh trắc học: $e');
+            setState(() {
+              errorMessage = 'Đăng nhập không thành công, vui lòng thử lại';
+            });
+          }
+        }
+      }
+    } catch (e) {
+      Logger.error('Lỗi xác thực sinh trắc học: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +151,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       onEmailPasswordLogin().then(
                         (value) {
                           if (context.mounted) {
-                            BlocProvider.of<UserBloc>(context).add(LoadUserEvent(
-                                FirebaseAuth.instance.currentUser!.uid));
+                            BlocProvider.of<UserBloc>(context).add(
+                                LoadUserEvent(
+                                    FirebaseAuth.instance.currentUser!.uid));
                           }
                         },
                       ).onError(
@@ -149,6 +207,27 @@ class _LoginScreenState extends State<LoginScreen> {
                       Expanded(child: Divider())
                     ],
                   ),
+                  // Nút đăng nhập bằng sinh trắc học (chỉ hiển thị nếu thiết bị hỗ trợ và người dùng đã bật tính năng)
+                  if (_isBiometricsAvailable)
+                    EtButton(
+                      onPressed: _authenticateWithBiometrics,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.fingerprint,
+                            size: 28,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(width: 8),
+                          Text(
+                            'Đăng nhập bằng sinh trắc học',
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.onPrimary),
+                          ),
+                        ],
+                      ),
+                    ),
                   EtButton(
                     onPressed: () {},
                     child: Row(
@@ -202,17 +281,18 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    isShowPassword = false;
-  }
-
   Future<void> onEmailPasswordLogin() async {
     try {
       await EmailPasswordLoginService().login(EmailPasswordLogin(
           email: emailController.text, password: passwordController.text));
 
+      // Lưu thông tin sinh trắc học nếu đăng nhập thành công và sinh trắc học đã được bật
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      final isEnabled = await BiometricAuth.isBiometricEnabled();
+
+      if (userId != null && isEnabled) {
+        await BiometricAuth.saveBiometricUser(userId);
+      }
       return;
     } on UserNotFoundException {
       setState(() {
@@ -222,10 +302,11 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         errorMessage = 'Mật khẩu không đúng';
       });
-    } on Exception {
+    } catch (e) {
       setState(() {
         errorMessage = 'Đã có lỗi xảy ra, vui lòng thử lại sau';
       });
+      Logger.error('Lỗi khi đăng nhập: $e');
     }
 
     throw Exception(errorMessage);

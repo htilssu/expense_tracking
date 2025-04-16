@@ -16,8 +16,8 @@ class CategoryServiceImpl implements CategoryService {
   ///
   /// Returns a list of [Category]
   @override
-  Future<List<Category>> getCategories() async {
-    return categoryRepository.getCategories();
+  Future<List<Category>> getCategories({int? month, int? year}) async {
+    return categoryRepository.getCategories(month: month, year: year);
   }
 
   @override

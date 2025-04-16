@@ -3,6 +3,7 @@ import 'package:expense_tracking/presentation/features/analysis/screen/analysis_
     show AnalysisScreen;
 import 'package:expense_tracking/presentation/features/notify/screen/notify_screen.dart'
     show NotifyScreen;
+import 'package:expense_tracking/presentation/features/setting/screen/settings_screen.dart';
 import 'package:expense_tracking/presentation/features/overview/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -34,6 +35,7 @@ class _MainPageViewState extends State<MainPageView>
       HomeScreen(key: _homeScreenKey),
       const AnalysisScreen(),
       const NotifyScreen(),
+      const SettingsScreen(),
     ];
 
     _animationController = AnimationController(

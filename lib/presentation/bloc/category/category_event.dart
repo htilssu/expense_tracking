@@ -6,11 +6,13 @@ sealed class CategoryEvent extends Equatable {
 
 final class LoadCategories extends CategoryEvent {
   final User user;
+  final int? month;
+  final int? year;
 
-  const LoadCategories(this.user);
+  const LoadCategories(this.user, {this.month, this.year});
 
   @override
-  List<Object> get props => [user];
+  List<Object?> get props => [user, month, year];
 }
 
 final class AddCategory extends CategoryEvent {

@@ -26,7 +26,7 @@ import 'package:mockito/mockito.dart' as _i1;
 
 class _FakeCategory_0 extends _i1.SmartFake implements _i2.Category {
   _FakeCategory_0(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
 /// A class which mocks [CategoryRepository].
@@ -39,47 +39,38 @@ class MockCategoryRepository extends _i1.Mock
   }
 
   @override
-  _i4.Future<List<_i2.Category>> getCategories() =>
+  _i4.Future<List<_i2.Category>> getCategories({int? month, int? year}) =>
       (super.noSuchMethod(
-            Invocation.method(#getCategories, []),
-            returnValue: _i4.Future<List<_i2.Category>>.value(<_i2.Category>[]),
-          )
-          as _i4.Future<List<_i2.Category>>);
+        Invocation.method(#getCategories, [], {#month: month, #year: year}),
+        returnValue: _i4.Future<List<_i2.Category>>.value(<_i2.Category>[]),
+      ) as _i4.Future<List<_i2.Category>>);
 
   @override
-  _i4.Future<_i2.Category?> findById(String? id) =>
-      (super.noSuchMethod(
-            Invocation.method(#findById, [id]),
-            returnValue: _i4.Future<_i2.Category?>.value(),
-          )
-          as _i4.Future<_i2.Category?>);
+  _i4.Future<_i2.Category?> findById(String? id) => (super.noSuchMethod(
+        Invocation.method(#findById, [id]),
+        returnValue: _i4.Future<_i2.Category?>.value(),
+      ) as _i4.Future<_i2.Category?>);
 
   @override
-  _i4.Future<_i2.Category> update(_i2.Category? entity) =>
-      (super.noSuchMethod(
-            Invocation.method(#update, [entity]),
-            returnValue: _i4.Future<_i2.Category>.value(
-              _FakeCategory_0(this, Invocation.method(#update, [entity])),
-            ),
-          )
-          as _i4.Future<_i2.Category>);
+  _i4.Future<_i2.Category> update(_i2.Category? entity) => (super.noSuchMethod(
+        Invocation.method(#update, [entity]),
+        returnValue: _i4.Future<_i2.Category>.value(
+          _FakeCategory_0(this, Invocation.method(#update, [entity])),
+        ),
+      ) as _i4.Future<_i2.Category>);
 
   @override
-  _i4.Future<void> delete(String? id) =>
-      (super.noSuchMethod(
-            Invocation.method(#delete, [id]),
-            returnValue: _i4.Future<void>.value(),
-            returnValueForMissingStub: _i4.Future<void>.value(),
-          )
-          as _i4.Future<void>);
+  _i4.Future<void> delete(String? id) => (super.noSuchMethod(
+        Invocation.method(#delete, [id]),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 
   @override
-  _i4.Future<_i2.Category> save(_i2.Category? entity) =>
-      (super.noSuchMethod(
-            Invocation.method(#save, [entity]),
-            returnValue: _i4.Future<_i2.Category>.value(
-              _FakeCategory_0(this, Invocation.method(#save, [entity])),
-            ),
-          )
-          as _i4.Future<_i2.Category>);
+  _i4.Future<_i2.Category> save(_i2.Category? entity) => (super.noSuchMethod(
+        Invocation.method(#save, [entity]),
+        returnValue: _i4.Future<_i2.Category>.value(
+          _FakeCategory_0(this, Invocation.method(#save, [entity])),
+        ),
+      ) as _i4.Future<_i2.Category>);
 }

@@ -33,12 +33,12 @@ import 'package:mockito/mockito.dart' as _i1;
 class _FakeCollectionReference_0<T extends Object?> extends _i1.SmartFake
     implements _i2.CollectionReference<T> {
   _FakeCollectionReference_0(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
 class _FakeOverviewData_1 extends _i1.SmartFake implements _i3.OverviewData {
   _FakeOverviewData_1(Object parent, Invocation parentInvocation)
-    : super(parent, parentInvocation);
+      : super(parent, parentInvocation);
 }
 
 /// A class which mocks [TransactionServiceImpl].
@@ -53,12 +53,26 @@ class MockTransactionServiceImpl extends _i1.Mock
   @override
   _i5.Future<List<_i6.Transaction>> getRecentTransactionsByUserId() =>
       (super.noSuchMethod(
-            Invocation.method(#getRecentTransactionsByUserId, []),
-            returnValue: _i5.Future<List<_i6.Transaction>>.value(
-              <_i6.Transaction>[],
-            ),
-          )
-          as _i5.Future<List<_i6.Transaction>>);
+        Invocation.method(#getRecentTransactionsByUserId, []),
+        returnValue: _i5.Future<List<_i6.Transaction>>.value(
+          <_i6.Transaction>[],
+        ),
+      ) as _i5.Future<List<_i6.Transaction>>);
+
+  @override
+  _i5.Future<List<_i6.Transaction>> getTransactionsByMonthAndCategoryType(
+    DateTime? month,
+    List<String>? categoryIds,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(#getTransactionsByMonthAndCategoryType, [
+          month,
+          categoryIds,
+        ]),
+        returnValue: _i5.Future<List<_i6.Transaction>>.value(
+          <_i6.Transaction>[],
+        ),
+      ) as _i5.Future<List<_i6.Transaction>>);
 }
 
 /// A class which mocks [AnalysisServiceImpl].
@@ -80,32 +94,30 @@ class MockAnalysisServiceImpl extends _i1.Mock
   @override
   _i2.CollectionReference<Map<String, dynamic>> get refTransaction =>
       (super.noSuchMethod(
-            Invocation.getter(#refTransaction),
-            returnValue: _FakeCollectionReference_0<Map<String, dynamic>>(
-              this,
-              Invocation.getter(#refTransaction),
-            ),
-          )
-          as _i2.CollectionReference<Map<String, dynamic>>);
+        Invocation.getter(#refTransaction),
+        returnValue: _FakeCollectionReference_0<Map<String, dynamic>>(
+          this,
+          Invocation.getter(#refTransaction),
+        ),
+      ) as _i2.CollectionReference<Map<String, dynamic>>);
 
   @override
   set refTransaction(
     _i2.CollectionReference<Map<String, dynamic>>? _refTransaction,
-  ) => super.noSuchMethod(
-    Invocation.setter(#refTransaction, _refTransaction),
-    returnValueForMissingStub: null,
-  );
+  ) =>
+      super.noSuchMethod(
+        Invocation.setter(#refTransaction, _refTransaction),
+        returnValueForMissingStub: null,
+      );
 
   @override
-  _i5.Future<_i3.OverviewData> getOverviewData() =>
-      (super.noSuchMethod(
+  _i5.Future<_i3.OverviewData> getOverviewData() => (super.noSuchMethod(
+        Invocation.method(#getOverviewData, []),
+        returnValue: _i5.Future<_i3.OverviewData>.value(
+          _FakeOverviewData_1(
+            this,
             Invocation.method(#getOverviewData, []),
-            returnValue: _i5.Future<_i3.OverviewData>.value(
-              _FakeOverviewData_1(
-                this,
-                Invocation.method(#getOverviewData, []),
-              ),
-            ),
-          )
-          as _i5.Future<_i3.OverviewData>);
+          ),
+        ),
+      ) as _i5.Future<_i3.OverviewData>);
 }

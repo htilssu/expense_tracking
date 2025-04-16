@@ -26,12 +26,27 @@ class _AmountInputState extends State<AmountInput> {
     _initializeController();
   }
 
+  void handle() {
+    var rawValue = _controller.text.replaceAll(RegExp(r'\D'), '');
+    if (rawValue.isEmpty) {
+      rawValue = '0';
+    }
+    var newValue = int.parse(rawValue);
+    widget.onChanged?.call(newValue);
+    var formattedValue = CurrencyFormatter.formatCurrency(newValue);
+    _controller.value = _controller.value.copyWith(
+      text: formattedValue,
+      selection: TextSelection.collapsed(
+          offset: formattedValue.lastIndexOf(RegExp(r'\d')) + 1),
+    );
+  }
+
   @override
   void didUpdateWidget(AmountInput oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.value != widget.value) {
-      var formattedValue = CurrencyFormatter.formatCurrency(widget.value);
-      _controller.text = formattedValue;
+      _controller.removeListener(handle);
+      _initializeController();
     }
   }
 
@@ -41,22 +56,13 @@ class _AmountInputState extends State<AmountInput> {
       text: formattedValue,
     );
 
-    _controller.addListener(
-      () {
-        var rawValue = _controller.text.replaceAll(RegExp(r'\D'), '');
-        if (rawValue.isEmpty) {
-          rawValue = '0';
-        }
-        var newValue = int.parse(rawValue);
-        widget.onChanged?.call(newValue);
-        var formattedValue = CurrencyFormatter.formatCurrency(newValue);
-        _controller.value = _controller.value.copyWith(
-          text: formattedValue,
-          selection: TextSelection.collapsed(
-              offset: formattedValue.lastIndexOf(RegExp(r'\d')) + 1),
-        );
-      },
+    _controller.value = _controller.value.copyWith(
+      text: formattedValue,
+      selection: TextSelection.collapsed(
+          offset: formattedValue.lastIndexOf(RegExp(r'\d')) + 1),
     );
+
+    _controller.addListener(handle);
   }
 
   @override

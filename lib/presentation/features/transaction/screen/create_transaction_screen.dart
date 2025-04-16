@@ -6,6 +6,7 @@ import 'package:expense_tracking/domain/entity/transaction.dart';
 import 'package:expense_tracking/domain/service/creation_transaction_service.dart';
 import 'package:expense_tracking/infrastructure/repository/category_repository_impl.dart';
 import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
+import 'package:expense_tracking/infrastructure/repository/user_repository_impl.dart';
 import 'package:expense_tracking/presentation/bloc/category_selector/category_selector_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/loading/loading_cubit.dart';
 import 'package:expense_tracking/presentation/bloc/scan_bill/scan_bill_bloc.dart';
@@ -21,6 +22,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../domain/entity/category.dart';
 import '../../../../utils/auth.dart';
 import '../../../bloc/user/user_bloc.dart';
+import '../../../bloc/user/user_bloc.dart';
 import '../widget/category_selector.dart';
 
 class CreateTransactionScreen extends StatefulWidget {
@@ -31,6 +33,8 @@ class CreateTransactionScreen extends StatefulWidget {
     super.key,
     CreationTransactionService? creationTransactionService,
   }) {
+    this.creationTransactionService =
+        creationTransactionService ?? CreationTransactionServiceImpl();
     this.creationTransactionService =
         creationTransactionService ?? CreationTransactionServiceImpl();
   }
@@ -45,7 +49,7 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
   int _selectedSegment = 0;
   late int _amount;
   Category? _category;
-  late BillInfo? billInfo;
+  BillInfo? billInfo;
   String _note = '';
   late final ScanBillBloc _scanBillBloc;
   late CustomSegmentedController<int> _customSegmentController;
@@ -265,6 +269,10 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                           BlocProvider.of<UserBloc>(context);
                                       var user =
                                           (userBloc.state as UserLoaded).user;
+                                      var userBloc =
+                                          BlocProvider.of<UserBloc>(context);
+                                      var user =
+                                          (userBloc.state as UserLoaded).user;
                                       final transaction = Transaction(_note,
                                           _amount, _category!.id, Auth.uid());
 
@@ -279,14 +287,20 @@ class _CreateTransactionScreenState extends State<CreateTransactionScreen> {
                                         billInfo = null;
 
                                         if (_category?.type == 'income') {
-
-                                              _category!.budget += _amount;
+                                          _category!.budget += _amount;
                                           user.money += _amount;
                                         } else {
-
-                                              _category!.amount += _amount;
+                                          _category!.amount += _amount;
                                           user.money -= _amount;
                                         }
+
+                                        userBloc
+                                            .add(UpdateUserEvent(user.clone()));
+
+                                        UserRepositoryImpl().update(user);
+
+                                        CategoryRepositoryImpl()
+                                            .update(_category!);
 
                                         userBloc
                                             .add(UpdateUserEvent(user.clone()));

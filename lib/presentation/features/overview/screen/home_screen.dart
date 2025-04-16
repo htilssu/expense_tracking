@@ -23,14 +23,13 @@ class HomeScreen extends StatefulWidget {
   HomeScreen(
       {super.key,
       TransactionService? transactionService,
-      AnalysisService? analysisService}) {
-    this.transactionService = transactionService ??
-        TransactionServiceImpl(TransactionRepositoryImpl());
-    this.analysisService = analysisService ?? AnalysisServiceImpl();
-  }
+      AnalysisService? analysisService})
+      : transactionService = transactionService ??
+            TransactionServiceImpl(TransactionRepositoryImpl()),
+        analysisService = analysisService ?? AnalysisServiceImpl();
 
-  late TransactionService transactionService;
-  late AnalysisService analysisService;
+  final TransactionService transactionService;
+  final AnalysisService analysisService;
 
   @override
   State<HomeScreen> createState() => HomeScreenState();

@@ -105,7 +105,7 @@ class RegisterScreenState extends State<RegisterScreen> {
                   Column(
                     children: [
                       EtButton(
-                        onPressed: isLoading ? null : _handleRegister,
+                        onPressed: _handleRegister,
                         child: isLoading
                             ? const SizedBox(
                                 width: 20,
@@ -145,6 +145,8 @@ class RegisterScreenState extends State<RegisterScreen> {
   }
 
   Future<void> _handleRegister() async {
+    if (isLoading) return;
+
     setState(() {
       errorMessage = '';
       isLoading = true;
@@ -178,7 +180,7 @@ class RegisterScreenState extends State<RegisterScreen> {
       var user = FirebaseAuth.instance.currentUser;
       if (user != null) {
         await UserRepositoryImpl()
-            .save(entity.User(user.uid, user.email!,0, '', ''));
+            .save(entity.User(user.uid, user.email!, 0, '', ''));
 
         await CategoryServiceImpl().saveDefaultCategories();
 

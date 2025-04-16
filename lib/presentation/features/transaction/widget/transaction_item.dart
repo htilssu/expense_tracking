@@ -23,11 +23,13 @@ class TransactionItem extends StatelessWidget {
         padding: const EdgeInsets.all(2),
         child: BlocBuilder<CategoryBloc, CategoryState>(
           builder: (context, state) {
-
             Category? category;
             if (state is CategoryLoaded) {
-              category = state.categories
-                  .firstWhere((element) => element.id == _transaction.category);
+              category = state.categories.firstWhere(
+                (element) => element.id == _transaction.category,
+                orElse: () => Category('Chi phí khác', 0, 0, 'expense', 'user',
+                    icon: 'other'),
+              );
             }
 
             return Row(
@@ -90,10 +92,10 @@ class TransactionItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "${category!.type == "income" ? "+" : "-"} ${CurrencyFormatter.formatCurrency(_transaction.value)}",
+                      "${category?.type == "income" ? "+" : "-"} ${CurrencyFormatter.formatCurrency(_transaction.value)}",
                       style: TextStyle(
                         fontSize: TextSize.medium + 4,
-                        color: category.type == 'income'
+                        color: category?.type == 'income'
                             ? Colors.green
                             : Colors.red[300],
                       ),
