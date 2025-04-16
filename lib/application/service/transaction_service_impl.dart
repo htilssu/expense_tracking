@@ -5,6 +5,4 @@ import 'package:expense_tracking/infrastructure/repository/transaction_repostory
 class TransactionServiceImpl extends TransactionService {
   TransactionServiceImpl([TransactionRepository? transactionRepository])
       : super(transactionRepository ?? TransactionRepositoryImpl());
-
-
 }
